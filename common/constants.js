@@ -26,12 +26,37 @@ export const STORAGE_KEYS = {
   THEME: "theme",
   STATS: "stats",
   TASKS: "tasks",
+  PRESETS: "presets",
 };
 
 // Task list shown in the popup and edited on the options page. Each entry is
 // { id: <string>, text: <string>, done: <boolean> }. Kept in chrome.storage.local
 // like everything else — never leaves the device.
 export const DEFAULT_TASKS = [];
+
+// Named timer-duration snapshots, switchable from the popup or the options
+// page instead of re-typing all four fields every time. Each entry is
+// { id, name, workMinutes, restMinutes, cyclesBeforeLongBreak, longBreakMinutes }.
+// Ships with two starter presets; both are just data, so either can be
+// renamed or removed like any preset the user creates.
+export const DEFAULT_PRESETS = [
+  {
+    id: "preset-classic",
+    name: "Classic 25/5",
+    workMinutes: 25,
+    restMinutes: 5,
+    cyclesBeforeLongBreak: 4,
+    longBreakMinutes: 15,
+  },
+  {
+    id: "preset-deep-work",
+    name: "Deep Work 50/10",
+    workMinutes: 50,
+    restMinutes: 10,
+    cyclesBeforeLongBreak: 4,
+    longBreakMinutes: 20,
+  },
+];
 
 // Windows the popup's "total minutes focused" counter can add up over.
 // 'all' means "everything since the user last hit Reset in settings".

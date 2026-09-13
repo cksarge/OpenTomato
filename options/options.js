@@ -13,6 +13,8 @@ import {
   getTimerState,
   getTasks,
   setTasks,
+  getPresets,
+  setPresets,
 } from "../common/storage.js";
 import { normalizeEntry } from "../common/blocklist.js";
 import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
@@ -51,6 +53,10 @@ const els = {
   addSiteBtn: document.getElementById("add-site-btn"),
   siteList: document.getElementById("site-list"),
   emptyHint: document.getElementById("empty-hint"),
+  presetList: document.getElementById("preset-list"),
+  presetEmptyHint: document.getElementById("preset-empty-hint"),
+  presetNameInput: document.getElementById("preset-name-input"),
+  savePresetBtn: document.getElementById("save-preset-btn"),
   resetDefaultsBtn: document.getElementById("reset-defaults-btn"),
   savedIndicator: document.getElementById("saved-indicator"),
   themeToggleBtn: document.getElementById("theme-toggle-btn"),
@@ -76,6 +82,7 @@ let settings = { ...DEFAULT_SETTINGS };
 let stats = { ...DEFAULT_STATS };
 let timerState = { ...DEFAULT_TIMER_STATE };
 let tasks = [];
+let presets = [];
 let savedIndicatorTimeout = null;
 
 // Folder names the user has expanded, so a re-render doesn't collapse them.
@@ -132,6 +139,7 @@ function populateForm() {
   renderFocusTotal();
   renderSiteList();
   renderFolders();
+  renderPresets();
   applyBlockingVisibility();
   applyRestrictiveLock();
 }
@@ -153,7 +161,127 @@ function applyRestrictiveLock() {
   els.timerLockNote.hidden = !locked;
   els.blockingLockNote.hidden = !locked;
   els.restrictiveActiveNote.hidden = !sessionActive;
+
+  // Applying a preset would touch the same fields restrictive mode just froze.
+  Array.from(els.presetList.querySelectorAll(".preset-apply")).forEach((btn) => {
+    if (btn.dataset.active !== "true") btn.disabled = locked;
+  });
 }
+
+// A preset "matches" when its four duration fields agree with the current
+// settings — used to mark it active and skip a no-op Apply.
+function presetMatchesSettings(preset) {
+  return (
+    preset.workMinutes === settings.workMinutes &&
+    preset.restMinutes === settings.restMinutes &&
+    preset.cyclesBeforeLongBreak === settings.cyclesBeforeLongBreak &&
+    preset.longBreakMinutes === settings.longBreakMinutes
+  );
+}
+
+function presetSummary(preset) {
+  return `${preset.workMinutes}/${preset.restMinutes} · ${preset.cyclesBeforeLongBreak} cycles · ${preset.longBreakMinutes} long break`;
+}
+
+function renderPresets() {
+  els.presetList.innerHTML = "";
+  els.presetEmptyHint.style.display = presets.length ? "none" : "block";
+  const locked = isLocked();
+
+  for (const preset of presets) {
+    const active = presetMatchesSettings(preset);
+    const li = document.createElement("li");
+    li.className = "preset-row" + (active ? " active" : "");
+
+    const info = document.createElement("div");
+    info.className = "preset-info";
+    const name = document.createElement("span");
+    name.className = "preset-name";
+    name.textContent = preset.name;
+    const summary = document.createElement("span");
+    summary.className = "preset-summary";
+    summary.textContent = presetSummary(preset);
+    info.append(name, summary);
+
+    const actions = document.createElement("div");
+    actions.className = "preset-actions";
+
+    const applyBtn = document.createElement("button");
+    applyBtn.type = "button";
+    applyBtn.className = "preset-apply";
+    applyBtn.dataset.active = String(active);
+    applyBtn.textContent = active ? "Active" : "Apply";
+    applyBtn.disabled = active || locked;
+    applyBtn.addEventListener("click", () => applyPreset(preset));
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "preset-remove";
+    removeBtn.textContent = "Remove";
+    removeBtn.addEventListener("click", () => removePreset(preset.id));
+
+    actions.append(applyBtn, removeBtn);
+    li.append(info, actions);
+    els.presetList.appendChild(li);
+  }
+}
+
+function applyPreset(preset) {
+  if (isLocked()) return;
+  settings = {
+    ...settings,
+    workMinutes: preset.workMinutes,
+    restMinutes: preset.restMinutes,
+    cyclesBeforeLongBreak: preset.cyclesBeforeLongBreak,
+    longBreakMinutes: preset.longBreakMinutes,
+  };
+  syncControlsFromSettings();
+  renderPresets();
+  persist();
+}
+
+function newPresetId() {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+}
+
+async function savePreset() {
+  const name = els.presetNameInput.value.trim();
+  if (!name) return;
+  presets = [
+    ...presets,
+    {
+      id: newPresetId(),
+      name: name.slice(0, 60),
+      workMinutes: settings.workMinutes,
+      restMinutes: settings.restMinutes,
+      cyclesBeforeLongBreak: settings.cyclesBeforeLongBreak,
+      longBreakMinutes: settings.longBreakMinutes,
+    },
+  ];
+  els.presetNameInput.value = "";
+  renderPresets();
+  await setPresets(presets);
+  showSaved();
+}
+
+async function removePreset(id) {
+  presets = presets.filter((p) => p.id !== id);
+  renderPresets();
+  await setPresets(presets);
+  showSaved();
+}
+
+els.savePresetBtn.addEventListener("click", savePreset);
+els.presetNameInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    savePreset();
+  }
+});
 
 function renderFocusTotal() {
   const total = formatFocusDuration(totalFocusMs(stats, timerState, settings));
@@ -331,6 +459,7 @@ function onFieldChange() {
   els.warningDetail.style.display = settings.warningEnabled ? "grid" : "none";
   els.idleDetail.style.display = settings.idleEnabled ? "grid" : "none";
   applyRestrictiveLock();
+  renderPresets();
   persist();
 }
 
@@ -542,9 +671,15 @@ chrome.storage.onChanged.addListener((changes, area) => {
     renderFocusTotal();
     renderFolders();
     renderSiteList();
+    renderPresets();
     applyRestrictiveLock();
   } else if (changes.stats) {
     renderFocusTotal();
+  }
+
+  if (changes.presets) {
+    presets = Array.isArray(changes.presets.newValue) ? changes.presets.newValue : [];
+    renderPresets();
   }
 
   // React to settings written elsewhere (another tab, or the worker snapping a
@@ -560,6 +695,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
     settings.whitelist = Array.isArray(settings.whitelist) ? settings.whitelist : [];
     syncControlsFromSettings();
     applyBlockingVisibility();
+    renderPresets();
     applyRestrictiveLock();
     renderFocusTotal();
     if (listsChanged) {
@@ -572,11 +708,12 @@ chrome.storage.onChanged.addListener((changes, area) => {
 setInterval(renderFocusTotal, 1000);
 
 (async function init() {
-  [settings, stats, timerState, tasks] = await Promise.all([
+  [settings, stats, timerState, tasks, presets] = await Promise.all([
     getSettings(),
     getStats(),
     getTimerState(),
     getTasks(),
+    getPresets(),
   ]);
   populateForm();
   renderTasks();

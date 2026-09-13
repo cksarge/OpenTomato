@@ -7,7 +7,7 @@ import {
   DEFAULT_STATS,
 } from "../common/constants.js";
 import { durationMsForPhase, formatTime } from "../common/duration.js";
-import { getStats, getTasks, setTasks } from "../common/storage.js";
+import { getStats, getTasks, setTasks, getPresets, setSettings } from "../common/storage.js";
 import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
 import { initTheme } from "../common/theme.js";
 
@@ -34,6 +34,8 @@ const els = {
   tasks: document.getElementById("tasks"),
   taskList: document.getElementById("task-list"),
   taskToggle: document.getElementById("task-toggle"),
+  presetBar: document.getElementById("preset-bar"),
+  presetSelect: document.getElementById("preset-select"),
 };
 
 const RESET_PHRASE = "Yes, I want to reset the timer.";
@@ -46,6 +48,7 @@ let state = {
   timerState: DEFAULT_TIMER_STATE,
   stats: DEFAULT_STATS,
   tasks: [],
+  presets: [],
 };
 let tasksExpanded = false;
 
@@ -113,6 +116,39 @@ function render() {
 
   renderFocusStat();
   renderTasks();
+  renderPresetBar();
+}
+
+let lastPresetsSig = null;
+
+function renderPresetBar() {
+  const presets = Array.isArray(state.presets) ? state.presets : [];
+  els.presetBar.hidden = presets.length === 0;
+  if (!presets.length) return;
+
+  // Only rebuild the <option> list when the presets actually changed, so an
+  // in-progress interaction with the select isn't disturbed by render()'s
+  // 250ms tick.
+  const sig = JSON.stringify(presets.map((p) => [p.id, p.name]));
+  if (sig !== lastPresetsSig) {
+    lastPresetsSig = sig;
+    els.presetSelect.innerHTML = "";
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.selected = true;
+    placeholder.disabled = true;
+    placeholder.textContent = "Duration preset…";
+    els.presetSelect.appendChild(placeholder);
+    for (const preset of presets) {
+      const option = document.createElement("option");
+      option.value = preset.id;
+      option.textContent = preset.name;
+      els.presetSelect.appendChild(option);
+    }
+  }
+
+  const { settings, timerState } = state;
+  els.presetSelect.disabled = !!settings.restrictiveMode && timerState.status !== STATUS.IDLE;
 }
 
 function openResetConfirm() {
@@ -241,6 +277,27 @@ els.taskToggle.addEventListener("click", () => {
   renderTasks();
 });
 
+els.presetSelect.addEventListener("change", async () => {
+  const id = els.presetSelect.value;
+  els.presetSelect.value = ""; // acts as a one-shot action menu, not a persistent selection
+  if (!id) return;
+  if (state.settings.restrictiveMode && state.timerState.status !== STATUS.IDLE) return;
+
+  const preset = (state.presets || []).find((p) => p.id === id);
+  if (!preset) return;
+
+  state.settings = {
+    ...state.settings,
+    workMinutes: preset.workMinutes,
+    restMinutes: preset.restMinutes,
+    cyclesBeforeLongBreak: preset.cyclesBeforeLongBreak,
+    longBreakMinutes: preset.longBreakMinutes,
+  };
+  render();
+  await setSettings(state.settings);
+  chrome.runtime.sendMessage({ type: "opentomato:save-settings", settings: state.settings }).catch(() => {});
+});
+
 async function sendAction(type) {
   return chrome.runtime.sendMessage({ type });
 }
@@ -253,7 +310,7 @@ async function loadState() {
     // Worker not ready yet (e.g. just after an unpacked reload) — fall through
     // to reading storage directly; a storage.onChanged will catch us up.
   }
-  const tasks = await getTasks();
+  const [tasks, presets] = await Promise.all([getTasks(), getPresets()]);
 
   state = {
     timerState:
@@ -262,6 +319,7 @@ async function loadState() {
       response && response.settings ? response.settings : state.settings || DEFAULT_SETTINGS,
     stats: response && response.stats ? response.stats : await getStats(),
     tasks,
+    presets,
   };
   render();
 }
@@ -324,6 +382,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (changes.stats) state.stats = { ...DEFAULT_STATS, ...changes.stats.newValue };
   if (changes.tasks) {
     state.tasks = Array.isArray(changes.tasks.newValue) ? changes.tasks.newValue : [];
+  }
+  if (changes.presets) {
+    state.presets = Array.isArray(changes.presets.newValue) ? changes.presets.newValue : [];
   }
   render();
 });

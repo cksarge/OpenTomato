@@ -127,6 +127,28 @@ body {
   color: var(--accent);
 }
 
+.preset-bar select {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.preset-bar select:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.preset-bar select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .timer-card {
   background: var(--card-bg);
   border: 1px solid var(--border);

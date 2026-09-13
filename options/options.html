@@ -83,6 +83,19 @@
         <p class="hint lock-note" id="timer-lock-note" hidden>
           🔒 Locked while a focus session is running (restrictive mode).
         </p>
+
+        <div class="presets">
+          <p class="hint">
+            Save the durations above as a named preset, then switch between presets here or from
+            the popup instead of re-typing them.
+          </p>
+          <ul class="preset-list" id="preset-list"></ul>
+          <p class="empty-hint" id="preset-empty-hint">No presets saved yet.</p>
+          <div class="list-add-row">
+            <input type="text" id="preset-name-input" placeholder="Name this preset" maxlength="60" />
+            <button type="button" id="save-preset-btn" class="btn btn-primary">Save current as preset</button>
+          </div>
+        </div>
         </div>
       </details>
 

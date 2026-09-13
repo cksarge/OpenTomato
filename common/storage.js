@@ -8,6 +8,7 @@ import {
   DEFAULT_STATS,
   DEFAULT_TASKS,
   DEFAULT_THEME,
+  DEFAULT_PRESETS,
   STORAGE_KEYS,
   BLOCK_MODE,
 } from "./constants.js";
@@ -69,6 +70,26 @@ export async function getTasks() {
 
 export async function setTasks(tasks) {
   await chrome.storage.local.set({ [STORAGE_KEYS.TASKS]: tasks });
+}
+
+export async function getPresets() {
+  const { [STORAGE_KEYS.PRESETS]: stored } = await chrome.storage.local.get(STORAGE_KEYS.PRESETS);
+  if (!Array.isArray(stored)) return DEFAULT_PRESETS.slice();
+  // Keep only well-shaped entries so a corrupt write can't break the UI.
+  return stored
+    .filter((p) => p && typeof p.id === "string" && typeof p.name === "string")
+    .map((p) => ({
+      id: p.id,
+      name: p.name,
+      workMinutes: Number(p.workMinutes) || DEFAULT_SETTINGS.workMinutes,
+      restMinutes: Number(p.restMinutes) || DEFAULT_SETTINGS.restMinutes,
+      cyclesBeforeLongBreak: Number(p.cyclesBeforeLongBreak) || DEFAULT_SETTINGS.cyclesBeforeLongBreak,
+      longBreakMinutes: Number(p.longBreakMinutes) || DEFAULT_SETTINGS.longBreakMinutes,
+    }));
+}
+
+export async function setPresets(presets) {
+  await chrome.storage.local.set({ [STORAGE_KEYS.PRESETS]: presets });
 }
 
 export async function getTheme() {
