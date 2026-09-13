@@ -43,6 +43,7 @@ const els = {
   restrictiveActiveNote: document.getElementById("restrictive-active-note"),
   timerLockNote: document.getElementById("timer-lock-note"),
   blockingLockNote: document.getElementById("blocking-lock-note"),
+  idleLockNote: document.getElementById("idle-lock-note"),
   workMinutes: document.getElementById("workMinutes"),
   restMinutes: document.getElementById("restMinutes"),
   cyclesBeforeLongBreak: document.getElementById("cyclesBeforeLongBreak"),
@@ -203,10 +204,12 @@ function applyRestrictiveLock() {
   els.modeRadios.forEach((radio) => (radio.disabled = locked));
   els.siteInput.disabled = locked;
   els.addSiteBtn.disabled = locked;
+  [els.idleEnabled, els.idleMinutes, els.idleAutoResume].forEach((el) => (el.disabled = locked));
   els.restrictiveMode.disabled = sessionActive;
 
   els.timerLockNote.hidden = !locked;
   els.blockingLockNote.hidden = !locked;
+  els.idleLockNote.hidden = !locked;
   els.restrictiveActiveNote.hidden = !sessionActive;
 
   // Applying a preset would touch the same fields restrictive mode just froze.

@@ -83,7 +83,7 @@
   "options_restrictiveHeading": { "message": "制限モード" },
   "options_restrictiveEnable": { "message": "制限モードを有効にする" },
   "options_restrictiveIntro": { "message": "制限モードがオンの場合、集中セッションを開始するとセッションが終わるまで設定がロックされます：" },
-  "options_restrictiveBullet1": { "message": "タイマーの時間設定とすべてのサイトブロック設定が変更できなくなります。" },
+  "options_restrictiveBullet1": { "message": "タイマーの時間設定、離席検知、およびすべてのサイトブロック設定が変更できなくなります。" },
   "options_restrictiveBullet2": { "message": "タイマーは一切スキップできません。" },
   "options_restrictiveBullet3": {
     "message": "タイマーは<em>一時停止中</em>のみリセットでき、さらに確認用の文を入力した場合に限られます。",

@@ -83,7 +83,7 @@
   "options_restrictiveHeading": { "message": "Modo restrictivo" },
   "options_restrictiveEnable": { "message": "Activar modo restrictivo" },
   "options_restrictiveIntro": { "message": "Cuando el modo restrictivo está activado, iniciar una sesión de enfoque bloquea los ajustes hasta que esa sesión termine:" },
-  "options_restrictiveBullet1": { "message": "Las duraciones del temporizador y todos los ajustes de bloqueo de sitios quedan bloqueados." },
+  "options_restrictiveBullet1": { "message": "Las duraciones del temporizador, la detección de inactividad y todos los ajustes de bloqueo de sitios quedan bloqueados." },
   "options_restrictiveBullet2": { "message": "El temporizador no se puede omitir bajo ninguna circunstancia." },
   "options_restrictiveBullet3": {
     "message": "El temporizador solo se puede reiniciar mientras está <em>en pausa</em>, y solo después de escribir una frase de confirmación.",

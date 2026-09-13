@@ -93,7 +93,7 @@
   "options_restrictiveHeading": { "message": "Restrictive Mode" },
   "options_restrictiveEnable": { "message": "Enable restrictive mode" },
   "options_restrictiveIntro": { "message": "When restrictive mode is on, starting a focus session locks things down until that session ends:" },
-  "options_restrictiveBullet1": { "message": "Timer durations and every site-blocking setting are frozen." },
+  "options_restrictiveBullet1": { "message": "Timer durations, idle detection, and every site-blocking setting are frozen." },
   "options_restrictiveBullet2": { "message": "The timer can't be skipped — at all." },
   "options_restrictiveBullet3": {
     "message": "The timer can only be reset while it's <em>paused</em>, and only after typing a confirmation phrase.",

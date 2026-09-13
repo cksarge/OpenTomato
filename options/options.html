@@ -40,7 +40,7 @@
           session ends:
         </p>
         <ul class="hint restrict-list">
-          <li data-i18n="options_restrictiveBullet1">Timer durations and every site-blocking setting are frozen.</li>
+          <li data-i18n="options_restrictiveBullet1">Timer durations, idle detection, and every site-blocking setting are frozen.</li>
           <li data-i18n="options_restrictiveBullet2">The timer can't be skipped — at all.</li>
           <li id="restrictive-bullet-3">
             The timer can only be reset while it's <em>paused</em>, and only after typing a
@@ -163,6 +163,9 @@
         <p class="hint" data-i18n="options_idleHint">
           Without this, the timer keeps running (and counting toward your focus total) even while
           you're away — this is what makes it notice and pause itself instead.
+        </p>
+        <p class="hint lock-note" id="idle-lock-note" data-i18n="options_lockedRestrictive" hidden>
+          🔒 Locked while a focus session is running (restrictive mode).
         </p>
         </div>
       </details>

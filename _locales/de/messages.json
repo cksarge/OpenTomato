@@ -83,7 +83,7 @@
   "options_restrictiveHeading": { "message": "Restriktiver Modus" },
   "options_restrictiveEnable": { "message": "Restriktiven Modus aktivieren" },
   "options_restrictiveIntro": { "message": "Wenn der restriktive Modus aktiviert ist, sperrt der Start einer Fokus-Sitzung die Einstellungen, bis diese Sitzung endet:" },
-  "options_restrictiveBullet1": { "message": "Timer-Dauern und sämtliche Website-Blockierungseinstellungen werden eingefroren." },
+  "options_restrictiveBullet1": { "message": "Timer-Dauern, die Inaktivitätserkennung und sämtliche Website-Blockierungseinstellungen werden eingefroren." },
   "options_restrictiveBullet2": { "message": "Der Timer kann überhaupt nicht übersprungen werden." },
   "options_restrictiveBullet3": {
     "message": "Der Timer kann nur zurückgesetzt werden, während er <em>pausiert</em> ist, und nur nach Eingabe eines Bestätigungssatzes.",

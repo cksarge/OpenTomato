@@ -83,7 +83,7 @@
   "options_restrictiveHeading": { "message": "Mode restrictif" },
   "options_restrictiveEnable": { "message": "Activer le mode restrictif" },
   "options_restrictiveIntro": { "message": "Lorsque le mode restrictif est activé, démarrer une session de concentration verrouille les réglages jusqu'à la fin de cette session :" },
-  "options_restrictiveBullet1": { "message": "Les durées du minuteur et tous les réglages de blocage de sites sont verrouillés." },
+  "options_restrictiveBullet1": { "message": "Les durées du minuteur, la détection d'inactivité et tous les réglages de blocage de sites sont verrouillés." },
   "options_restrictiveBullet2": { "message": "Le minuteur ne peut absolument pas être passé." },
   "options_restrictiveBullet3": {
     "message": "Le minuteur ne peut être réinitialisé que lorsqu'il est <em>en pause</em>, et seulement après avoir tapé une phrase de confirmation.",

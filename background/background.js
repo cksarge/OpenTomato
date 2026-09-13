@@ -510,6 +510,9 @@ const RESTRICTED_SETTING_KEYS = [
   "blockMode",
   "blacklist",
   "whitelist",
+  "idleEnabled",
+  "idleMinutes",
+  "idleAutoResume",
 ];
 
 function restrictionsActive(settings, timerState) {
