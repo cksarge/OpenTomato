@@ -22,7 +22,7 @@ globalThis.chrome = {
   },
 };
 
-const { getPresets, setPresets } = await import("./storage.js");
+const { getPresets, setPresets, getBlockingProfiles, setBlockingProfiles } = await import("./storage.js");
 const { DEFAULT_PRESETS } = await import("./constants.js");
 
 test("getPresets falls back to the two built-in defaults when nothing is stored", async () => {
@@ -46,5 +46,30 @@ test("getPresets filters out malformed entries and coerces numeric fields", asyn
   const presets = await getPresets();
   assert.deepEqual(presets, [
     { id: "good", name: "Good One", workMinutes: 50, restMinutes: 10, cyclesBeforeLongBreak: 4, longBreakMinutes: 20 },
+  ]);
+});
+
+test("getBlockingProfiles defaults to an empty list when nothing is stored", async () => {
+  const profiles = await getBlockingProfiles();
+  assert.deepEqual(profiles, []);
+});
+
+test("getBlockingProfiles round-trips a well-formed profile", async () => {
+  await setBlockingProfiles([
+    { id: "deep-work", name: "Deep Work", blockMode: "blacklist", blacklist: ["reddit.com"], whitelist: [] },
+  ]);
+  const profiles = await getBlockingProfiles();
+  assert.deepEqual(profiles, [
+    { id: "deep-work", name: "Deep Work", blockMode: "blacklist", blacklist: ["reddit.com"], whitelist: [] },
+  ]);
+});
+
+test("getBlockingProfiles sanitizes a bogus blockMode and non-string list entries", async () => {
+  await setBlockingProfiles([
+    { id: "weird", name: "Weird", blockMode: "nonsense", blacklist: ["ok.com", 5, null], whitelist: "not-an-array" },
+  ]);
+  const profiles = await getBlockingProfiles();
+  assert.deepEqual(profiles, [
+    { id: "weird", name: "Weird", blockMode: "off", blacklist: ["ok.com"], whitelist: [] },
   ]);
 });

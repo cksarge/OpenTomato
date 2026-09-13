@@ -9,6 +9,7 @@ import {
   DEFAULT_TASKS,
   DEFAULT_THEME,
   DEFAULT_PRESETS,
+  DEFAULT_BLOCKING_PROFILES,
   STORAGE_KEYS,
   BLOCK_MODE,
 } from "./constants.js";
@@ -90,6 +91,31 @@ export async function getPresets() {
 
 export async function setPresets(presets) {
   await chrome.storage.local.set({ [STORAGE_KEYS.PRESETS]: presets });
+}
+
+function sanitizeStringArray(value) {
+  return Array.isArray(value) ? value.filter((v) => typeof v === "string") : [];
+}
+
+export async function getBlockingProfiles() {
+  const { [STORAGE_KEYS.BLOCKING_PROFILES]: stored } = await chrome.storage.local.get(
+    STORAGE_KEYS.BLOCKING_PROFILES
+  );
+  if (!Array.isArray(stored)) return DEFAULT_BLOCKING_PROFILES.slice();
+  const validModes = [BLOCK_MODE.OFF, BLOCK_MODE.BLACKLIST, BLOCK_MODE.WHITELIST];
+  return stored
+    .filter((p) => p && typeof p.id === "string" && typeof p.name === "string")
+    .map((p) => ({
+      id: p.id,
+      name: p.name,
+      blockMode: validModes.includes(p.blockMode) ? p.blockMode : BLOCK_MODE.OFF,
+      blacklist: sanitizeStringArray(p.blacklist),
+      whitelist: sanitizeStringArray(p.whitelist),
+    }));
+}
+
+export async function setBlockingProfiles(profiles) {
+  await chrome.storage.local.set({ [STORAGE_KEYS.BLOCKING_PROFILES]: profiles });
 }
 
 export async function getTheme() {

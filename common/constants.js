@@ -27,6 +27,7 @@ export const STORAGE_KEYS = {
   STATS: "stats",
   TASKS: "tasks",
   PRESETS: "presets",
+  BLOCKING_PROFILES: "blockingProfiles",
 };
 
 // Task list shown in the popup and edited on the options page. Each entry is
@@ -57,6 +58,13 @@ export const DEFAULT_PRESETS = [
     longBreakMinutes: 20,
   },
 ];
+
+// Named blocking-mode + list snapshots, so different kinds of sessions (e.g.
+// "Deep Work" vs "Light Research") can swap their whole site-blocking setup
+// without re-editing the blacklist/whitelist each time. Each entry is
+// { id, name, blockMode, blacklist, whitelist }. Starts empty — unlike
+// duration presets, a starter blocklist would be presumptuous.
+export const DEFAULT_BLOCKING_PROFILES = [];
 
 // Windows the popup's "total minutes focused" counter can add up over.
 // 'all' means "everything since the user last hit Reset in settings".

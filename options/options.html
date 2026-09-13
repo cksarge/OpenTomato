@@ -239,6 +239,20 @@
           whitelist keep separate lists. Enter one domain per site (e.g. <code>youtube.com</code>);
           subdomains are matched automatically.
         </p>
+
+        <div class="presets">
+          <p class="hint">
+            Save the current mode and lists as a named profile (e.g. "Deep Work" vs "Light
+            Research"), then switch between them here without re-editing your lists.
+          </p>
+          <ul class="preset-list" id="profile-list"></ul>
+          <p class="empty-hint" id="profile-empty-hint">No blocking profiles saved yet.</p>
+          <div class="list-add-row">
+            <input type="text" id="profile-name-input" placeholder="Name this profile" maxlength="60" />
+            <button type="button" id="save-profile-btn" class="btn btn-primary">Save current as profile</button>
+          </div>
+        </div>
+
         <div class="mode-row" role="radiogroup" aria-label="Blocking mode">
           <label class="radio-pill">
             <input type="radio" name="blockMode" value="off" />

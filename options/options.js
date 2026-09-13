@@ -15,6 +15,8 @@ import {
   setTasks,
   getPresets,
   setPresets,
+  getBlockingProfiles,
+  setBlockingProfiles,
 } from "../common/storage.js";
 import { normalizeEntry } from "../common/blocklist.js";
 import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
@@ -57,6 +59,10 @@ const els = {
   presetEmptyHint: document.getElementById("preset-empty-hint"),
   presetNameInput: document.getElementById("preset-name-input"),
   savePresetBtn: document.getElementById("save-preset-btn"),
+  profileList: document.getElementById("profile-list"),
+  profileEmptyHint: document.getElementById("profile-empty-hint"),
+  profileNameInput: document.getElementById("profile-name-input"),
+  saveProfileBtn: document.getElementById("save-profile-btn"),
   resetDefaultsBtn: document.getElementById("reset-defaults-btn"),
   savedIndicator: document.getElementById("saved-indicator"),
   themeToggleBtn: document.getElementById("theme-toggle-btn"),
@@ -83,6 +89,7 @@ let stats = { ...DEFAULT_STATS };
 let timerState = { ...DEFAULT_TIMER_STATE };
 let tasks = [];
 let presets = [];
+let blockingProfiles = [];
 let savedIndicatorTimeout = null;
 
 // Folder names the user has expanded, so a re-render doesn't collapse them.
@@ -140,6 +147,7 @@ function populateForm() {
   renderSiteList();
   renderFolders();
   renderPresets();
+  renderBlockingProfiles();
   applyBlockingVisibility();
   applyRestrictiveLock();
 }
@@ -280,6 +288,129 @@ els.presetNameInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     event.preventDefault();
     savePreset();
+  }
+});
+
+// --- Blocking profiles -------------------------------------------------
+
+const MODE_LABELS = {
+  [BLOCK_MODE.OFF]: "Off",
+  [BLOCK_MODE.BLACKLIST]: "Blacklist",
+  [BLOCK_MODE.WHITELIST]: "Whitelist",
+};
+
+function profileMatchesSettings(profile) {
+  return (
+    profile.blockMode === settings.blockMode &&
+    JSON.stringify(profile.blacklist) === JSON.stringify(settings.blacklist ?? []) &&
+    JSON.stringify(profile.whitelist) === JSON.stringify(settings.whitelist ?? [])
+  );
+}
+
+function profileSummary(profile) {
+  if (profile.blockMode === BLOCK_MODE.OFF) return "Blocking off";
+  const count =
+    profile.blockMode === BLOCK_MODE.WHITELIST ? profile.whitelist.length : profile.blacklist.length;
+  return `${MODE_LABELS[profile.blockMode]} · ${count} site${count === 1 ? "" : "s"}`;
+}
+
+function renderBlockingProfiles() {
+  els.profileList.innerHTML = "";
+  els.profileEmptyHint.style.display = blockingProfiles.length ? "none" : "block";
+  const locked = isLocked();
+
+  for (const profile of blockingProfiles) {
+    const active = profileMatchesSettings(profile);
+    const li = document.createElement("li");
+    li.className = "preset-row" + (active ? " active" : "");
+
+    const info = document.createElement("div");
+    info.className = "preset-info";
+    const name = document.createElement("span");
+    name.className = "preset-name";
+    name.textContent = profile.name;
+    const summary = document.createElement("span");
+    summary.className = "preset-summary";
+    summary.textContent = profileSummary(profile);
+    info.append(name, summary);
+
+    const actions = document.createElement("div");
+    actions.className = "preset-actions";
+
+    const applyBtn = document.createElement("button");
+    applyBtn.type = "button";
+    applyBtn.className = "preset-apply";
+    applyBtn.textContent = active ? "Active" : "Apply";
+    applyBtn.disabled = active || locked;
+    applyBtn.addEventListener("click", () => applyBlockingProfile(profile));
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "preset-remove";
+    removeBtn.textContent = "Remove";
+    removeBtn.addEventListener("click", () => removeBlockingProfile(profile.id));
+
+    actions.append(applyBtn, removeBtn);
+    li.append(info, actions);
+    els.profileList.appendChild(li);
+  }
+}
+
+function applyBlockingProfile(profile) {
+  if (isLocked()) return;
+  settings = {
+    ...settings,
+    blockMode: profile.blockMode,
+    blacklist: profile.blacklist.slice(),
+    whitelist: profile.whitelist.slice(),
+  };
+  syncControlsFromSettings();
+  renderFolders();
+  renderSiteList();
+  applyBlockingVisibility();
+  renderBlockingProfiles();
+  persist();
+}
+
+function newProfileId() {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return "bp" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+}
+
+async function saveBlockingProfile() {
+  const name = els.profileNameInput.value.trim();
+  if (!name) return;
+  blockingProfiles = [
+    ...blockingProfiles,
+    {
+      id: newProfileId(),
+      name: name.slice(0, 60),
+      blockMode: settings.blockMode,
+      blacklist: (settings.blacklist ?? []).slice(),
+      whitelist: (settings.whitelist ?? []).slice(),
+    },
+  ];
+  els.profileNameInput.value = "";
+  renderBlockingProfiles();
+  await setBlockingProfiles(blockingProfiles);
+  showSaved();
+}
+
+async function removeBlockingProfile(id) {
+  blockingProfiles = blockingProfiles.filter((p) => p.id !== id);
+  renderBlockingProfiles();
+  await setBlockingProfiles(blockingProfiles);
+  showSaved();
+}
+
+els.saveProfileBtn.addEventListener("click", saveBlockingProfile);
+els.profileNameInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    saveBlockingProfile();
   }
 });
 
@@ -451,6 +582,11 @@ async function persist() {
   // Let the background worker know so it can re-schedule alarms if a timer
   // is currently running (e.g. warning settings changed mid-session).
   chrome.runtime.sendMessage({ type: "opentomato:save-settings", settings }).catch(() => {});
+  // Every settings mutation in this file funnels through here, so this is the
+  // one place needed to keep the presets/profiles "active" highlighting and
+  // lock state in sync with whatever just changed.
+  renderPresets();
+  renderBlockingProfiles();
   showSaved();
 }
 
@@ -459,7 +595,6 @@ function onFieldChange() {
   els.warningDetail.style.display = settings.warningEnabled ? "grid" : "none";
   els.idleDetail.style.display = settings.idleEnabled ? "grid" : "none";
   applyRestrictiveLock();
-  renderPresets();
   persist();
 }
 
@@ -672,6 +807,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
     renderFolders();
     renderSiteList();
     renderPresets();
+    renderBlockingProfiles();
     applyRestrictiveLock();
   } else if (changes.stats) {
     renderFocusTotal();
@@ -680,6 +816,13 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (changes.presets) {
     presets = Array.isArray(changes.presets.newValue) ? changes.presets.newValue : [];
     renderPresets();
+  }
+
+  if (changes.blockingProfiles) {
+    blockingProfiles = Array.isArray(changes.blockingProfiles.newValue)
+      ? changes.blockingProfiles.newValue
+      : [];
+    renderBlockingProfiles();
   }
 
   // React to settings written elsewhere (another tab, or the worker snapping a
@@ -696,6 +839,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
     syncControlsFromSettings();
     applyBlockingVisibility();
     renderPresets();
+    renderBlockingProfiles();
     applyRestrictiveLock();
     renderFocusTotal();
     if (listsChanged) {
@@ -708,12 +852,13 @@ chrome.storage.onChanged.addListener((changes, area) => {
 setInterval(renderFocusTotal, 1000);
 
 (async function init() {
-  [settings, stats, timerState, tasks, presets] = await Promise.all([
+  [settings, stats, timerState, tasks, presets, blockingProfiles] = await Promise.all([
     getSettings(),
     getStats(),
     getTimerState(),
     getTasks(),
     getPresets(),
+    getBlockingProfiles(),
   ]);
   populateForm();
   renderTasks();
