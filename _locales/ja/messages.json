@@ -214,7 +214,6 @@
   "options_resetDefaults": { "message": "初期設定に戻す" },
   "options_confirmResetDefaults": { "message": "OpenTomatoのすべての設定を初期状態に戻しますか？" },
   "options_homepage": { "message": "ホームページ" },
-  "options_buyMeACoffee": { "message": "☕ コーヒーをおごる" },
   "options_saved": { "message": "保存しました" },
 
   "blocked_pageTitle": { "message": "ブロック中 — OpenTomato" },

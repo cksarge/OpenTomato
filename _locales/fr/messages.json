@@ -214,7 +214,6 @@
   "options_resetDefaults": { "message": "Rétablir les valeurs par défaut" },
   "options_confirmResetDefaults": { "message": "Rétablir tous les paramètres OpenTomato à leurs valeurs par défaut ?" },
   "options_homepage": { "message": "Page d'accueil" },
-  "options_buyMeACoffee": { "message": "☕ Offrez-moi un café" },
   "options_saved": { "message": "Enregistré" },
 
   "blocked_pageTitle": { "message": "Bloqué — OpenTomato" },
