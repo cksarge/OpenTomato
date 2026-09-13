@@ -1,0 +1,11 @@
+{
+  "name": "opentomato-extension",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only test tooling for the OpenTomato extension. Not used by Chrome at runtime — the extension itself has no build step and no dependencies.",
+  "scripts": {
+    "test": "node --test",
+    "lint:syntax": "for f in $(find . -name '*.js' -not -path './node_modules/*'); do node --check \"$f\" || exit 1; done",
+    "lint:manifest": "node -e \"JSON.parse(require('fs').readFileSync('manifest.json','utf8')); console.log('manifest.json is valid JSON')\""
+  }
+}

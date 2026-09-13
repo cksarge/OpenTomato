@@ -18,6 +18,19 @@ for details.
 After editing source files, click the refresh icon on the extension's card in
 `chrome://extensions` to reload it.
 
+## Running the tests
+
+The shared logic in `common/` (phase transitions, duration math, site-list matching, focus-stats
+math) has a plain Node test suite — no bundler, no dependencies, nothing that ships to Chrome:
+
+```sh
+npm test              # unit tests (node's built-in test runner)
+npm run lint:syntax   # every .js file parses
+npm run lint:manifest # manifest.json is valid JSON
+```
+
+All three run in CI on every push to this branch (`.github/workflows/ci.yml`).
+
 ## Structure
 
 ```
