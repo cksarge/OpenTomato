@@ -1,15 +1,17 @@
 <!--
-  PRERELEASE DRAFT — the OpenTomato 1.1.0 privacy policy.
+  The OpenTomato 1.1.0 privacy policy — ready to ship alongside the 1.1.0
+  Chrome Web Store update.
 
   privacy.html serves versioned policy files: privacy-policy-X-Y-Z.md (dots
   become dashes). With no #version in the URL it serves whichever version
   OPENTOMATO_PRIVACY_VERSION in assets/config.js names as live (currently
-  1.0.0, so this file is reachable now only at privacy.html#1.1.0 — handy for
-  pointing the Chrome Web Store's privacy policy field at it while 1.1.0 is
-  pending review). When 1.1.0 actually ships, just update
-  OPENTOMATO_PRIVACY_VERSION to "1.1.0" — this file becomes the default at
-  privacy.html with no further changes, and older versions stay reachable
-  forever at their own #version URL.
+  1.0.0, so this file is reachable for now only at privacy.html#1.1.0 — handy
+  for pointing the Chrome Web Store's privacy policy field at it while 1.1.0
+  is pending review). The moment 1.1.0 actually goes live, update
+  OPENTOMATO_PRIVACY_VERSION to "1.1.0" (and double check the effective date
+  below still matches) — this file becomes the default at privacy.html with
+  no further changes, and older versions stay reachable forever at their own
+  #version URL.
 
   Differences from 1.0.0: adds the Tasks checklist (now with per-task
   estimates, completed-session counts, and an active-task selection), saved
@@ -24,7 +26,7 @@
 
 # Privacy Policy
 
-**Effective date:** September 9, 2026 &nbsp;·&nbsp; **Extension version:** 1.1.0
+**Effective date:** September 13, 2026 &nbsp;·&nbsp; **Extension version:** 1.1.0
 
 OpenTomato is built around a simple rule: nothing about how you use it ever leaves your device.
 This page explains exactly what that means.
@@ -96,8 +98,7 @@ each one is for:
 
 None of these permissions are used to read, collect, or transmit the content of the pages you
 visit — OpenTomato only ever compares a page's domain (and, where relevant, its path) against the
-list you configured yourself, and
-that comparison happens entirely on your device.
+list you configured yourself, and that comparison happens entirely on your device.
 
 ## Keyboard shortcut
 
