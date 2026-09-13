@@ -11,10 +11,10 @@
   privacy.html with no further changes, and older versions stay reachable
   forever at their own #version URL.
 
-  Differences from 1.0.0: adds the Tasks checklist and saved duration presets
-  to what's stored, discloses the content script that links the website demo
-  page to the timer, and adds the `idle` permission plus its settings for the
-  new idle-detection feature.
+  Differences from 1.0.0: adds the Tasks checklist, saved duration presets,
+  and saved blocking profiles to what's stored, discloses the content script
+  that links the website demo page to the timer, and adds the `idle`
+  permission plus its settings for the new idle-detection feature.
 -->
 
 # Privacy Policy
@@ -59,6 +59,9 @@ OpenTomato stores the following, only in your browser's local extension storage:
 - **Duration presets** — any named timer-duration configurations you save (e.g. "Classic 25/5"),
   so you can switch between them from the popup or settings instead of re-typing durations. Stays
   on your device and is removed when you uninstall.
+- **Blocking profiles** — any named blocking-mode-and-list combinations you save (e.g. "Deep Work"
+  vs "Light Research"), so you can swap your whole site-blocking setup without re-editing it each
+  time. Stays on your device and is removed when you uninstall.
 - **"Continue anyway" allowances** — if you choose to proceed past a blocked page, OpenTomato
   keeps the site's domain in temporary in-memory storage (`chrome.storage.session`) so it isn't
   re-blocked for the rest of that session. This list is discarded when the tab closes, when a new
@@ -74,7 +77,7 @@ each one is for:
 
 | Permission | Why OpenTomato needs it |
 | --- | --- |
-| `storage` | To save — only on your device — your timer settings, the current timer state (phase, running or paused, time left), your blacklist and whitelist, your focus-time history, your task checklist, your saved duration presets, and your theme choice. Temporary "Continue anyway" allowances are held in in-memory session storage that clears when the browser closes. |
+| `storage` | To save — only on your device — your timer settings, the current timer state (phase, running or paused, time left), your blacklist and whitelist, your focus-time history, your task checklist, your saved duration presets and blocking profiles, and your theme choice. Temporary "Continue anyway" allowances are held in in-memory session storage that clears when the browser closes. |
 | `alarms` | Chrome shuts down the extension's background process when it's idle (a Manifest V3 requirement). Alarms wake it at the exact moment a session or break ends, at the warning point you choose just before that, and once a minute to update the toolbar badge. The background process also stays active while a timer is actively running so the countdown can't stall. |
 | `webNavigation` | Only to enforce site blocking. While a focus session is running, OpenTomato checks the domain of each page you navigate to against your blacklist/whitelist — entirely on your device — and redirects to its own "blocked" page if the site is off-limits. Page contents are never read. |
 | `tabs` | To redirect a tab to the "blocked" page when a site is off-limits during a focus session, to check already-open tabs when a session starts, and to forget a tab's "Continue anyway" allowance once it closes. Only a tab's URL is read — never its contents. |
