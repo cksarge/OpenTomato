@@ -11,12 +11,13 @@
   privacy.html with no further changes, and older versions stay reachable
   forever at their own #version URL.
 
-  Differences from 1.0.0: adds the Tasks checklist, saved duration presets,
-  and saved blocking profiles to what's stored; notes that site-list entries
-  can now include a path, so blocking checks may compare a page's path too;
-  discloses the content script that links the website demo page to the
-  timer; and adds the `idle` permission plus its settings for the new
-  idle-detection feature.
+  Differences from 1.0.0: adds the Tasks checklist (now with per-task
+  estimates, completed-session counts, and an active-task selection), saved
+  duration presets, and saved blocking profiles to what's stored; notes that
+  site-list entries can now include a path, so blocking checks may compare a
+  page's path too; discloses the content script that links the website demo
+  page to the timer; and adds the `idle` permission plus its settings for
+  the new idle-detection feature.
 -->
 
 # Privacy Policy
@@ -55,9 +56,12 @@ OpenTomato stores the following, only in your browser's local extension storage:
 - **Focus-time history** — a local log of how long each focus stretch lasted, used only to show
   the "time focused" total in the popup. It stays on your device, is capped to roughly the last
   45 days, and can be wiped anytime with the "Reset focus total" button in settings.
-- **Tasks** — the checklist shown in the popup: each task's text and whether it's checked off.
-  You add, rename, and remove tasks on the settings page (and can check them off from the popup
-  too). It stays on your device and is removed when you uninstall.
+- **Tasks** — the checklist shown in the popup: each task's text, whether it's checked off, an
+  optional pomodoro estimate, and how many completed focus sessions have been credited to it.
+  You add, rename, remove, and reorder tasks on the settings page (and can check them off from
+  the popup too). Marking a task "active" (from either surface) is also stored, so a completed
+  focus session knows which task's count to increment automatically. It stays on your device and
+  is removed when you uninstall.
 - **Duration presets** — any named timer-duration configurations you save (e.g. "Classic 25/5"),
   so you can switch between them from the popup or settings instead of re-typing durations. Stays
   on your device and is removed when you uninstall.
@@ -79,7 +83,7 @@ each one is for:
 
 | Permission | Why OpenTomato needs it |
 | --- | --- |
-| `storage` | To save — only on your device — your timer settings, the current timer state (phase, running or paused, time left), your blacklist and whitelist, your focus-time history, your task checklist, your saved duration presets and blocking profiles, and your theme choice. Temporary "Continue anyway" allowances are held in in-memory session storage that clears when the browser closes. |
+| `storage` | To save — only on your device — your timer settings, the current timer state (phase, running or paused, time left), your blacklist and whitelist, your focus-time history, your task checklist (including estimates, completed-session counts, and which task is active), your saved duration presets and blocking profiles, and your theme choice. Temporary "Continue anyway" allowances are held in in-memory session storage that clears when the browser closes. |
 | `alarms` | Chrome shuts down the extension's background process when it's idle (a Manifest V3 requirement). Alarms wake it at the exact moment a session or break ends, at the warning point you choose just before that, and once a minute to update the toolbar badge. The background process also stays active while a timer is actively running so the countdown can't stall. |
 | `webNavigation` | Only to enforce site blocking. While a focus session is running, OpenTomato checks the domain (and, for list entries that include one, the path) of each page you navigate to against your blacklist/whitelist — entirely on your device — and redirects to its own "blocked" page if the site is off-limits. Page contents are never read. |
 | `tabs` | To redirect a tab to the "blocked" page when a site is off-limits during a focus session, to check already-open tabs when a session starts, and to forget a tab's "Continue anyway" allowance once it closes. Only a tab's URL is read — never its contents. |
