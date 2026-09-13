@@ -34,6 +34,10 @@ const els = {
   warningDetail: document.getElementById("warning-detail"),
   soundOnWarning: document.getElementById("soundOnWarning"),
   warningSeconds: document.getElementById("warningSeconds"),
+  idleEnabled: document.getElementById("idleEnabled"),
+  idleDetail: document.getElementById("idle-detail"),
+  idleMinutes: document.getElementById("idleMinutes"),
+  idleAutoResume: document.getElementById("idleAutoResume"),
   statsWindow: document.getElementById("statsWindow"),
   focusTotalLine: document.getElementById("focus-total-line"),
   resetStatsBtn: document.getElementById("reset-stats-btn"),
@@ -113,9 +117,13 @@ function syncControlsFromSettings() {
   els.warningEnabled.checked = settings.warningEnabled;
   els.soundOnWarning.checked = settings.soundOnWarning;
   els.warningSeconds.value = settings.warningSeconds;
+  els.idleEnabled.checked = settings.idleEnabled;
+  els.idleMinutes.value = settings.idleMinutes;
+  els.idleAutoResume.checked = settings.idleAutoResume;
   els.statsWindow.value = settings.statsWindow;
   els.modeRadios.forEach((radio) => (radio.checked = radio.value === settings.blockMode));
   els.warningDetail.style.display = settings.warningEnabled ? "grid" : "none";
+  els.idleDetail.style.display = settings.idleEnabled ? "grid" : "none";
   els.modeExplainer.textContent = MODE_EXPLAINERS[settings.blockMode] ?? "";
 }
 
@@ -296,6 +304,9 @@ function readFormIntoSettings() {
     warningEnabled: els.warningEnabled.checked,
     soundOnWarning: els.soundOnWarning.checked,
     warningSeconds: readNumberField(els.warningSeconds, settings.warningSeconds, { min: 5, max: 120 }),
+    idleEnabled: els.idleEnabled.checked,
+    idleMinutes: readNumberField(els.idleMinutes, settings.idleMinutes, { min: 1, max: 30 }),
+    idleAutoResume: els.idleAutoResume.checked,
     statsWindow: els.statsWindow.value,
   };
 }
@@ -318,6 +329,7 @@ async function persist() {
 function onFieldChange() {
   readFormIntoSettings();
   els.warningDetail.style.display = settings.warningEnabled ? "grid" : "none";
+  els.idleDetail.style.display = settings.idleEnabled ? "grid" : "none";
   applyRestrictiveLock();
   persist();
 }
@@ -328,11 +340,18 @@ function onFieldChange() {
   els.cyclesBeforeLongBreak,
   els.longBreakMinutes,
   els.warningSeconds,
+  els.idleMinutes,
 ].forEach((el) => el.addEventListener("change", onFieldChange));
 
-[els.restrictiveMode, els.soundOnEnd, els.badgeCountdown, els.warningEnabled, els.soundOnWarning].forEach(
-  (el) => el.addEventListener("change", onFieldChange)
-);
+[
+  els.restrictiveMode,
+  els.soundOnEnd,
+  els.badgeCountdown,
+  els.warningEnabled,
+  els.soundOnWarning,
+  els.idleEnabled,
+  els.idleAutoResume,
+].forEach((el) => el.addEventListener("change", onFieldChange));
 
 els.statsWindow.addEventListener("change", () => {
   settings.statsWindow = els.statsWindow.value;

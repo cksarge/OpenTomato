@@ -63,6 +63,15 @@ export const DEFAULT_SETTINGS = {
   soundOnWarning: true,
   badgeCountdown: true,
   statsWindow: STATS_WINDOW.DAY,
+  // Idle detection: pause automatically after this many minutes of no mouse/
+  // keyboard activity (or the screen locking), so walking away doesn't burn
+  // through a session or inflate your focus total. Off by default since it's
+  // a behavior change, not just a preference.
+  idleEnabled: false,
+  idleMinutes: 5,
+  // Only consulted while idleEnabled is on: resume on its own the moment
+  // you're active again, versus staying paused until you hit Resume yourself.
+  idleAutoResume: true,
   blockMode: BLOCK_MODE.OFF,
   // Blacklist and whitelist keep entirely separate lists — switching modes
   // never carries entries from one into the other.

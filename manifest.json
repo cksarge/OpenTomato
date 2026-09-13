@@ -34,6 +34,6 @@
       "run_at": "document_start"
     }
   ],
-  "permissions": ["storage", "alarms", "webNavigation", "notifications", "offscreen", "tabs"],
+  "permissions": ["storage", "alarms", "webNavigation", "notifications", "offscreen", "tabs", "idle"],
   "host_permissions": ["<all_urls>"]
 }

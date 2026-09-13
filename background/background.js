@@ -134,8 +134,10 @@ function stopKeepAlive() {
 chrome.runtime.onInstalled.addListener(async () => {
   // Reading then writing back through getSettings/getTimerState fills in any
   // missing defaults, so storage always has a complete, well-shaped record.
-  await setSettings(await getSettings());
+  const settings = await getSettings();
+  await setSettings(settings);
   await setTimerState(await getTimerState());
+  await applyIdleDetectionInterval(settings);
 });
 
 async function refreshBadge() {
@@ -193,13 +195,71 @@ async function refreshBadge() {
 
 // Refresh on every service-worker wake-up (message, alarm, install, etc.) so
 // the badge is never stale even if a tick alarm was ever missed/delayed.
+// Also (re-)applies the idle detection interval, since a fresh worker can't
+// assume Chrome remembered a value set by a previous, since-unloaded one.
 refreshBadge();
+getSettings().then(applyIdleDetectionInterval);
 
 // Storage changes are a reliable wake-up even when the "save-settings" message
 // doesn't reach a sleeping worker, so mirror any settings edit onto the badge
-// right away (e.g. toggling "Show minutes remaining on the toolbar icon" off).
+// (and the idle detection interval) right away.
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.settings) refreshBadge();
+  if (area !== "local" || !changes.settings) return;
+  refreshBadge();
+  applyIdleDetectionInterval(changes.settings.newValue || {});
+});
+
+// Idle detection: auto-pause a running timer when the computer has been idle
+// (or locked) for the configured number of minutes, so walking away doesn't
+// silently burn through a session or inflate the focus total. Off by default
+// (settings.idleEnabled). Whether coming back auto-resumes or just leaves it
+// paused is itself a setting (settings.idleAutoResume).
+//
+// "Was this pause caused by idle detection?" is tracked in chrome.storage.session
+// (in-memory, survives worker restarts, gone when the browser closes) rather
+// than timerState, so it never gets confused with — or has to be cleaned up
+// by — a manual pause. Only a RUNNING -> PAUSED transition triggered here sets
+// the flag, so a session the user paused themselves before going idle is never
+// auto-resumed out from under them.
+async function getIdleAutoPaused() {
+  const { idleAutoPaused } = await chrome.storage.session.get("idleAutoPaused");
+  return idleAutoPaused === true;
+}
+
+async function setIdleAutoPaused(value) {
+  await chrome.storage.session.set({ idleAutoPaused: value });
+}
+
+async function applyIdleDetectionInterval(settings) {
+  // chrome.idle takes seconds and clamps below 15 itself; idleMinutes is
+  // already kept to a sane range (1-30) by the options page.
+  const minutes = Math.max(1, Number(settings.idleMinutes) || 1);
+  chrome.idle.setDetectionInterval(minutes * 60);
+}
+
+chrome.idle.onStateChanged.addListener(async (state) => {
+  const settings = await getSettings();
+  if (!settings.idleEnabled) return;
+
+  if (state === "idle" || state === "locked") {
+    const timerState = await getTimerState();
+    if (timerState.status !== STATUS.RUNNING) return; // nothing running to protect
+    await pauseTimer();
+    await setIdleAutoPaused(true);
+    notify("OpenTomato", "Paused — looks like you stepped away.");
+    return;
+  }
+
+  if (state === "active") {
+    if (!(await getIdleAutoPaused())) return; // this return wasn't from an idle-triggered pause
+    await setIdleAutoPaused(false);
+    if (settings.idleAutoResume) {
+      const resumed = await resumeTimer();
+      if (resumed.status === STATUS.RUNNING) {
+        notify("OpenTomato", "Welcome back — resumed where you left off.");
+      }
+    }
+  }
 });
 
 const FOCUS_LOG_MAX_AGE_MS = 45 * 24 * 60 * 60 * 1000; // keep ~1.5 months of history
