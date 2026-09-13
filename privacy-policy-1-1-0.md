@@ -12,9 +12,11 @@
   forever at their own #version URL.
 
   Differences from 1.0.0: adds the Tasks checklist, saved duration presets,
-  and saved blocking profiles to what's stored, discloses the content script
-  that links the website demo page to the timer, and adds the `idle`
-  permission plus its settings for the new idle-detection feature.
+  and saved blocking profiles to what's stored; notes that site-list entries
+  can now include a path, so blocking checks may compare a page's path too;
+  discloses the content script that links the website demo page to the
+  timer; and adds the `idle` permission plus its settings for the new
+  idle-detection feature.
 -->
 
 # Privacy Policy
@@ -46,8 +48,8 @@ OpenTomato stores the following, only in your browser's local extension storage:
   break, your sound/notification and toolbar-badge preferences, whether restrictive mode is on,
   whether idle detection is on (and its away-after-minutes and auto-resume preferences), and the
   window your focus-time total is measured over.
-- **Site lists** — the domains you've chosen to blacklist or whitelist during focus sessions
-  (kept as two separate lists).
+- **Site lists** — the domains (optionally with a path, e.g. to block just one section of a site)
+  you've chosen to blacklist or whitelist during focus sessions (kept as two separate lists).
 - **Timer state** — the current phase (focus, short break, long break), whether the timer is
   running, and how much time is left.
 - **Focus-time history** — a local log of how long each focus stretch lasted, used only to show
@@ -79,15 +81,16 @@ each one is for:
 | --- | --- |
 | `storage` | To save — only on your device — your timer settings, the current timer state (phase, running or paused, time left), your blacklist and whitelist, your focus-time history, your task checklist, your saved duration presets and blocking profiles, and your theme choice. Temporary "Continue anyway" allowances are held in in-memory session storage that clears when the browser closes. |
 | `alarms` | Chrome shuts down the extension's background process when it's idle (a Manifest V3 requirement). Alarms wake it at the exact moment a session or break ends, at the warning point you choose just before that, and once a minute to update the toolbar badge. The background process also stays active while a timer is actively running so the countdown can't stall. |
-| `webNavigation` | Only to enforce site blocking. While a focus session is running, OpenTomato checks the domain of each page you navigate to against your blacklist/whitelist — entirely on your device — and redirects to its own "blocked" page if the site is off-limits. Page contents are never read. |
+| `webNavigation` | Only to enforce site blocking. While a focus session is running, OpenTomato checks the domain (and, for list entries that include one, the path) of each page you navigate to against your blacklist/whitelist — entirely on your device — and redirects to its own "blocked" page if the site is off-limits. Page contents are never read. |
 | `tabs` | To redirect a tab to the "blocked" page when a site is off-limits during a focus session, to check already-open tabs when a session starts, and to forget a tab's "Continue anyway" allowance once it closes. Only a tab's URL is read — never its contents. |
 | `notifications` | To show a desktop notification when a session or break ends, and — if you turn it on — shortly before a session ends. These contain only the timer's phase names and time remaining. |
 | `offscreen` | Manifest V3 background workers can't play audio directly. OpenTomato uses a single hidden document solely to synthesize a short alert tone — no sound files are bundled or downloaded. |
 | `idle` | Only used if you turn on idle detection in settings (it's off by default). Chrome reports whether your computer has been active, idle, or locked — OpenTomato uses this solely to pause a running session automatically when you step away, and optionally resume it when you're back, so time away from the computer doesn't silently count toward your focus total. No activity data is stored or sent anywhere; only the current state (active/idle/locked) is ever read, in the moment. |
-| Host access (all sites) | Site blocking has to work for any site you add to your blacklist, and whitelist mode blocks everything except the sites you list — so OpenTomato needs to be able to check a navigation against any domain. This access is used only to read a page's domain and compare it, on your device, to your own lists. No page content is read or injected, and OpenTomato never contacts any site itself. |
+| Host access (all sites) | Site blocking has to work for any site you add to your blacklist, and whitelist mode blocks everything except the sites you list — so OpenTomato needs to be able to check a navigation against any domain. This access is used only to read a page's domain (and path, for list entries scoped to one) and compare it, on your device, to your own lists. No page content is read or injected, and OpenTomato never contacts any site itself. |
 
 None of these permissions are used to read, collect, or transmit the content of the pages you
-visit — OpenTomato only ever compares a page's domain against the list you configured yourself, and
+visit — OpenTomato only ever compares a page's domain (and, where relevant, its path) against the
+list you configured yourself, and
 that comparison happens entirely on your device.
 
 ## The OpenTomato website demo
