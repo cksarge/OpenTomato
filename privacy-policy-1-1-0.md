@@ -15,10 +15,10 @@
   estimates, completed-session counts, and an active-task selection), saved
   duration presets, and saved blocking profiles to what's stored; notes that
   site-list entries can now include a path, so blocking checks may compare a
-  page's path too; adds a section on the new JSON backup/CSV export/JSON
-  import feature; discloses the content script that links the website demo
-  page to the timer; and adds the `idle` permission plus its settings for
-  the new idle-detection feature.
+  page's path too; adds sections on the new keyboard shortcut and the new
+  JSON backup/CSV export/JSON import feature; discloses the content script
+  that links the website demo page to the timer; and adds the `idle`
+  permission plus its settings for the new idle-detection feature.
 -->
 
 # Privacy Policy
@@ -97,6 +97,13 @@ None of these permissions are used to read, collect, or transmit the content of 
 visit — OpenTomato only ever compares a page's domain (and, where relevant, its path) against the
 list you configured yourself, and
 that comparison happens entirely on your device.
+
+## Keyboard shortcut
+
+OpenTomato registers one optional keyboard shortcut (Chrome's standard `commands` API, not a
+special permission) to start, pause, or resume the timer without opening the popup. Chrome itself
+manages the actual key binding and lets you change or disable it from its own shortcuts page. No
+data is collected about when or how often the shortcut is used.
 
 ## Backup, export, and import
 
