@@ -14,8 +14,10 @@ import {
   BLOCK_MODE,
 } from "./constants.js";
 
-export async function getSettings() {
-  const { [STORAGE_KEYS.SETTINGS]: stored } = await chrome.storage.local.get(STORAGE_KEYS.SETTINGS);
+// Pure sanitizers, factored out so both the normal chrome.storage.local reads
+// below and the JSON-backup importer (options.js) validate a raw/untrusted
+// value the exact same way.
+export function sanitizeSettings(stored) {
   const settings = { ...DEFAULT_SETTINGS, ...(stored || {}) };
 
   // One-time migration: older versions kept a single `blockList` shared by both
@@ -36,6 +38,11 @@ export async function getSettings() {
   return settings;
 }
 
+export async function getSettings() {
+  const { [STORAGE_KEYS.SETTINGS]: stored } = await chrome.storage.local.get(STORAGE_KEYS.SETTINGS);
+  return sanitizeSettings(stored);
+}
+
 export async function setSettings(settings) {
   await chrome.storage.local.set({ [STORAGE_KEYS.SETTINGS]: settings });
 }
@@ -51,20 +58,31 @@ export async function setTimerState(timerState) {
   await chrome.storage.local.set({ [STORAGE_KEYS.TIMER_STATE]: timerState });
 }
 
+export function sanitizeStats(stored) {
+  const stats = { ...DEFAULT_STATS, ...(stored || {}) };
+  stats.focusLog = Array.isArray(stats.focusLog)
+    ? stats.focusLog.filter(
+        (entry) => entry && typeof entry.end === "number" && typeof entry.ms === "number"
+      )
+    : [];
+  stats.resetAt = Number.isFinite(Number(stats.resetAt)) ? Number(stats.resetAt) : 0;
+  return stats;
+}
+
 export async function getStats() {
   const { [STORAGE_KEYS.STATS]: stats } = await chrome.storage.local.get(STORAGE_KEYS.STATS);
-  return { ...DEFAULT_STATS, ...(stats || {}) };
+  return sanitizeStats(stats);
 }
 
 export async function setStats(stats) {
   await chrome.storage.local.set({ [STORAGE_KEYS.STATS]: stats });
 }
 
-export async function getTasks() {
-  const { [STORAGE_KEYS.TASKS]: tasks } = await chrome.storage.local.get(STORAGE_KEYS.TASKS);
-  if (!Array.isArray(tasks)) return DEFAULT_TASKS.slice();
-  // Keep only well-shaped entries so a corrupt write can't break the UI.
-  return tasks
+// Keep only well-shaped entries so a corrupt write (or a hand-edited import
+// file) can't break the UI.
+export function sanitizeTasks(stored) {
+  if (!Array.isArray(stored)) return DEFAULT_TASKS.slice();
+  return stored
     .filter((t) => t && typeof t.id === "string" && typeof t.text === "string")
     .map((t) => ({
       id: t.id,
@@ -73,6 +91,11 @@ export async function getTasks() {
       estimate: Number.isFinite(Number(t.estimate)) && Number(t.estimate) > 0 ? Math.round(Number(t.estimate)) : null,
       actual: Number.isFinite(Number(t.actual)) && Number(t.actual) >= 0 ? Math.round(Number(t.actual)) : 0,
     }));
+}
+
+export async function getTasks() {
+  const { [STORAGE_KEYS.TASKS]: tasks } = await chrome.storage.local.get(STORAGE_KEYS.TASKS);
+  return sanitizeTasks(tasks);
 }
 
 export async function setTasks(tasks) {
@@ -92,8 +115,7 @@ export async function setActiveTaskId(id) {
   await chrome.storage.local.set({ [STORAGE_KEYS.ACTIVE_TASK]: id });
 }
 
-export async function getPresets() {
-  const { [STORAGE_KEYS.PRESETS]: stored } = await chrome.storage.local.get(STORAGE_KEYS.PRESETS);
+export function sanitizePresets(stored) {
   if (!Array.isArray(stored)) return DEFAULT_PRESETS.slice();
   // Keep only well-shaped entries so a corrupt write can't break the UI.
   return stored
@@ -108,6 +130,11 @@ export async function getPresets() {
     }));
 }
 
+export async function getPresets() {
+  const { [STORAGE_KEYS.PRESETS]: stored } = await chrome.storage.local.get(STORAGE_KEYS.PRESETS);
+  return sanitizePresets(stored);
+}
+
 export async function setPresets(presets) {
   await chrome.storage.local.set({ [STORAGE_KEYS.PRESETS]: presets });
 }
@@ -116,10 +143,7 @@ function sanitizeStringArray(value) {
   return Array.isArray(value) ? value.filter((v) => typeof v === "string") : [];
 }
 
-export async function getBlockingProfiles() {
-  const { [STORAGE_KEYS.BLOCKING_PROFILES]: stored } = await chrome.storage.local.get(
-    STORAGE_KEYS.BLOCKING_PROFILES
-  );
+export function sanitizeBlockingProfiles(stored) {
   if (!Array.isArray(stored)) return DEFAULT_BLOCKING_PROFILES.slice();
   const validModes = [BLOCK_MODE.OFF, BLOCK_MODE.BLACKLIST, BLOCK_MODE.WHITELIST];
   return stored
@@ -131,6 +155,13 @@ export async function getBlockingProfiles() {
       blacklist: sanitizeStringArray(p.blacklist),
       whitelist: sanitizeStringArray(p.whitelist),
     }));
+}
+
+export async function getBlockingProfiles() {
+  const { [STORAGE_KEYS.BLOCKING_PROFILES]: stored } = await chrome.storage.local.get(
+    STORAGE_KEYS.BLOCKING_PROFILES
+  );
+  return sanitizeBlockingProfiles(stored);
 }
 
 export async function setBlockingProfiles(profiles) {

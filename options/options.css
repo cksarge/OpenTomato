@@ -526,6 +526,12 @@ details.card:not([open]) {
   color: var(--accent);
 }
 
+.backup-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .footer-row {
   display: flex;
   align-items: center;

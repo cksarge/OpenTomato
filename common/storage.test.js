@@ -22,9 +22,19 @@ globalThis.chrome = {
   },
 };
 
-const { getPresets, setPresets, getBlockingProfiles, setBlockingProfiles, getTasks, setTasks, getActiveTaskId, setActiveTaskId } =
-  await import("./storage.js");
-const { DEFAULT_PRESETS } = await import("./constants.js");
+const {
+  getPresets,
+  setPresets,
+  getBlockingProfiles,
+  setBlockingProfiles,
+  getTasks,
+  setTasks,
+  getActiveTaskId,
+  setActiveTaskId,
+  sanitizeSettings,
+  sanitizeStats,
+} = await import("./storage.js");
+const { DEFAULT_PRESETS, DEFAULT_SETTINGS } = await import("./constants.js");
 
 test("getPresets falls back to the two built-in defaults when nothing is stored", async () => {
   const presets = await getPresets();
@@ -99,4 +109,27 @@ test("getActiveTaskId defaults to null, and round-trips a set value", async () =
   assert.equal(await getActiveTaskId(), "t1");
   await setActiveTaskId(null);
   assert.equal(await getActiveTaskId(), null);
+});
+
+// sanitizeSettings/sanitizeStats back both the normal chrome.storage.local
+// reads above and the JSON-backup importer in options.js, so an imported
+// file gets exactly the same validation a live read would.
+test("sanitizeSettings fills in defaults and coerces list fields for a backup file's settings", () => {
+  const result = sanitizeSettings({ workMinutes: 40, blacklist: "not-an-array" });
+  assert.equal(result.workMinutes, 40);
+  assert.equal(result.restMinutes, DEFAULT_SETTINGS.restMinutes);
+  assert.deepEqual(result.blacklist, []);
+});
+
+test("sanitizeSettings handles a missing/empty input the same as sanitizeSettings(undefined)", () => {
+  assert.deepEqual(sanitizeSettings(undefined), sanitizeSettings({}));
+});
+
+test("sanitizeStats drops malformed focusLog entries and normalizes resetAt", () => {
+  const result = sanitizeStats({
+    focusLog: [{ end: 100, ms: 5000 }, { end: "bad" }, null, { ms: 5000 }],
+    resetAt: "200",
+  });
+  assert.deepEqual(result.focusLog, [{ end: 100, ms: 5000 }]);
+  assert.equal(result.resetAt, 200);
 });

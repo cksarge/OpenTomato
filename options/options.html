@@ -290,6 +290,33 @@
         </div>
       </details>
 
+      <details class="card">
+        <summary class="card-summary">
+          <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
+          </svg>
+          <h2>Backup &amp; Export</h2>
+        </summary>
+        <div class="card-body">
+        <p class="hint">
+          Export everything — settings, focus history, tasks, presets, and blocking profiles — to
+          a JSON file you can keep as a backup or bring to another browser. Importing replaces
+          your current data with what's in the file.
+        </p>
+        <div class="backup-actions">
+          <button type="button" id="export-json-btn" class="btn btn-ghost">Export backup (JSON)</button>
+          <button type="button" id="import-json-btn" class="btn btn-ghost">Import backup&hellip;</button>
+          <input type="file" id="import-json-input" accept="application/json,.json" hidden />
+        </div>
+        <p class="hint">
+          Or export just your focus-time log as a spreadsheet-friendly CSV file.
+        </p>
+        <div class="backup-actions">
+          <button type="button" id="export-csv-btn" class="btn btn-ghost">Export focus history (CSV)</button>
+        </div>
+        </div>
+      </details>
+
       <div class="footer-row">
         <div class="footer-actions">
           <button type="button" id="reset-defaults-btn" class="btn btn-ghost">Reset to defaults</button>

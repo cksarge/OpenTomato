@@ -9,16 +9,24 @@ import {
 import {
   getSettings,
   setSettings,
+  sanitizeSettings,
   getStats,
+  setStats,
+  sanitizeStats,
   getTimerState,
   getTasks,
   setTasks,
+  sanitizeTasks,
   getPresets,
   setPresets,
+  sanitizePresets,
   getBlockingProfiles,
   setBlockingProfiles,
+  sanitizeBlockingProfiles,
   getActiveTaskId,
   setActiveTaskId,
+  getTheme,
+  setTheme,
 } from "../common/storage.js";
 import { normalizeEntry } from "../common/blocklist.js";
 import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
@@ -65,6 +73,10 @@ const els = {
   profileEmptyHint: document.getElementById("profile-empty-hint"),
   profileNameInput: document.getElementById("profile-name-input"),
   saveProfileBtn: document.getElementById("save-profile-btn"),
+  exportJsonBtn: document.getElementById("export-json-btn"),
+  importJsonBtn: document.getElementById("import-json-btn"),
+  importJsonInput: document.getElementById("import-json-input"),
+  exportCsvBtn: document.getElementById("export-csv-btn"),
   resetDefaultsBtn: document.getElementById("reset-defaults-btn"),
   savedIndicator: document.getElementById("saved-indicator"),
   themeToggleBtn: document.getElementById("theme-toggle-btn"),
@@ -872,6 +884,131 @@ els.taskInput.addEventListener("keydown", (event) => {
 });
 els.clearDoneBtn.addEventListener("click", clearCompleted);
 els.clearAllBtn.addEventListener("click", clearAllTasks);
+
+// --- Backup: export / import (JSON), export (CSV) ---------------------------
+
+const BACKUP_FORMAT = "opentomato-backup";
+const BACKUP_VERSION = 1;
+
+function triggerDownload(filename, content, mimeType) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function dateStamp() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function isPlainObject(value) {
+  return !!value && typeof value === "object" && !Array.isArray(value);
+}
+
+async function exportJsonBackup() {
+  const bundle = {
+    format: BACKUP_FORMAT,
+    version: BACKUP_VERSION,
+    extensionVersion: chrome.runtime.getManifest().version,
+    exportedAt: new Date().toISOString(),
+    data: {
+      settings,
+      stats,
+      tasks,
+      presets,
+      blockingProfiles,
+      activeTaskId,
+      theme: await getTheme(),
+    },
+  };
+  triggerDownload(`opentomato-backup-${dateStamp()}.json`, JSON.stringify(bundle, null, 2), "application/json");
+}
+
+async function importJsonBackup(file) {
+  let parsed;
+  try {
+    parsed = JSON.parse(await file.text());
+  } catch {
+    alert("That file isn't valid JSON.");
+    return;
+  }
+  if (parsed?.format !== BACKUP_FORMAT || !isPlainObject(parsed.data)) {
+    alert("That doesn't look like an OpenTomato backup file.");
+    return;
+  }
+  if (
+    !confirm(
+      "Import this backup? It will replace your current settings, focus history, tasks, presets, and blocking profiles."
+    )
+  ) {
+    return;
+  }
+
+  const data = parsed.data;
+  if (isPlainObject(data.settings)) {
+    settings = sanitizeSettings(data.settings);
+    await setSettings(settings);
+  }
+  if (isPlainObject(data.stats)) {
+    stats = sanitizeStats(data.stats);
+    await setStats(stats);
+  }
+  if (Array.isArray(data.tasks)) {
+    tasks = sanitizeTasks(data.tasks);
+    await setTasks(tasks);
+  }
+  if (Array.isArray(data.presets)) {
+    presets = sanitizePresets(data.presets);
+    await setPresets(presets);
+  }
+  if (Array.isArray(data.blockingProfiles)) {
+    blockingProfiles = sanitizeBlockingProfiles(data.blockingProfiles);
+    await setBlockingProfiles(blockingProfiles);
+  }
+  if (typeof data.activeTaskId === "string" && tasks.some((t) => t.id === data.activeTaskId)) {
+    activeTaskId = data.activeTaskId;
+  } else {
+    activeTaskId = null;
+  }
+  await setActiveTaskId(activeTaskId);
+  if (typeof data.theme === "string") {
+    await setTheme(data.theme);
+  }
+
+  timerState = await getTimerState(); // unaffected by import, but re-sync the lock state
+  populateForm();
+  renderTasks();
+  showSaved();
+  alert("Import complete.");
+}
+
+function csvEscape(value) {
+  const s = String(value);
+  return /["\r\n,]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function exportCsvHistory() {
+  const rows = [["End Time (ISO 8601)", "Minutes Focused"]];
+  for (const entry of Array.isArray(stats.focusLog) ? stats.focusLog : []) {
+    rows.push([new Date(entry.end).toISOString(), (entry.ms / 60000).toFixed(2)]);
+  }
+  const csv = rows.map((row) => row.map(csvEscape).join(",")).join("\r\n");
+  triggerDownload(`opentomato-focus-history-${dateStamp()}.csv`, csv, "text/csv");
+}
+
+els.exportJsonBtn.addEventListener("click", exportJsonBackup);
+els.importJsonBtn.addEventListener("click", () => els.importJsonInput.click());
+els.importJsonInput.addEventListener("change", async () => {
+  const file = els.importJsonInput.files?.[0];
+  els.importJsonInput.value = ""; // allow re-selecting the same file later
+  if (file) await importJsonBackup(file);
+});
+els.exportCsvBtn.addEventListener("click", exportCsvHistory);
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local") return;
