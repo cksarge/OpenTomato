@@ -15,10 +15,11 @@
   estimates, completed-session counts, and an active-task selection), saved
   duration presets, and saved blocking profiles to what's stored; notes that
   site-list entries can now include a path, so blocking checks may compare a
-  page's path too; adds sections on the new keyboard shortcut and the new
-  JSON backup/CSV export/JSON import feature; discloses the content script
-  that links the website demo page to the timer; and adds the `idle`
-  permission plus its settings for the new idle-detection feature.
+  page's path too; adds sections on the new keyboard shortcut, the new
+  language/localization support, and the new JSON backup/CSV export/JSON
+  import feature; discloses the content script that links the website demo
+  page to the timer; and adds the `idle` permission plus its settings for
+  the new idle-detection feature.
 -->
 
 # Privacy Policy
@@ -114,6 +115,13 @@ your browser's normal file-save dialog — OpenTomato does not upload them anywh
 leaves your device unless you yourself share the file. Importing a previously exported JSON file
 replaces your current data with what's in the file; nothing is imported without you explicitly
 choosing a file and confirming.
+
+## Language
+
+OpenTomato's interface follows your browser's language setting (via Chrome's standard `chrome.i18n`
+API), currently with translations for English, Spanish, French, German, and Japanese, falling back
+to English otherwise. This uses the language Chrome already reports for its own UI — OpenTomato
+does not separately read, store, or transmit your language or location.
 
 ## The OpenTomato website demo
 
