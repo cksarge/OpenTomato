@@ -253,5 +253,9 @@
   "notify_badgeSeconds": {
     "message": "$SECONDS$s",
     "placeholders": { "seconds": { "content": "$1", "example": "45" } }
+  },
+  "notify_badgeMinutes": {
+    "message": "$MINUTES$m",
+    "placeholders": { "minutes": { "content": "$1", "example": "25" } }
   }
 }

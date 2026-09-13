@@ -183,7 +183,7 @@ async function refreshBadge() {
 
   const text = underOneMinute
     ? t("notify_badgeSeconds", [String(Math.ceil(remainingMs / 1000))])
-    : String(Math.ceil(remainingMs / 60000));
+    : t("notify_badgeMinutes", [String(Math.ceil(remainingMs / 60000))]);
   const color =
     timerState.status === STATUS.PAUSED ? BADGE_PAUSED_COLOR : BADGE_COLORS[timerState.phase] ?? BADGE_COLORS[PHASE.WORK];
 

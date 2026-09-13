@@ -134,6 +134,17 @@ function render() {
 
 let lastPresetsSig = null;
 
+// True when every duration field a preset carries matches the current
+// settings — used to show which preset (if any) is currently in effect.
+function presetMatchesSettings(preset, settings) {
+  return (
+    preset.workMinutes === settings.workMinutes &&
+    preset.restMinutes === settings.restMinutes &&
+    preset.cyclesBeforeLongBreak === settings.cyclesBeforeLongBreak &&
+    preset.longBreakMinutes === settings.longBreakMinutes
+  );
+}
+
 function renderPresetBar() {
   const presets = Array.isArray(state.presets) ? state.presets : [];
   els.presetBar.hidden = presets.length === 0;
@@ -148,7 +159,6 @@ function renderPresetBar() {
     els.presetSelect.innerHTML = "";
     const placeholder = document.createElement("option");
     placeholder.value = "";
-    placeholder.selected = true;
     placeholder.disabled = true;
     placeholder.textContent = t("popup_presetSelectPlaceholder");
     els.presetSelect.appendChild(placeholder);
@@ -161,6 +171,10 @@ function renderPresetBar() {
   }
 
   const { settings, timerState } = state;
+  // Reflect whichever preset (if any) the current durations actually match,
+  // instead of always snapping back to the placeholder after a selection.
+  const matched = presets.find((preset) => presetMatchesSettings(preset, settings));
+  els.presetSelect.value = matched ? matched.id : "";
   els.presetSelect.disabled = !!settings.restrictiveMode && timerState.status !== STATUS.IDLE;
 }
 
@@ -323,9 +337,11 @@ els.taskToggle.addEventListener("click", () => {
 
 els.presetSelect.addEventListener("change", async () => {
   const id = els.presetSelect.value;
-  els.presetSelect.value = ""; // acts as a one-shot action menu, not a persistent selection
   if (!id) return;
-  if (state.settings.restrictiveMode && state.timerState.status !== STATUS.IDLE) return;
+  if (state.settings.restrictiveMode && state.timerState.status !== STATUS.IDLE) {
+    renderPresetBar(); // locked — snap back to whatever preset (if any) is actually in effect
+    return;
+  }
 
   const preset = (state.presets || []).find((p) => p.id === id);
   if (!preset) return;

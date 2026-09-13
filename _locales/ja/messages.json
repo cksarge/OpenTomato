@@ -243,5 +243,9 @@
   "notify_badgeSeconds": {
     "message": "$SECONDS$秒",
     "placeholders": { "seconds": { "content": "$1", "example": "45" } }
+  },
+  "notify_badgeMinutes": {
+    "message": "$MINUTES$分",
+    "placeholders": { "minutes": { "content": "$1", "example": "25" } }
   }
 }
