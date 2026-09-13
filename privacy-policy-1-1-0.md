@@ -15,7 +15,8 @@
   estimates, completed-session counts, and an active-task selection), saved
   duration presets, and saved blocking profiles to what's stored; notes that
   site-list entries can now include a path, so blocking checks may compare a
-  page's path too; discloses the content script that links the website demo
+  page's path too; adds a section on the new JSON backup/CSV export/JSON
+  import feature; discloses the content script that links the website demo
   page to the timer; and adds the `idle` permission plus its settings for
   the new idle-detection feature.
 -->
@@ -96,6 +97,16 @@ None of these permissions are used to read, collect, or transmit the content of 
 visit — OpenTomato only ever compares a page's domain (and, where relevant, its path) against the
 list you configured yourself, and
 that comparison happens entirely on your device.
+
+## Backup, export, and import
+
+Settings includes an optional "Backup & Export" section that lets you save your settings, focus
+history, tasks, presets, and blocking profiles to a JSON file on your own device, or export just
+your focus history as a CSV file. These files are written directly to a location you choose using
+your browser's normal file-save dialog — OpenTomato does not upload them anywhere, and nothing
+leaves your device unless you yourself share the file. Importing a previously exported JSON file
+replaces your current data with what's in the file; nothing is imported without you explicitly
+choosing a file and confirming.
 
 ## The OpenTomato website demo
 
