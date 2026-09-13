@@ -9,19 +9,22 @@
 import {
   PHASE,
   STATUS,
-  PHASE_LABELS,
   DEFAULT_SETTINGS,
   DEFAULT_TIMER_STATE,
 } from "./constants.js";
 import { durationMsForPhase, formatTime } from "./duration.js";
+import { t, applyI18n, phaseLabel } from "./i18n.js";
 
 const RING_RADIUS = 54;
 const CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
-const RESET_PHRASE = "Yes, I want to reset the timer.";
+
+function resetPhrase() {
+  return t("common_resetConfirmPhrase");
+}
 
 const MARKUP = `
   <div class="tp-card" data-phase="work">
-    <p class="tp-phase">Focus</p>
+    <p class="tp-phase" data-i18n="common_phaseWork">Focus</p>
     <div class="tp-ring-wrap">
       <svg class="tp-ring" viewBox="0 0 120 120" aria-hidden="true">
         <circle class="tp-ring-track" cx="60" cy="60" r="54"></circle>
@@ -31,21 +34,21 @@ const MARKUP = `
     </div>
     <div class="tp-dots" aria-hidden="true"></div>
     <div class="tp-controls">
-      <button type="button" class="btn btn-primary tp-primary">Start</button>
+      <button type="button" class="btn btn-primary tp-primary" data-i18n="common_start">Start</button>
       <div class="tp-secondary">
-        <button type="button" class="btn btn-ghost tp-skip" disabled>Skip</button>
-        <button type="button" class="btn btn-ghost tp-reset" disabled>Reset</button>
+        <button type="button" class="btn btn-ghost tp-skip" data-i18n="common_skip" disabled>Skip</button>
+        <button type="button" class="btn btn-ghost tp-reset" data-i18n="common_reset" disabled>Reset</button>
       </div>
     </div>
-    <p class="tp-restrict-note" hidden>🔒 Restrictive mode — no skipping; reset only while paused.</p>
+    <p class="tp-restrict-note" data-i18n="common_restrictNote" hidden>🔒 Restrictive mode — no skipping; reset only while paused.</p>
     <div class="tp-reset-confirm" hidden>
-      <p>Restrictive mode is on. To reset the timer, type this exactly:</p>
-      <p class="tp-reset-phrase">Yes, I want to reset the timer.</p>
-      <input type="text" class="tp-reset-input" placeholder="Type the phrase"
+      <p data-i18n="common_resetConfirmPrompt">Restrictive mode is on. To reset the timer, type this exactly:</p>
+      <p class="tp-reset-phrase" data-i18n="common_resetConfirmPhrase">Yes, I want to reset the timer.</p>
+      <input type="text" class="tp-reset-input" data-i18n-placeholder="common_resetConfirmPlaceholder" placeholder="Type the phrase"
              autocomplete="off" autocapitalize="off" spellcheck="false" />
       <div class="tp-reset-actions">
-        <button type="button" class="btn btn-ghost tp-reset-cancel">Cancel</button>
-        <button type="button" class="btn btn-primary tp-reset-go" disabled>Reset timer</button>
+        <button type="button" class="btn btn-ghost tp-reset-cancel" data-i18n="common_cancel">Cancel</button>
+        <button type="button" class="btn btn-primary tp-reset-go" data-i18n="common_resetTimer" disabled>Reset timer</button>
       </div>
     </div>
   </div>
@@ -60,6 +63,7 @@ function phaseAttr(phase) {
 export function initTimerPanel(root) {
   if (!root) return;
   root.innerHTML = MARKUP;
+  applyI18n(root);
 
   const els = {
     card: root.querySelector(".tp-card"),
@@ -89,9 +93,9 @@ export function initTimerPanel(root) {
 
     els.card.dataset.phase = phaseAttr(phase);
 
-    const suffix =
-      status === STATUS.PAUSED ? " · Paused" : status === STATUS.IDLE ? " · Ready" : "";
-    els.phase.textContent = (PHASE_LABELS[phase] || "Focus") + suffix;
+    const statusWord =
+      status === STATUS.PAUSED ? t("common_statusPaused") : status === STATUS.IDLE ? t("common_statusReady") : "";
+    els.phase.textContent = statusWord ? t("common_phaseWithStatus", [phaseLabel(phase), statusWord]) : phaseLabel(phase);
 
     const totalMs = durationMsForPhase(phase, settings);
     let remainingMs;
@@ -119,7 +123,7 @@ export function initTimerPanel(root) {
     }
 
     els.primary.textContent =
-      status === STATUS.RUNNING ? "Pause" : status === STATUS.PAUSED ? "Resume" : "Start";
+      status === STATUS.RUNNING ? t("common_pause") : status === STATUS.PAUSED ? t("common_resume") : t("common_start");
 
     const running = status !== STATUS.IDLE;
     const restrictive = !!settings.restrictiveMode;
@@ -191,11 +195,11 @@ export function initTimerPanel(root) {
   });
 
   els.resetInput.addEventListener("input", () => {
-    els.resetGo.disabled = els.resetInput.value !== RESET_PHRASE;
+    els.resetGo.disabled = els.resetInput.value !== resetPhrase();
   });
   els.resetCancel.addEventListener("click", closeResetConfirm);
   els.resetGo.addEventListener("click", async () => {
-    if (els.resetInput.value !== RESET_PHRASE) return;
+    if (els.resetInput.value !== resetPhrase()) return;
     closeResetConfirm();
     const res = await send("opentomato:reset", { confirmed: true });
     if (res) state.timerState = res;

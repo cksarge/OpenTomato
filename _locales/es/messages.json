@@ -1,0 +1,248 @@
+{
+  "appName": { "message": "OpenTomato – Temporizador Pomodoro de Enfoque" },
+  "appShortName": { "message": "OpenTomato" },
+  "appDescription": {
+    "message": "Temporizador Pomodoro centrado en la privacidad: temporizadores personalizables, alertas de sonido y bloqueo de sitios durante las sesiones de enfoque. 100% local, sin seguimiento."
+  },
+  "commandToggleTimer": { "message": "Iniciar, pausar o reanudar el temporizador de OpenTomato" },
+
+  "common_toggleTheme": { "message": "Cambiar tema" },
+  "common_themeSystem": { "message": "Igual que el sistema" },
+  "common_themeLight": { "message": "Claro" },
+  "common_themeDark": { "message": "Oscuro" },
+  "common_themeButtonLabel": {
+    "message": "Tema: $THEME$ (haz clic para cambiar)",
+    "placeholders": { "theme": { "content": "$1", "example": "Claro" } }
+  },
+
+  "common_phaseWork": { "message": "Enfoque" },
+  "common_phaseRest": { "message": "Descanso corto" },
+  "common_phaseLongBreak": { "message": "Descanso largo" },
+  "common_statusPaused": { "message": "Pausado" },
+  "common_statusReady": { "message": "Listo" },
+  "common_phaseWithStatus": {
+    "message": "$PHASE$ · $STATUS$",
+    "placeholders": { "phase": { "content": "$1", "example": "Enfoque" }, "status": { "content": "$2", "example": "Pausado" } }
+  },
+
+  "common_start": { "message": "Iniciar" },
+  "common_pause": { "message": "Pausar" },
+  "common_resume": { "message": "Reanudar" },
+  "common_skip": { "message": "Omitir" },
+  "common_reset": { "message": "Reiniciar" },
+  "common_resetTimer": { "message": "Reiniciar temporizador" },
+  "common_cancel": { "message": "Cancelar" },
+  "common_add": { "message": "Añadir" },
+  "common_remove": { "message": "Eliminar" },
+  "common_active": { "message": "Activo" },
+  "common_apply": { "message": "Aplicar" },
+
+  "common_restrictNote": { "message": "🔒 Modo restrictivo: no se puede omitir; solo se puede reiniciar en pausa." },
+  "common_resetConfirmPrompt": { "message": "El modo restrictivo está activado. Para reiniciar el temporizador, escribe exactamente esto:" },
+  "common_resetConfirmPhrase": { "message": "Sí, quiero reiniciar el temporizador." },
+  "common_resetConfirmPlaceholder": { "message": "Escribe la frase" },
+
+  "common_blockModeOff": { "message": "Desactivado" },
+  "common_blockModeBlacklist": { "message": "Lista negra" },
+  "common_blockModeWhitelist": { "message": "Lista blanca" },
+
+  "common_statsWindowHour": { "message": "esta hora" },
+  "common_statsWindowDay": { "message": "hoy" },
+  "common_statsWindowWeek": { "message": "esta semana" },
+  "common_statsWindowMonth": { "message": "este mes" },
+  "common_statsWindowAll": { "message": "desde el último reinicio" },
+
+  "popup_appName": { "message": "OpenTomato" },
+  "popup_settingsTitle": { "message": "Ajustes" },
+  "popup_settingsAriaLabel": { "message": "Abrir ajustes" },
+  "popup_presetSelectAriaLabel": { "message": "Aplicar un ajuste preestablecido de duración" },
+  "popup_presetSelectPlaceholder": { "message": "Preajuste de duración…" },
+  "popup_focusedLabel": {
+    "message": "Enfocado $WINDOW$: ",
+    "placeholders": { "window": { "content": "$1", "example": "hoy" } }
+  },
+  "popup_tasksCompleteLabel": { "message": " · Tareas completadas " },
+  "popup_taskFocusOn": { "message": "Enfocarse en esta tarea" },
+  "popup_taskStopFocus": { "message": "Dejar de enfocarse en esta tarea" },
+  "popup_showLess": { "message": "Mostrar menos" },
+  "popup_showAll": {
+    "message": "Mostrar todo ($COUNT$)",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_pageTitle": { "message": "Ajustes de OpenTomato" },
+  "options_heading": { "message": "Ajustes de OpenTomato" },
+  "options_subtitle": { "message": "Personaliza tu temporizador Pomodoro y el bloqueo de sitios durante el enfoque." },
+  "options_versionLine": {
+    "message": "Versión: $VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "1.1.0" } }
+  },
+
+  "options_timerHeading": { "message": "Temporizador" },
+
+  "options_restrictiveHeading": { "message": "Modo restrictivo" },
+  "options_restrictiveEnable": { "message": "Activar modo restrictivo" },
+  "options_restrictiveIntro": { "message": "Cuando el modo restrictivo está activado, iniciar una sesión de enfoque bloquea los ajustes hasta que esa sesión termine:" },
+  "options_restrictiveBullet1": { "message": "Las duraciones del temporizador y todos los ajustes de bloqueo de sitios quedan bloqueados." },
+  "options_restrictiveBullet2": { "message": "El temporizador no se puede omitir bajo ninguna circunstancia." },
+  "options_restrictiveBullet3": {
+    "message": "El temporizador solo se puede reiniciar mientras está <em>en pausa</em>, y solo después de escribir una frase de confirmación.",
+    "description": "The <em> tag is intentional and should stay in the translation, wrapping whatever word means \"paused\" in this language."
+  },
+  "options_restrictiveBullet4": { "message": "Las páginas bloqueadas pierden el botón “Continuar de todos modos”." },
+  "options_restrictiveActiveNote": { "message": "🔒 Hay una sesión de enfoque en curso: el modo restrictivo no se puede cambiar hasta que termine." },
+
+  "options_durationsHeading": { "message": "Duraciones del temporizador" },
+  "options_workMinutesLabel": { "message": "Sesión de enfoque (minutos)" },
+  "options_restMinutesLabel": { "message": "Descanso corto (minutos)" },
+  "options_cyclesLabel": { "message": "Sesiones de enfoque antes del descanso largo" },
+  "options_longBreakMinutesLabel": { "message": "Descanso largo (minutos)" },
+  "options_lockedRestrictive": { "message": "🔒 Bloqueado mientras hay una sesión de enfoque en curso (modo restrictivo)." },
+  "options_presetsIntro": { "message": "Guarda las duraciones anteriores como un ajuste preestablecido con nombre y luego cambia entre ellos aquí o desde la ventana emergente sin tener que volver a escribirlos." },
+  "options_presetsEmpty": { "message": "Aún no hay ajustes preestablecidos guardados." },
+  "options_presetNamePlaceholder": { "message": "Nombra este ajuste preestablecido" },
+  "options_savePreset": { "message": "Guardar actual como ajuste preestablecido" },
+  "options_presetSummary": {
+    "message": "$WORK$/$REST$ · $CYCLES$ ciclos · descanso largo de $LONGBREAK$",
+    "placeholders": {
+      "work": { "content": "$1", "example": "25" },
+      "rest": { "content": "$2", "example": "5" },
+      "cycles": { "content": "$3", "example": "4" },
+      "longbreak": { "content": "$4", "example": "15" }
+    }
+  },
+
+  "options_notificationsHeading": { "message": "Notificaciones" },
+  "options_soundOnEnd": { "message": "Reproducir un sonido cuando termine una sesión" },
+  "options_badgeCountdown": { "message": "Mostrar los minutos restantes en el icono de la barra de herramientas" },
+  "options_warningEnabled": { "message": "Avisarme antes de que termine una sesión" },
+  "options_warningSoundLabel": { "message": "Sonido de aviso" },
+  "options_soundOnWarning": { "message": "Reproducir un sonido para el aviso" },
+  "options_warningSecondsLabel": { "message": "Avisarme con esta cantidad de segundos de antelación" },
+
+  "options_idleHeading": { "message": "Detección de inactividad" },
+  "options_idleEnable": { "message": "Pausar automáticamente cuando esté lejos del ordenador" },
+  "options_idleMinutesLabel": { "message": "Considerarme ausente tras esta cantidad de minutos de inactividad" },
+  "options_idleBackLabel": { "message": "Cuando vuelva" },
+  "options_idleAutoResume": { "message": "Reanudar automáticamente" },
+  "options_idleHint": { "message": "Sin esto, el temporizador sigue funcionando (y sumando a tu total de enfoque) incluso mientras estás ausente; esto es lo que hace que se dé cuenta y se pause por sí solo." },
+
+  "options_shortcutHeading": { "message": "Atajo de teclado" },
+  "options_shortcutIntro": { "message": "Inicia, pausa o reanuda el temporizador sin abrir la ventana emergente, según lo que tenga sentido según el estado actual del temporizador." },
+  "options_shortcutCurrentLabel": { "message": "Atajo actual:" },
+  "options_shortcutNotAvailable": { "message": "No disponible en este navegador" },
+  "options_shortcutNotSet": { "message": "No establecido" },
+  "options_changeShortcut": { "message": "Cambiar atajo…" },
+  "options_shortcutHint": { "message": "Chrome gestiona los atajos de teclado de todas las extensiones en un solo lugar, así que al cambiarlo se abre la página de atajos de Chrome, desplazada hasta OpenTomato." },
+
+  "options_tasksHeading": { "message": "Tareas" },
+  "options_tasksIntro": { "message": "Una lista de tareas que se muestra en la ventana emergente. Márcalas desde la ventana emergente o desde aquí; añade, cambia el nombre, elimina y arrastra para reordenarlas aquí. Asigna a una tarea una estimación (en pomodoros) y márcala como \"activa\" — aquí o desde la ventana emergente — para llevar un seguimiento automático de las sesiones completadas, sin necesidad de contar manualmente." },
+  "options_tasksEmpty": { "message": "Aún no hay tareas." },
+  "options_taskInputPlaceholder": { "message": "Añadir una tarea" },
+  "options_clearCompleted": { "message": "Borrar completadas" },
+  "options_clearAll": { "message": "Borrar todo" },
+  "options_taskMarkDone": { "message": "Marcar tarea como hecha" },
+  "options_taskEstimatePlaceholder": { "message": "≈" },
+  "options_taskEstimateTitle": { "message": "Pomodoros estimados" },
+  "options_taskSetActive": { "message": "Marcar como activa" },
+  "options_taskStartCrediting": { "message": "Contar las sesiones completadas para esta tarea" },
+  "options_taskStopCrediting": { "message": "Dejar de contar las sesiones completadas para esta tarea" },
+  "options_taskCountLine": {
+    "message": "$DONE$ de $TOTAL$ completadas",
+    "placeholders": { "done": { "content": "$1", "example": "2" }, "total": { "content": "$2", "example": "5" } }
+  },
+  "options_taskProgressDone": {
+    "message": "$COUNT$ hechas",
+    "placeholders": { "count": { "content": "$1", "example": "2" } }
+  },
+  "options_confirmClearAllTasks": { "message": "¿Eliminar todas las tareas? Esta acción no se puede deshacer." },
+
+  "options_statsHeading": { "message": "Estadísticas de enfoque" },
+  "options_statsIntro": { "message": "Cuenta el tiempo que realmente pasas en sesiones de enfoque. Elige el período sobre el que se suma el total de la ventana emergente, o reinícialo cuando quieras empezar de nuevo." },
+  "options_statsWindowLabel": { "message": "El total de la ventana emergente cubre" },
+  "options_statsWindowHourOption": { "message": "La hora actual" },
+  "options_statsWindowDayOption": { "message": "Hoy" },
+  "options_statsWindowWeekOption": { "message": "Esta semana" },
+  "options_statsWindowMonthOption": { "message": "Este mes" },
+  "options_statsWindowAllOption": { "message": "Desde el último reinicio" },
+  "options_focusTotalLine": {
+    "message": "Has estado enfocado $TOTAL$ $WINDOW$.",
+    "placeholders": { "total": { "content": "$1", "example": "1h 20m" }, "window": { "content": "$2", "example": "hoy" } }
+  },
+  "options_resetFocusTotal": { "message": "Reiniciar total de enfoque" },
+  "options_confirmResetStats": { "message": "¿Reiniciar tu total de enfoque a cero?" },
+
+  "options_blockingHeading": { "message": "Bloqueo de sitios" },
+  "options_blockingHint": {
+    "message": "El bloqueo solo se aplica durante las sesiones de enfoque, nunca durante los descansos. La lista negra y la lista blanca mantienen listas separadas. Introduce un dominio (p. ej. <code>youtube.com</code>) para bloquear todo el sitio y sus subdominios, o añade una ruta para bloquear solo esa sección — p. ej. <code>reddit.com/r/funny</code> deja accesible el resto de reddit.com.",
+    "description": "The <code>...</code> spans wrap domain examples and should stay in the translation exactly as written (domains aren't translated); only the surrounding prose should be translated."
+  },
+  "options_profilesIntro": { "message": "Guarda el modo y las listas actuales como un perfil con nombre (p. ej. \"Trabajo profundo\" frente a \"Investigación ligera\") y luego cambia entre ellos aquí sin tener que volver a editar tus listas." },
+  "options_profilesEmpty": { "message": "Aún no hay perfiles de bloqueo guardados." },
+  "options_profileNamePlaceholder": { "message": "Nombra este perfil" },
+  "options_saveProfile": { "message": "Guardar actual como perfil" },
+  "options_blockModeAriaLabel": { "message": "Modo de bloqueo" },
+  "options_siteInputPlaceholder": { "message": "p. ej. youtube.com" },
+  "options_sitesEmpty": { "message": "Aún no se han añadido sitios." },
+  "options_foldersHint": { "message": "O añade rápidamente una categoría completa:" },
+  "options_modeExplainerOff": { "message": "El bloqueo de sitios está desactivado: todos los sitios son accesibles durante las sesiones de enfoque." },
+  "options_modeExplainerBlacklist": { "message": "Los sitios de la siguiente lista se bloquean durante las sesiones de enfoque. Todo lo demás es accesible." },
+  "options_modeExplainerWhitelist": { "message": "Solo los sitios de la siguiente lista son accesibles durante las sesiones de enfoque. Todo lo demás está bloqueado." },
+  "options_profileBlockingOff": { "message": "Bloqueo desactivado" },
+  "options_profileSiteCount": {
+    "message": "$COUNT$ sitio",
+    "placeholders": { "count": { "content": "$1", "example": "1" } }
+  },
+  "options_profileSiteCountPlural": {
+    "message": "$COUNT$ sitios",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_backupHeading": { "message": "Copia de seguridad y exportación" },
+  "options_backupIntro": { "message": "Exporta todo (ajustes, historial de enfoque, tareas, ajustes preestablecidos y perfiles de bloqueo) a un archivo JSON que puedes guardar como copia de seguridad o llevar a otro navegador. Al importar se reemplazan tus datos actuales por los del archivo." },
+  "options_exportJson": { "message": "Exportar copia de seguridad (JSON)" },
+  "options_importJson": { "message": "Importar copia de seguridad…" },
+  "options_csvIntro": { "message": "O exporta solo tu registro de tiempo de enfoque como un archivo CSV compatible con hojas de cálculo." },
+  "options_exportCsv": { "message": "Exportar historial de enfoque (CSV)" },
+  "options_csvHeaderEnd": { "message": "Hora de finalización (ISO 8601)" },
+  "options_csvHeaderMinutes": { "message": "Minutos enfocados" },
+  "options_importInvalidJson": { "message": "Ese archivo no es un JSON válido." },
+  "options_importNotBackup": { "message": "Eso no parece un archivo de copia de seguridad de OpenTomato." },
+  "options_confirmImport": { "message": "¿Importar esta copia de seguridad? Se reemplazarán tus ajustes, historial de enfoque, tareas, ajustes preestablecidos y perfiles de bloqueo actuales." },
+  "options_importComplete": { "message": "Importación completada." },
+
+  "options_resetDefaults": { "message": "Restablecer valores predeterminados" },
+  "options_confirmResetDefaults": { "message": "¿Restablecer todos los ajustes de OpenTomato a sus valores predeterminados?" },
+  "options_homepage": { "message": "Página principal" },
+  "options_buyMeACoffee": { "message": "☕ Invítame a un café" },
+  "options_saved": { "message": "Guardado" },
+
+  "blocked_pageTitle": { "message": "Bloqueado — OpenTomato" },
+  "blocked_headline": { "message": "¡No puedes ir ahí!" },
+  "blocked_message": { "message": "Este sitio no está disponible mientras te enfocas." },
+  "blocked_timeRemainingLabel": { "message": "Tiempo restante" },
+  "blocked_hint": { "message": "Vuelve a lo que estabas haciendo — tú puedes." },
+  "blocked_backToSite": { "message": "Volver al sitio" },
+  "blocked_backToHost": {
+    "message": "Volver a $HOST$",
+    "placeholders": { "host": { "content": "$1", "example": "youtube.com" } }
+  },
+  "blocked_continueAnyway": { "message": "Continuar de todos modos" },
+  "blocked_headlineFree": { "message": "¡Eres libre!" },
+  "blocked_messageFree": { "message": "Tu sesión de enfoque ha terminado — esta página ya no aplica." },
+
+  "notify_idlePaused": { "message": "Pausado — parece que te has alejado." },
+  "notify_idleResumed": { "message": "Bienvenido de nuevo — se reanudó donde lo dejaste." },
+  "notify_phaseFinished": {
+    "message": "$FINISHED$ terminado. Iniciando: $NEXT$.",
+    "placeholders": { "finished": { "content": "$1", "example": "Enfoque" }, "next": { "content": "$2", "example": "Descanso corto" } }
+  },
+  "notify_warning": {
+    "message": "Quedan $SECONDS$s de $PHASE$.",
+    "placeholders": { "seconds": { "content": "$1", "example": "30" }, "phase": { "content": "$2", "example": "Enfoque" } }
+  },
+  "notify_badgeSeconds": {
+    "message": "$SECONDS$s",
+    "placeholders": { "seconds": { "content": "$1", "example": "45" } }
+  }
+}

@@ -27,9 +27,10 @@ math) has a plain Node test suite — no bundler, no dependencies, nothing that 
 npm test              # unit tests (node's built-in test runner)
 npm run lint:syntax   # every .js file parses
 npm run lint:manifest # manifest.json is valid JSON
+npm run lint:locales  # every _locales/*/messages.json matches en's keys and placeholders
 ```
 
-All three run in CI on every push to this branch (`.github/workflows/ci.yml`).
+All four run in CI on every push to this branch (`.github/workflows/ci.yml`).
 
 ## Structure
 

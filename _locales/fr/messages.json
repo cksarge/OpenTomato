@@ -1,0 +1,248 @@
+{
+  "appName": { "message": "OpenTomato – Minuteur Pomodoro" },
+  "appShortName": { "message": "OpenTomato" },
+  "appDescription": {
+    "message": "Minuteur Pomodoro respectueux de la vie privée : minuteurs personnalisables, alertes sonores et blocage de sites pendant les sessions de concentration. 100% local, aucun suivi."
+  },
+  "commandToggleTimer": { "message": "Démarrer, mettre en pause ou reprendre le minuteur OpenTomato" },
+
+  "common_toggleTheme": { "message": "Changer de thème" },
+  "common_themeSystem": { "message": "Système" },
+  "common_themeLight": { "message": "Clair" },
+  "common_themeDark": { "message": "Sombre" },
+  "common_themeButtonLabel": {
+    "message": "Thème : $THEME$ (cliquez pour changer)",
+    "placeholders": { "theme": { "content": "$1", "example": "Clair" } }
+  },
+
+  "common_phaseWork": { "message": "Concentration" },
+  "common_phaseRest": { "message": "Pause courte" },
+  "common_phaseLongBreak": { "message": "Pause longue" },
+  "common_statusPaused": { "message": "En pause" },
+  "common_statusReady": { "message": "Prêt" },
+  "common_phaseWithStatus": {
+    "message": "$PHASE$ · $STATUS$",
+    "placeholders": { "phase": { "content": "$1", "example": "Concentration" }, "status": { "content": "$2", "example": "En pause" } }
+  },
+
+  "common_start": { "message": "Démarrer" },
+  "common_pause": { "message": "Pause" },
+  "common_resume": { "message": "Reprendre" },
+  "common_skip": { "message": "Passer" },
+  "common_reset": { "message": "Réinitialiser" },
+  "common_resetTimer": { "message": "Réinitialiser le minuteur" },
+  "common_cancel": { "message": "Annuler" },
+  "common_add": { "message": "Ajouter" },
+  "common_remove": { "message": "Supprimer" },
+  "common_active": { "message": "Actif" },
+  "common_apply": { "message": "Appliquer" },
+
+  "common_restrictNote": { "message": "🔒 Mode restrictif — impossible de passer ; réinitialisation possible seulement en pause." },
+  "common_resetConfirmPrompt": { "message": "Le mode restrictif est activé. Pour réinitialiser le minuteur, tapez exactement ceci :" },
+  "common_resetConfirmPhrase": { "message": "Oui, je veux réinitialiser le minuteur." },
+  "common_resetConfirmPlaceholder": { "message": "Tapez la phrase" },
+
+  "common_blockModeOff": { "message": "Désactivé" },
+  "common_blockModeBlacklist": { "message": "Liste noire" },
+  "common_blockModeWhitelist": { "message": "Liste blanche" },
+
+  "common_statsWindowHour": { "message": "cette heure-ci" },
+  "common_statsWindowDay": { "message": "aujourd'hui" },
+  "common_statsWindowWeek": { "message": "cette semaine" },
+  "common_statsWindowMonth": { "message": "ce mois-ci" },
+  "common_statsWindowAll": { "message": "depuis la dernière réinitialisation" },
+
+  "popup_appName": { "message": "OpenTomato" },
+  "popup_settingsTitle": { "message": "Paramètres" },
+  "popup_settingsAriaLabel": { "message": "Ouvrir les paramètres" },
+  "popup_presetSelectAriaLabel": { "message": "Appliquer un préréglage de durée" },
+  "popup_presetSelectPlaceholder": { "message": "Préréglage de durée…" },
+  "popup_focusedLabel": {
+    "message": "Concentration $WINDOW$ : ",
+    "placeholders": { "window": { "content": "$1", "example": "aujourd'hui" } }
+  },
+  "popup_tasksCompleteLabel": { "message": " · Tâches terminées " },
+  "popup_taskFocusOn": { "message": "Se concentrer sur cette tâche" },
+  "popup_taskStopFocus": { "message": "Arrêter de se concentrer sur cette tâche" },
+  "popup_showLess": { "message": "Afficher moins" },
+  "popup_showAll": {
+    "message": "Tout afficher ($COUNT$)",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_pageTitle": { "message": "Paramètres OpenTomato" },
+  "options_heading": { "message": "Paramètres OpenTomato" },
+  "options_subtitle": { "message": "Personnalisez votre minuteur Pomodoro et le blocage de sites pendant la concentration." },
+  "options_versionLine": {
+    "message": "Version : $VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "1.1.0" } }
+  },
+
+  "options_timerHeading": { "message": "Minuteur" },
+
+  "options_restrictiveHeading": { "message": "Mode restrictif" },
+  "options_restrictiveEnable": { "message": "Activer le mode restrictif" },
+  "options_restrictiveIntro": { "message": "Lorsque le mode restrictif est activé, démarrer une session de concentration verrouille les réglages jusqu'à la fin de cette session :" },
+  "options_restrictiveBullet1": { "message": "Les durées du minuteur et tous les réglages de blocage de sites sont verrouillés." },
+  "options_restrictiveBullet2": { "message": "Le minuteur ne peut absolument pas être passé." },
+  "options_restrictiveBullet3": {
+    "message": "Le minuteur ne peut être réinitialisé que lorsqu'il est <em>en pause</em>, et seulement après avoir tapé une phrase de confirmation.",
+    "description": "The <em> tag is intentional and should stay in the translation, wrapping whatever word means \"paused\" in this language."
+  },
+  "options_restrictiveBullet4": { "message": "Les pages bloquées perdent leur bouton « Continuer quand même »." },
+  "options_restrictiveActiveNote": { "message": "🔒 Une session de concentration est en cours — le mode restrictif ne peut pas être modifié avant sa fin." },
+
+  "options_durationsHeading": { "message": "Durées du minuteur" },
+  "options_workMinutesLabel": { "message": "Session de concentration (minutes)" },
+  "options_restMinutesLabel": { "message": "Pause courte (minutes)" },
+  "options_cyclesLabel": { "message": "Sessions de concentration avant une pause longue" },
+  "options_longBreakMinutesLabel": { "message": "Pause longue (minutes)" },
+  "options_lockedRestrictive": { "message": "🔒 Verrouillé pendant qu'une session de concentration est en cours (mode restrictif)." },
+  "options_presetsIntro": { "message": "Enregistrez les durées ci-dessus comme préréglage nommé, puis basculez entre les préréglages ici ou depuis le popup au lieu de les retaper." },
+  "options_presetsEmpty": { "message": "Aucun préréglage enregistré pour l'instant." },
+  "options_presetNamePlaceholder": { "message": "Nommez ce préréglage" },
+  "options_savePreset": { "message": "Enregistrer l'actuel comme préréglage" },
+  "options_presetSummary": {
+    "message": "$WORK$/$REST$ · $CYCLES$ cycles · pause longue de $LONGBREAK$",
+    "placeholders": {
+      "work": { "content": "$1", "example": "25" },
+      "rest": { "content": "$2", "example": "5" },
+      "cycles": { "content": "$3", "example": "4" },
+      "longbreak": { "content": "$4", "example": "15" }
+    }
+  },
+
+  "options_notificationsHeading": { "message": "Notifications" },
+  "options_soundOnEnd": { "message": "Jouer un son à la fin d'une session" },
+  "options_badgeCountdown": { "message": "Afficher les minutes restantes sur l'icône de la barre d'outils" },
+  "options_warningEnabled": { "message": "M'avertir avant la fin d'une session" },
+  "options_warningSoundLabel": { "message": "Son d'avertissement" },
+  "options_soundOnWarning": { "message": "Jouer un son pour l'avertissement" },
+  "options_warningSecondsLabel": { "message": "M'avertir ce nombre de secondes avant la fin" },
+
+  "options_idleHeading": { "message": "Détection d'inactivité" },
+  "options_idleEnable": { "message": "Mettre en pause automatiquement quand je m'absente de l'ordinateur" },
+  "options_idleMinutesLabel": { "message": "Me considérer absent après ce nombre de minutes d'inactivité" },
+  "options_idleBackLabel": { "message": "À mon retour" },
+  "options_idleAutoResume": { "message": "Reprendre automatiquement" },
+  "options_idleHint": { "message": "Sans cela, le minuteur continue de tourner (et de compter dans votre total de concentration) même en votre absence — c'est ce qui lui permet de le remarquer et de se mettre en pause tout seul." },
+
+  "options_shortcutHeading": { "message": "Raccourci clavier" },
+  "options_shortcutIntro": { "message": "Démarrez, mettez en pause ou reprenez le minuteur sans ouvrir le popup — selon ce qui a du sens pour l'état actuel du minuteur." },
+  "options_shortcutCurrentLabel": { "message": "Raccourci actuel :" },
+  "options_shortcutNotAvailable": { "message": "Non disponible dans ce navigateur" },
+  "options_shortcutNotSet": { "message": "Non défini" },
+  "options_changeShortcut": { "message": "Changer le raccourci…" },
+  "options_shortcutHint": { "message": "Chrome gère les raccourcis clavier de toutes les extensions au même endroit ; le changer ouvre donc la page des raccourcis de Chrome, positionnée sur OpenTomato." },
+
+  "options_tasksHeading": { "message": "Tâches" },
+  "options_tasksIntro": { "message": "Une liste de tâches affichée dans le popup. Cochez les tâches depuis le popup ou ici ; ajoutez, renommez, supprimez et faites glisser pour les réorganiser ici. Donnez à une tâche une estimation (en pomodoros) et marquez-la comme « active » — ici ou depuis le popup — pour suivre automatiquement les sessions terminées, sans compter manuellement." },
+  "options_tasksEmpty": { "message": "Aucune tâche pour l'instant." },
+  "options_taskInputPlaceholder": { "message": "Ajouter une tâche" },
+  "options_clearCompleted": { "message": "Effacer les terminées" },
+  "options_clearAll": { "message": "Tout effacer" },
+  "options_taskMarkDone": { "message": "Marquer la tâche comme terminée" },
+  "options_taskEstimatePlaceholder": { "message": "≈" },
+  "options_taskEstimateTitle": { "message": "Pomodoros estimés" },
+  "options_taskSetActive": { "message": "Définir comme active" },
+  "options_taskStartCrediting": { "message": "Comptabiliser les sessions terminées pour cette tâche" },
+  "options_taskStopCrediting": { "message": "Arrêter de comptabiliser les sessions terminées pour cette tâche" },
+  "options_taskCountLine": {
+    "message": "$DONE$ sur $TOTAL$ terminées",
+    "placeholders": { "done": { "content": "$1", "example": "2" }, "total": { "content": "$2", "example": "5" } }
+  },
+  "options_taskProgressDone": {
+    "message": "$COUNT$ faites",
+    "placeholders": { "count": { "content": "$1", "example": "2" } }
+  },
+  "options_confirmClearAllTasks": { "message": "Supprimer toutes les tâches ? Cette action est irréversible." },
+
+  "options_statsHeading": { "message": "Statistiques de concentration" },
+  "options_statsIntro": { "message": "Compte le temps que vous passez réellement en session de concentration. Choisissez la période sur laquelle porte le total du popup, ou réinitialisez-le quand vous voulez repartir à zéro." },
+  "options_statsWindowLabel": { "message": "Le total du popup porte sur" },
+  "options_statsWindowHourOption": { "message": "L'heure en cours" },
+  "options_statsWindowDayOption": { "message": "Aujourd'hui" },
+  "options_statsWindowWeekOption": { "message": "Cette semaine" },
+  "options_statsWindowMonthOption": { "message": "Ce mois-ci" },
+  "options_statsWindowAllOption": { "message": "Depuis ma dernière réinitialisation" },
+  "options_focusTotalLine": {
+    "message": "Vous vous êtes concentré $TOTAL$ $WINDOW$.",
+    "placeholders": { "total": { "content": "$1", "example": "1h 20m" }, "window": { "content": "$2", "example": "aujourd'hui" } }
+  },
+  "options_resetFocusTotal": { "message": "Réinitialiser le total de concentration" },
+  "options_confirmResetStats": { "message": "Réinitialiser votre total de concentration à zéro ?" },
+
+  "options_blockingHeading": { "message": "Blocage de sites" },
+  "options_blockingHint": {
+    "message": "Le blocage ne s'applique que pendant les sessions de concentration — jamais pendant les pauses. La liste noire et la liste blanche restent séparées. Entrez un domaine (ex. <code>youtube.com</code>) pour bloquer tout le site et ses sous-domaines, ou ajoutez un chemin pour ne bloquer que cette section — ex. <code>reddit.com/r/funny</code> laisse le reste de reddit.com accessible.",
+    "description": "The <code>...</code> spans wrap domain examples and should stay in the translation exactly as written (domains aren't translated); only the surrounding prose should be translated."
+  },
+  "options_profilesIntro": { "message": "Enregistrez le mode et les listes actuels comme profil nommé (ex. « Travail approfondi » contre « Recherche légère »), puis basculez entre eux ici sans modifier vos listes." },
+  "options_profilesEmpty": { "message": "Aucun profil de blocage enregistré pour l'instant." },
+  "options_profileNamePlaceholder": { "message": "Nommez ce profil" },
+  "options_saveProfile": { "message": "Enregistrer l'actuel comme profil" },
+  "options_blockModeAriaLabel": { "message": "Mode de blocage" },
+  "options_siteInputPlaceholder": { "message": "ex. youtube.com" },
+  "options_sitesEmpty": { "message": "Aucun site ajouté pour l'instant." },
+  "options_foldersHint": { "message": "Ou ajoutez rapidement toute une catégorie :" },
+  "options_modeExplainerOff": { "message": "Le blocage de sites est désactivé — tous les sites sont accessibles pendant les sessions de concentration." },
+  "options_modeExplainerBlacklist": { "message": "Les sites de la liste ci-dessous sont bloqués pendant les sessions de concentration. Tout le reste est accessible." },
+  "options_modeExplainerWhitelist": { "message": "Seuls les sites de la liste ci-dessous sont accessibles pendant les sessions de concentration. Tout le reste est bloqué." },
+  "options_profileBlockingOff": { "message": "Blocage désactivé" },
+  "options_profileSiteCount": {
+    "message": "$COUNT$ site",
+    "placeholders": { "count": { "content": "$1", "example": "1" } }
+  },
+  "options_profileSiteCountPlural": {
+    "message": "$COUNT$ sites",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_backupHeading": { "message": "Sauvegarde et export" },
+  "options_backupIntro": { "message": "Exportez tout — paramètres, historique de concentration, tâches, préréglages et profils de blocage — vers un fichier JSON à conserver comme sauvegarde ou à transférer vers un autre navigateur. L'importation remplace vos données actuelles par celles du fichier." },
+  "options_exportJson": { "message": "Exporter la sauvegarde (JSON)" },
+  "options_importJson": { "message": "Importer une sauvegarde…" },
+  "options_csvIntro": { "message": "Ou exportez uniquement votre historique de concentration au format CSV compatible avec les tableurs." },
+  "options_exportCsv": { "message": "Exporter l'historique de concentration (CSV)" },
+  "options_csvHeaderEnd": { "message": "Heure de fin (ISO 8601)" },
+  "options_csvHeaderMinutes": { "message": "Minutes de concentration" },
+  "options_importInvalidJson": { "message": "Ce fichier n'est pas un JSON valide." },
+  "options_importNotBackup": { "message": "Cela ne ressemble pas à un fichier de sauvegarde OpenTomato." },
+  "options_confirmImport": { "message": "Importer cette sauvegarde ? Vos paramètres, historique de concentration, tâches, préréglages et profils de blocage actuels seront remplacés." },
+  "options_importComplete": { "message": "Importation terminée." },
+
+  "options_resetDefaults": { "message": "Rétablir les valeurs par défaut" },
+  "options_confirmResetDefaults": { "message": "Rétablir tous les paramètres OpenTomato à leurs valeurs par défaut ?" },
+  "options_homepage": { "message": "Page d'accueil" },
+  "options_buyMeACoffee": { "message": "☕ Offrez-moi un café" },
+  "options_saved": { "message": "Enregistré" },
+
+  "blocked_pageTitle": { "message": "Bloqué — OpenTomato" },
+  "blocked_headline": { "message": "Vous ne pouvez pas aller là !" },
+  "blocked_message": { "message": "Ce site est inaccessible pendant que vous vous concentrez." },
+  "blocked_timeRemainingLabel": { "message": "Temps restant" },
+  "blocked_hint": { "message": "Retournez à ce sur quoi vous travailliez — vous pouvez le faire." },
+  "blocked_backToSite": { "message": "Retour au site" },
+  "blocked_backToHost": {
+    "message": "Retour à $HOST$",
+    "placeholders": { "host": { "content": "$1", "example": "youtube.com" } }
+  },
+  "blocked_continueAnyway": { "message": "Continuer quand même" },
+  "blocked_headlineFree": { "message": "Vous êtes libre !" },
+  "blocked_messageFree": { "message": "Votre session de concentration est terminée — cette page ne s'applique plus." },
+
+  "notify_idlePaused": { "message": "En pause — on dirait que vous vous êtes absenté." },
+  "notify_idleResumed": { "message": "Bon retour — reprise là où vous en étiez." },
+  "notify_phaseFinished": {
+    "message": "$FINISHED$ terminé. Début de : $NEXT$.",
+    "placeholders": { "finished": { "content": "$1", "example": "Concentration" }, "next": { "content": "$2", "example": "Pause courte" } }
+  },
+  "notify_warning": {
+    "message": "$SECONDS$s restantes en $PHASE$.",
+    "placeholders": { "seconds": { "content": "$1", "example": "30" }, "phase": { "content": "$2", "example": "Concentration" } }
+  },
+  "notify_badgeSeconds": {
+    "message": "$SECONDS$s",
+    "placeholders": { "seconds": { "content": "$1", "example": "45" } }
+  }
+}

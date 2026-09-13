@@ -14,7 +14,6 @@ import {
   ALARM_PHASE_END,
   ALARM_WARNING,
   ALARM_BADGE_TICK,
-  PHASE_LABELS,
 } from "../common/constants.js";
 import {
   getSettings,
@@ -28,6 +27,7 @@ import {
   getActiveTaskId,
 } from "../common/storage.js";
 import { isUrlBlocked, activeBlockList, matchesList } from "../common/blocklist.js";
+import { t, phaseLabel } from "../common/i18n.js";
 import { getNextPhase } from "../common/phases.js";
 import { durationMsForPhase } from "../common/duration.js";
 
@@ -182,7 +182,7 @@ async function refreshBadge() {
   }
 
   const text = underOneMinute
-    ? `${Math.ceil(remainingMs / 1000)}s`
+    ? t("notify_badgeSeconds", [String(Math.ceil(remainingMs / 1000))])
     : String(Math.ceil(remainingMs / 60000));
   const color =
     timerState.status === STATUS.PAUSED ? BADGE_PAUSED_COLOR : BADGE_COLORS[timerState.phase] ?? BADGE_COLORS[PHASE.WORK];
@@ -249,7 +249,7 @@ chrome.idle.onStateChanged.addListener(async (state) => {
     if (timerState.status !== STATUS.RUNNING) return; // nothing running to protect
     await pauseTimer();
     await setIdleAutoPaused(true);
-    notify("OpenTomato", "Paused — looks like you stepped away.");
+    notify(t("appShortName"), t("notify_idlePaused"));
     return;
   }
 
@@ -259,7 +259,7 @@ chrome.idle.onStateChanged.addListener(async (state) => {
     if (settings.idleAutoResume) {
       const resumed = await resumeTimer();
       if (resumed.status === STATUS.RUNNING) {
-        notify("OpenTomato", "Welcome back — resumed where you left off.");
+        notify(t("appShortName"), t("notify_idleResumed"));
       }
     }
   }
@@ -465,7 +465,7 @@ async function advancePhase({ announce }) {
   await applyState(next, settings, { sweep: true });
 
   if (announce) {
-    notify("OpenTomato", `${PHASE_LABELS[finishedPhase]} finished. Starting: ${PHASE_LABELS[nextPhase]}.`);
+    notify(t("appShortName"), t("notify_phaseFinished", [phaseLabel(finishedPhase), phaseLabel(nextPhase)]));
     if (settings.soundOnEnd) await playSound("end");
   }
   return next;
@@ -493,7 +493,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     const settings = await getSettings();
     const timerState = await getTimerState();
     if (settings.soundOnWarning) await playSound("warning");
-    notify("OpenTomato", `${settings.warningSeconds}s left in ${PHASE_LABELS[timerState.phase]}.`);
+    notify(t("appShortName"), t("notify_warning", [String(settings.warningSeconds), phaseLabel(timerState.phase)]));
     await refreshBadge();
   } else if (alarm.name === ALARM_BADGE_TICK) {
     await refreshBadge();

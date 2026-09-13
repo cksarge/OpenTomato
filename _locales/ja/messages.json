@@ -1,0 +1,248 @@
+{
+  "appName": { "message": "OpenTomato – ポモドーロ集中タイマー" },
+  "appShortName": { "message": "OpenTomato" },
+  "appDescription": {
+    "message": "プライバシー重視のポモドーロタイマー：カスタマイズ可能なタイマー、サウンドアラート、集中セッション中のサイトブロック機能。100%ローカル動作、トラッキングなし。"
+  },
+  "commandToggleTimer": { "message": "OpenTomatoのタイマーを開始・一時停止・再開します" },
+
+  "common_toggleTheme": { "message": "テーマを切り替え" },
+  "common_themeSystem": { "message": "システムに合わせる" },
+  "common_themeLight": { "message": "ライト" },
+  "common_themeDark": { "message": "ダーク" },
+  "common_themeButtonLabel": {
+    "message": "テーマ: $THEME$（クリックで変更）",
+    "placeholders": { "theme": { "content": "$1", "example": "ライト" } }
+  },
+
+  "common_phaseWork": { "message": "集中" },
+  "common_phaseRest": { "message": "小休憩" },
+  "common_phaseLongBreak": { "message": "長い休憩" },
+  "common_statusPaused": { "message": "一時停止中" },
+  "common_statusReady": { "message": "準備完了" },
+  "common_phaseWithStatus": {
+    "message": "$PHASE$・$STATUS$",
+    "placeholders": { "phase": { "content": "$1", "example": "集中" }, "status": { "content": "$2", "example": "一時停止中" } }
+  },
+
+  "common_start": { "message": "開始" },
+  "common_pause": { "message": "一時停止" },
+  "common_resume": { "message": "再開" },
+  "common_skip": { "message": "スキップ" },
+  "common_reset": { "message": "リセット" },
+  "common_resetTimer": { "message": "タイマーをリセット" },
+  "common_cancel": { "message": "キャンセル" },
+  "common_add": { "message": "追加" },
+  "common_remove": { "message": "削除" },
+  "common_active": { "message": "アクティブ" },
+  "common_apply": { "message": "適用" },
+
+  "common_restrictNote": { "message": "🔒 制限モード — スキップ不可、リセットは一時停止中のみ可能です。" },
+  "common_resetConfirmPrompt": { "message": "制限モードがオンです。タイマーをリセットするには、次の文をそのまま入力してください：" },
+  "common_resetConfirmPhrase": { "message": "はい、タイマーをリセットします。" },
+  "common_resetConfirmPlaceholder": { "message": "文を入力してください" },
+
+  "common_blockModeOff": { "message": "オフ" },
+  "common_blockModeBlacklist": { "message": "ブラックリスト" },
+  "common_blockModeWhitelist": { "message": "ホワイトリスト" },
+
+  "common_statsWindowHour": { "message": "この1時間" },
+  "common_statsWindowDay": { "message": "今日" },
+  "common_statsWindowWeek": { "message": "今週" },
+  "common_statsWindowMonth": { "message": "今月" },
+  "common_statsWindowAll": { "message": "前回のリセット以降" },
+
+  "popup_appName": { "message": "OpenTomato" },
+  "popup_settingsTitle": { "message": "設定" },
+  "popup_settingsAriaLabel": { "message": "設定を開く" },
+  "popup_presetSelectAriaLabel": { "message": "時間プリセットを適用" },
+  "popup_presetSelectPlaceholder": { "message": "時間プリセット…" },
+  "popup_focusedLabel": {
+    "message": "$WINDOW$の集中時間: ",
+    "placeholders": { "window": { "content": "$1", "example": "今日" } }
+  },
+  "popup_tasksCompleteLabel": { "message": "・タスク完了 " },
+  "popup_taskFocusOn": { "message": "このタスクに集中する" },
+  "popup_taskStopFocus": { "message": "このタスクへの集中をやめる" },
+  "popup_showLess": { "message": "表示を減らす" },
+  "popup_showAll": {
+    "message": "すべて表示（$COUNT$）",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_pageTitle": { "message": "OpenTomatoの設定" },
+  "options_heading": { "message": "OpenTomatoの設定" },
+  "options_subtitle": { "message": "ポモドーロタイマーと集中時間中のサイトブロックをカスタマイズします。" },
+  "options_versionLine": {
+    "message": "バージョン: $VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "1.1.0" } }
+  },
+
+  "options_timerHeading": { "message": "タイマー" },
+
+  "options_restrictiveHeading": { "message": "制限モード" },
+  "options_restrictiveEnable": { "message": "制限モードを有効にする" },
+  "options_restrictiveIntro": { "message": "制限モードがオンの場合、集中セッションを開始するとセッションが終わるまで設定がロックされます：" },
+  "options_restrictiveBullet1": { "message": "タイマーの時間設定とすべてのサイトブロック設定が変更できなくなります。" },
+  "options_restrictiveBullet2": { "message": "タイマーは一切スキップできません。" },
+  "options_restrictiveBullet3": {
+    "message": "タイマーは<em>一時停止中</em>のみリセットでき、さらに確認用の文を入力した場合に限られます。",
+    "description": "The <em> tag is intentional and should stay in the translation, wrapping whatever word means \"paused\" in this language."
+  },
+  "options_restrictiveBullet4": { "message": "ブロックページから「このまま続ける」ボタンがなくなります。" },
+  "options_restrictiveActiveNote": { "message": "🔒 集中セッションが実行中です。終了するまで制限モードは変更できません。" },
+
+  "options_durationsHeading": { "message": "タイマーの時間設定" },
+  "options_workMinutesLabel": { "message": "集中セッション（分）" },
+  "options_restMinutesLabel": { "message": "小休憩（分）" },
+  "options_cyclesLabel": { "message": "長い休憩までの集中セッション数" },
+  "options_longBreakMinutesLabel": { "message": "長い休憩（分）" },
+  "options_lockedRestrictive": { "message": "🔒 集中セッション実行中はロックされます（制限モード）。" },
+  "options_presetsIntro": { "message": "上記の時間設定に名前を付けてプリセットとして保存し、ここまたはポップアップから、入力し直すことなくプリセットを切り替えられます。" },
+  "options_presetsEmpty": { "message": "保存されたプリセットはまだありません。" },
+  "options_presetNamePlaceholder": { "message": "このプリセットの名前" },
+  "options_savePreset": { "message": "現在の設定をプリセットとして保存" },
+  "options_presetSummary": {
+    "message": "$WORK$/$REST$・$CYCLES$サイクル・長い休憩$LONGBREAK$分",
+    "placeholders": {
+      "work": { "content": "$1", "example": "25" },
+      "rest": { "content": "$2", "example": "5" },
+      "cycles": { "content": "$3", "example": "4" },
+      "longbreak": { "content": "$4", "example": "15" }
+    }
+  },
+
+  "options_notificationsHeading": { "message": "通知" },
+  "options_soundOnEnd": { "message": "セッション終了時に音を鳴らす" },
+  "options_badgeCountdown": { "message": "ツールバーアイコンに残り時間（分）を表示する" },
+  "options_warningEnabled": { "message": "セッション終了前に通知する" },
+  "options_warningSoundLabel": { "message": "警告音" },
+  "options_soundOnWarning": { "message": "警告時に音を鳴らす" },
+  "options_warningSecondsLabel": { "message": "終了の何秒前に通知するか" },
+
+  "options_idleHeading": { "message": "離席検知" },
+  "options_idleEnable": { "message": "パソコンから離れたら自動で一時停止する" },
+  "options_idleMinutesLabel": { "message": "何分操作がなければ離席とみなすか" },
+  "options_idleBackLabel": { "message": "戻ってきたとき" },
+  "options_idleAutoResume": { "message": "自動的に再開する" },
+  "options_idleHint": { "message": "この機能がないと、離席中もタイマーが動き続け（集中時間の合計にも加算され）ます。この機能によって、離席を検知して自動的に一時停止できます。" },
+
+  "options_shortcutHeading": { "message": "キーボードショートカット" },
+  "options_shortcutIntro": { "message": "ポップアップを開かずにタイマーを開始・一時停止・再開できます。タイマーの現在の状態に応じた動作が実行されます。" },
+  "options_shortcutCurrentLabel": { "message": "現在のショートカット:" },
+  "options_shortcutNotAvailable": { "message": "このブラウザでは利用できません" },
+  "options_shortcutNotSet": { "message": "未設定" },
+  "options_changeShortcut": { "message": "ショートカットを変更…" },
+  "options_shortcutHint": { "message": "Chromeはすべての拡張機能のキーボードショートカットを1か所で管理しています。変更するとChromeのショートカット設定ページがOpenTomatoの項目までスクロールした状態で開きます。" },
+
+  "options_tasksHeading": { "message": "タスク" },
+  "options_tasksIntro": { "message": "ポップアップに表示されるチェックリストです。ポップアップまたはここでチェックを付けられます。タスクの追加・名前の変更・削除・ドラッグによる並べ替えはここで行います。タスクに見積もり（ポモドーロ数）を設定して「アクティブ」に設定すると（ここでもポップアップでも設定可能）、手動で数えなくても完了したセッションが自動的に記録されます。" },
+  "options_tasksEmpty": { "message": "タスクはまだありません。" },
+  "options_taskInputPlaceholder": { "message": "タスクを追加" },
+  "options_clearCompleted": { "message": "完了済みを削除" },
+  "options_clearAll": { "message": "すべて削除" },
+  "options_taskMarkDone": { "message": "タスクを完了にする" },
+  "options_taskEstimatePlaceholder": { "message": "≈" },
+  "options_taskEstimateTitle": { "message": "見積もりポモドーロ数" },
+  "options_taskSetActive": { "message": "アクティブに設定" },
+  "options_taskStartCrediting": { "message": "完了したセッションをこのタスクに記録する" },
+  "options_taskStopCrediting": { "message": "完了したセッションをこのタスクに記録しない" },
+  "options_taskCountLine": {
+    "message": "$TOTAL$件中$DONE$件完了",
+    "placeholders": { "done": { "content": "$1", "example": "2" }, "total": { "content": "$2", "example": "5" } }
+  },
+  "options_taskProgressDone": {
+    "message": "$COUNT$回完了",
+    "placeholders": { "count": { "content": "$1", "example": "2" } }
+  },
+  "options_confirmClearAllTasks": { "message": "すべてのタスクを削除しますか？この操作は取り消せません。" },
+
+  "options_statsHeading": { "message": "集中時間の統計" },
+  "options_statsIntro": { "message": "実際に集中セッションで過ごした時間を計測します。ポップアップの合計時間を集計する期間を選択するか、リセットして最初からやり直せます。" },
+  "options_statsWindowLabel": { "message": "ポップアップの合計期間" },
+  "options_statsWindowHourOption": { "message": "この1時間" },
+  "options_statsWindowDayOption": { "message": "今日" },
+  "options_statsWindowWeekOption": { "message": "今週" },
+  "options_statsWindowMonthOption": { "message": "今月" },
+  "options_statsWindowAllOption": { "message": "前回リセットしてから" },
+  "options_focusTotalLine": {
+    "message": "$WINDOW$、$TOTAL$集中しました。",
+    "placeholders": { "total": { "content": "$1", "example": "1h 20m" }, "window": { "content": "$2", "example": "今日" } }
+  },
+  "options_resetFocusTotal": { "message": "集中時間の合計をリセット" },
+  "options_confirmResetStats": { "message": "集中時間の合計を0にリセットしますか？" },
+
+  "options_blockingHeading": { "message": "サイトブロック" },
+  "options_blockingHint": {
+    "message": "ブロックは集中セッション中のみ適用され、休憩中は適用されません。ブラックリストとホワイトリストは別々のリストとして管理されます。ドメインを入力すると（例: <code>youtube.com</code>）、サイト全体とそのサブドメインが対象になります。パスを追加すると、その部分だけを対象にできます — 例えば<code>reddit.com/r/funny</code>と指定すると、reddit.comの他の部分はアクセス可能なままです。",
+    "description": "The <code>...</code> spans wrap domain examples and should stay in the translation exactly as written (domains aren't translated); only the surrounding prose should be translated."
+  },
+  "options_profilesIntro": { "message": "現在のモードとリストに名前を付けてプロファイルとして保存できます（例:「集中作業」と「軽い調べもの」）。リストを編集し直すことなく、ここでプロファイルを切り替えられます。" },
+  "options_profilesEmpty": { "message": "保存されたブロックプロファイルはまだありません。" },
+  "options_profileNamePlaceholder": { "message": "このプロファイルの名前" },
+  "options_saveProfile": { "message": "現在の設定をプロファイルとして保存" },
+  "options_blockModeAriaLabel": { "message": "ブロックモード" },
+  "options_siteInputPlaceholder": { "message": "例: youtube.com" },
+  "options_sitesEmpty": { "message": "サイトはまだ追加されていません。" },
+  "options_foldersHint": { "message": "またはカテゴリーごとまとめて追加:" },
+  "options_modeExplainerOff": { "message": "サイトブロックはオフです。集中セッション中もすべてのサイトにアクセスできます。" },
+  "options_modeExplainerBlacklist": { "message": "下のリストにあるサイトは集中セッション中にブロックされます。それ以外はアクセスできます。" },
+  "options_modeExplainerWhitelist": { "message": "集中セッション中は下のリストにあるサイトのみアクセスできます。それ以外はすべてブロックされます。" },
+  "options_profileBlockingOff": { "message": "ブロックなし" },
+  "options_profileSiteCount": {
+    "message": "$COUNT$件のサイト",
+    "placeholders": { "count": { "content": "$1", "example": "1" } }
+  },
+  "options_profileSiteCountPlural": {
+    "message": "$COUNT$件のサイト",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_backupHeading": { "message": "バックアップとエクスポート" },
+  "options_backupIntro": { "message": "設定・集中履歴・タスク・プリセット・ブロックプロファイルなど、すべてをJSONファイルにエクスポートできます。バックアップとして保存したり、別のブラウザに持ち込んだりできます。インポートすると、現在のデータがファイルの内容で置き換えられます。" },
+  "options_exportJson": { "message": "バックアップをエクスポート（JSON）" },
+  "options_importJson": { "message": "バックアップをインポート…" },
+  "options_csvIntro": { "message": "または、集中時間の記録だけを表計算ソフトで使いやすいCSVファイルとしてエクスポートできます。" },
+  "options_exportCsv": { "message": "集中履歴をエクスポート（CSV）" },
+  "options_csvHeaderEnd": { "message": "終了時刻（ISO 8601）" },
+  "options_csvHeaderMinutes": { "message": "集中時間（分）" },
+  "options_importInvalidJson": { "message": "そのファイルは有効なJSONではありません。" },
+  "options_importNotBackup": { "message": "OpenTomatoのバックアップファイルではないようです。" },
+  "options_confirmImport": { "message": "このバックアップをインポートしますか？現在の設定・集中履歴・タスク・プリセット・ブロックプロファイルが置き換えられます。" },
+  "options_importComplete": { "message": "インポートが完了しました。" },
+
+  "options_resetDefaults": { "message": "初期設定に戻す" },
+  "options_confirmResetDefaults": { "message": "OpenTomatoのすべての設定を初期状態に戻しますか？" },
+  "options_homepage": { "message": "ホームページ" },
+  "options_buyMeACoffee": { "message": "☕ コーヒーをおごる" },
+  "options_saved": { "message": "保存しました" },
+
+  "blocked_pageTitle": { "message": "ブロック中 — OpenTomato" },
+  "blocked_headline": { "message": "そこにはアクセスできません！" },
+  "blocked_message": { "message": "集中中はこのサイトにアクセスできません。" },
+  "blocked_timeRemainingLabel": { "message": "残り時間" },
+  "blocked_hint": { "message": "作業していたことに戻りましょう。あなたならできます。" },
+  "blocked_backToSite": { "message": "サイトに戻る" },
+  "blocked_backToHost": {
+    "message": "$HOST$に戻る",
+    "placeholders": { "host": { "content": "$1", "example": "youtube.com" } }
+  },
+  "blocked_continueAnyway": { "message": "このまま続ける" },
+  "blocked_headlineFree": { "message": "自由の時間です！" },
+  "blocked_messageFree": { "message": "集中セッションが終了しました。このページはもう関係ありません。" },
+
+  "notify_idlePaused": { "message": "一時停止しました — 離席したようですね。" },
+  "notify_idleResumed": { "message": "おかえりなさい — 中断したところから再開しました。" },
+  "notify_phaseFinished": {
+    "message": "$FINISHED$が終了しました。次: $NEXT$。",
+    "placeholders": { "finished": { "content": "$1", "example": "集中" }, "next": { "content": "$2", "example": "小休憩" } }
+  },
+  "notify_warning": {
+    "message": "$PHASE$残り$SECONDS$秒。",
+    "placeholders": { "seconds": { "content": "$1", "example": "30" }, "phase": { "content": "$2", "example": "集中" } }
+  },
+  "notify_badgeSeconds": {
+    "message": "$SECONDS$秒",
+    "placeholders": { "seconds": { "content": "$1", "example": "45" } }
+  }
+}

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>OpenTomato</title>
+    <title data-i18n="popup_appName">OpenTomato</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
@@ -10,11 +10,11 @@
       <header class="popup-header">
         <div class="brand">
           <img src="../icons/icon32.png" alt="" class="brand-icon" width="20" height="20" />
-          <span class="brand-name">OpenTomato</span>
+          <span class="brand-name" data-i18n="popup_appName">OpenTomato</span>
         </div>
         <div class="header-actions">
-          <button id="theme-toggle-btn" class="icon-btn" title="Toggle theme" aria-label="Toggle theme"></button>
-          <button id="settings-btn" class="icon-btn" title="Settings" aria-label="Open settings">
+          <button id="theme-toggle-btn" class="icon-btn" data-i18n-title="common_toggleTheme" data-i18n-aria-label="common_toggleTheme" title="Toggle theme" aria-label="Toggle theme"></button>
+          <button id="settings-btn" class="icon-btn" data-i18n-title="popup_settingsTitle" data-i18n-aria-label="popup_settingsAriaLabel" title="Settings" aria-label="Open settings">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path
                 fill="currentColor"
@@ -26,13 +26,13 @@
       </header>
 
       <div class="preset-bar" id="preset-bar" hidden>
-        <select id="preset-select" aria-label="Apply a duration preset">
-          <option value="" selected disabled>Duration preset…</option>
+        <select id="preset-select" data-i18n-aria-label="popup_presetSelectAriaLabel" aria-label="Apply a duration preset">
+          <option value="" selected disabled data-i18n="popup_presetSelectPlaceholder">Duration preset…</option>
         </select>
       </div>
 
       <main class="timer-card" id="timer-card" data-phase="work">
-        <p class="phase-label" id="phase-label">Focus</p>
+        <p class="phase-label" id="phase-label" data-i18n="common_phaseWork">Focus</p>
         <div class="ring-wrap">
           <svg class="ring" viewBox="0 0 120 120">
             <circle class="ring-track" cx="60" cy="60" r="54" />
@@ -44,14 +44,14 @@
       </main>
 
       <div class="controls">
-        <button id="primary-btn" class="btn btn-primary">Start</button>
+        <button id="primary-btn" class="btn btn-primary" data-i18n="common_start">Start</button>
         <div class="secondary-controls">
-          <button id="skip-btn" class="btn btn-ghost" disabled>Skip</button>
-          <button id="reset-btn" class="btn btn-ghost" disabled>Reset</button>
+          <button id="skip-btn" class="btn btn-ghost" data-i18n="common_skip" disabled>Skip</button>
+          <button id="reset-btn" class="btn btn-ghost" data-i18n="common_reset" disabled>Reset</button>
         </div>
       </div>
 
-      <p class="restrict-note" id="restrict-note" hidden>
+      <p class="restrict-note" id="restrict-note" data-i18n="common_restrictNote" hidden>
         🔒 Restrictive mode — no skipping; reset only while paused.
       </p>
       <p class="focus-stat" id="focus-stat" aria-live="polite"></p>
@@ -62,19 +62,20 @@
       </div>
 
       <div class="reset-confirm" id="reset-confirm" hidden>
-        <p>Restrictive mode is on. To reset the timer, type this exactly:</p>
-        <p class="reset-phrase" id="reset-phrase">Yes, I want to reset the timer.</p>
+        <p data-i18n="common_resetConfirmPrompt">Restrictive mode is on. To reset the timer, type this exactly:</p>
+        <p class="reset-phrase" id="reset-phrase" data-i18n="common_resetConfirmPhrase">Yes, I want to reset the timer.</p>
         <input
           type="text"
           id="reset-confirm-input"
+          data-i18n-placeholder="common_resetConfirmPlaceholder"
           placeholder="Type the phrase"
           autocomplete="off"
           autocapitalize="off"
           spellcheck="false"
         />
         <div class="reset-confirm-actions">
-          <button type="button" id="reset-confirm-cancel" class="btn btn-ghost">Cancel</button>
-          <button type="button" id="reset-confirm-go" class="btn btn-primary" disabled>Reset timer</button>
+          <button type="button" id="reset-confirm-cancel" class="btn btn-ghost" data-i18n="common_cancel">Cancel</button>
+          <button type="button" id="reset-confirm-go" class="btn btn-primary" data-i18n="common_resetTimer" disabled>Reset timer</button>
         </div>
       </div>
     </div>

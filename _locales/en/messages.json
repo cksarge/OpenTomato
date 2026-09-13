@@ -1,0 +1,258 @@
+{
+  "appName": {
+    "message": "OpenTomato – Pomodoro Focus Timer",
+    "description": "Extension name shown in the Chrome Web Store and toolbar."
+  },
+  "appShortName": {
+    "message": "OpenTomato",
+    "description": "Short name used when space is limited."
+  },
+  "appDescription": {
+    "message": "Privacy-first Pomodoro timer: customizable timers, sound alerts, and focus-session site blocking. 100% local, no tracking.",
+    "description": "Extension description shown in the Chrome Web Store."
+  },
+  "commandToggleTimer": {
+    "message": "Start, pause, or resume the OpenTomato timer",
+    "description": "Keyboard shortcut description shown on chrome://extensions/shortcuts."
+  },
+
+  "common_toggleTheme": { "message": "Toggle theme" },
+  "common_themeSystem": { "message": "Matching system" },
+  "common_themeLight": { "message": "Light" },
+  "common_themeDark": { "message": "Dark" },
+  "common_themeButtonLabel": {
+    "message": "Theme: $THEME$ (click to change)",
+    "placeholders": { "theme": { "content": "$1", "example": "Light" } }
+  },
+
+  "common_phaseWork": { "message": "Focus" },
+  "common_phaseRest": { "message": "Short Break" },
+  "common_phaseLongBreak": { "message": "Long Break" },
+  "common_statusPaused": { "message": "Paused" },
+  "common_statusReady": { "message": "Ready" },
+  "common_phaseWithStatus": {
+    "message": "$PHASE$ · $STATUS$",
+    "placeholders": { "phase": { "content": "$1", "example": "Focus" }, "status": { "content": "$2", "example": "Paused" } }
+  },
+
+  "common_start": { "message": "Start" },
+  "common_pause": { "message": "Pause" },
+  "common_resume": { "message": "Resume" },
+  "common_skip": { "message": "Skip" },
+  "common_reset": { "message": "Reset" },
+  "common_resetTimer": { "message": "Reset timer" },
+  "common_cancel": { "message": "Cancel" },
+  "common_add": { "message": "Add" },
+  "common_remove": { "message": "Remove" },
+  "common_active": { "message": "Active" },
+  "common_apply": { "message": "Apply" },
+
+  "common_restrictNote": { "message": "🔒 Restrictive mode — no skipping; reset only while paused." },
+  "common_resetConfirmPrompt": { "message": "Restrictive mode is on. To reset the timer, type this exactly:" },
+  "common_resetConfirmPhrase": { "message": "Yes, I want to reset the timer." },
+  "common_resetConfirmPlaceholder": { "message": "Type the phrase" },
+
+  "common_blockModeOff": { "message": "Off" },
+  "common_blockModeBlacklist": { "message": "Blacklist" },
+  "common_blockModeWhitelist": { "message": "Whitelist" },
+
+  "common_statsWindowHour": { "message": "this hour" },
+  "common_statsWindowDay": { "message": "today" },
+  "common_statsWindowWeek": { "message": "this week" },
+  "common_statsWindowMonth": { "message": "this month" },
+  "common_statsWindowAll": { "message": "since last reset" },
+
+  "popup_appName": { "message": "OpenTomato" },
+  "popup_settingsTitle": { "message": "Settings" },
+  "popup_settingsAriaLabel": { "message": "Open settings" },
+  "popup_presetSelectAriaLabel": { "message": "Apply a duration preset" },
+  "popup_presetSelectPlaceholder": { "message": "Duration preset…" },
+  "popup_focusedLabel": {
+    "message": "Focused $WINDOW$: ",
+    "placeholders": { "window": { "content": "$1", "example": "today" } }
+  },
+  "popup_tasksCompleteLabel": { "message": " · Tasks complete " },
+  "popup_taskFocusOn": { "message": "Focus on this task" },
+  "popup_taskStopFocus": { "message": "Stop focusing on this task" },
+  "popup_showLess": { "message": "Show less" },
+  "popup_showAll": {
+    "message": "Show all ($COUNT$)",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_pageTitle": { "message": "OpenTomato Settings" },
+  "options_heading": { "message": "OpenTomato Settings" },
+  "options_subtitle": { "message": "Customize your Pomodoro timer and focus-time site blocking." },
+  "options_versionLine": {
+    "message": "Version: $VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "1.1.0" } }
+  },
+
+  "options_timerHeading": { "message": "Timer" },
+
+  "options_restrictiveHeading": { "message": "Restrictive Mode" },
+  "options_restrictiveEnable": { "message": "Enable restrictive mode" },
+  "options_restrictiveIntro": { "message": "When restrictive mode is on, starting a focus session locks things down until that session ends:" },
+  "options_restrictiveBullet1": { "message": "Timer durations and every site-blocking setting are frozen." },
+  "options_restrictiveBullet2": { "message": "The timer can't be skipped — at all." },
+  "options_restrictiveBullet3": {
+    "message": "The timer can only be reset while it's <em>paused</em>, and only after typing a confirmation phrase.",
+    "description": "The <em> tag is intentional and should stay in the translation, wrapping whatever word means \"paused\" in this language."
+  },
+  "options_restrictiveBullet4": { "message": "Blocked pages lose their “Continue anyway” button." },
+  "options_restrictiveActiveNote": { "message": "🔒 A focus session is running — restrictive mode can't be changed until it ends." },
+
+  "options_durationsHeading": { "message": "Timer Durations" },
+  "options_workMinutesLabel": { "message": "Focus session (minutes)" },
+  "options_restMinutesLabel": { "message": "Short break (minutes)" },
+  "options_cyclesLabel": { "message": "Focus sessions before long break" },
+  "options_longBreakMinutesLabel": { "message": "Long break (minutes)" },
+  "options_lockedRestrictive": { "message": "🔒 Locked while a focus session is running (restrictive mode)." },
+  "options_presetsIntro": { "message": "Save the durations above as a named preset, then switch between presets here or from the popup instead of re-typing them." },
+  "options_presetsEmpty": { "message": "No presets saved yet." },
+  "options_presetNamePlaceholder": { "message": "Name this preset" },
+  "options_savePreset": { "message": "Save current as preset" },
+  "options_presetSummary": {
+    "message": "$WORK$/$REST$ · $CYCLES$ cycles · $LONGBREAK$ long break",
+    "placeholders": {
+      "work": { "content": "$1", "example": "25" },
+      "rest": { "content": "$2", "example": "5" },
+      "cycles": { "content": "$3", "example": "4" },
+      "longbreak": { "content": "$4", "example": "15" }
+    }
+  },
+
+  "options_notificationsHeading": { "message": "Notifications" },
+  "options_soundOnEnd": { "message": "Play a sound when a session ends" },
+  "options_badgeCountdown": { "message": "Show minutes remaining on the toolbar icon" },
+  "options_warningEnabled": { "message": "Warn me before a session ends" },
+  "options_warningSoundLabel": { "message": "Warning sound" },
+  "options_soundOnWarning": { "message": "Play a sound for the warning" },
+  "options_warningSecondsLabel": { "message": "Warn me this many seconds before the end" },
+
+  "options_idleHeading": { "message": "Idle Detection" },
+  "options_idleEnable": { "message": "Automatically pause when I'm away from the computer" },
+  "options_idleMinutesLabel": { "message": "Consider me away after this many minutes of inactivity" },
+  "options_idleBackLabel": { "message": "When I'm back" },
+  "options_idleAutoResume": { "message": "Resume automatically" },
+  "options_idleHint": { "message": "Without this, the timer keeps running (and counting toward your focus total) even while you're away — this is what makes it notice and pause itself instead." },
+
+  "options_shortcutHeading": { "message": "Keyboard Shortcut" },
+  "options_shortcutIntro": { "message": "Start, pause, or resume the timer without opening the popup — whichever one of those makes sense for the timer's current state." },
+  "options_shortcutCurrentLabel": { "message": "Current shortcut:" },
+  "options_shortcutNotAvailable": { "message": "Not available in this browser" },
+  "options_shortcutNotSet": { "message": "Not set" },
+  "options_changeShortcut": { "message": "Change shortcut…" },
+  "options_shortcutHint": { "message": "Chrome manages keyboard shortcuts for every extension in one place, so changing it opens Chrome's own shortcuts page, scrolled to OpenTomato." },
+
+  "options_tasksHeading": { "message": "Tasks" },
+  "options_tasksIntro": { "message": "A checklist that shows in the popup. Check items off from the popup or here; add, rename, remove, and drag to reorder them here. Give a task an estimate (in pomodoros) and mark it \"active\" — either here or from the popup — to auto-track completed sessions against it, no manual counting needed." },
+  "options_tasksEmpty": { "message": "No tasks yet." },
+  "options_taskInputPlaceholder": { "message": "Add a task" },
+  "options_clearCompleted": { "message": "Clear completed" },
+  "options_clearAll": { "message": "Clear all" },
+  "options_taskMarkDone": { "message": "Mark task done" },
+  "options_taskEstimatePlaceholder": { "message": "≈" },
+  "options_taskEstimateTitle": { "message": "Estimated pomodoros" },
+  "options_taskSetActive": { "message": "Set active" },
+  "options_taskStartCrediting": { "message": "Credit completed sessions to this task" },
+  "options_taskStopCrediting": { "message": "Stop crediting completed sessions to this task" },
+  "options_taskCountLine": {
+    "message": "$DONE$ of $TOTAL$ complete",
+    "placeholders": { "done": { "content": "$1", "example": "2" }, "total": { "content": "$2", "example": "5" } }
+  },
+  "options_taskProgressDone": {
+    "message": "$COUNT$ done",
+    "placeholders": { "count": { "content": "$1", "example": "2" } }
+  },
+  "options_confirmClearAllTasks": { "message": "Remove all tasks? This can't be undone." },
+
+  "options_statsHeading": { "message": "Focus Stats" },
+  "options_statsIntro": { "message": "Counts the time you actually spend in focus sessions. Pick the window the popup's running total adds up over, or reset it whenever you want a fresh start." },
+  "options_statsWindowLabel": { "message": "Popup total covers" },
+  "options_statsWindowHourOption": { "message": "The current hour" },
+  "options_statsWindowDayOption": { "message": "Today" },
+  "options_statsWindowWeekOption": { "message": "This week" },
+  "options_statsWindowMonthOption": { "message": "This month" },
+  "options_statsWindowAllOption": { "message": "Since I last reset it" },
+  "options_focusTotalLine": {
+    "message": "You've focused $TOTAL$ $WINDOW$.",
+    "placeholders": { "total": { "content": "$1", "example": "1h 20m" }, "window": { "content": "$2", "example": "today" } }
+  },
+  "options_resetFocusTotal": { "message": "Reset focus total" },
+  "options_confirmResetStats": { "message": "Reset your focus total back to zero?" },
+
+  "options_blockingHeading": { "message": "Site Blocking" },
+  "options_blockingHint": {
+    "message": "Blocking only applies during focus sessions — never during breaks. The blacklist and whitelist keep separate lists. Enter a domain (e.g. <code>youtube.com</code>) to match the whole site and its subdomains, or add a path to match just that section — e.g. <code>reddit.com/r/funny</code> leaves the rest of reddit.com reachable.",
+    "description": "The <code>...</code> spans wrap domain examples and should stay in the translation exactly as written (domains aren't translated); only the surrounding prose should be translated."
+  },
+  "options_profilesIntro": { "message": "Save the current mode and lists as a named profile (e.g. \"Deep Work\" vs \"Light Research\"), then switch between them here without re-editing your lists." },
+  "options_profilesEmpty": { "message": "No blocking profiles saved yet." },
+  "options_profileNamePlaceholder": { "message": "Name this profile" },
+  "options_saveProfile": { "message": "Save current as profile" },
+  "options_blockModeAriaLabel": { "message": "Blocking mode" },
+  "options_siteInputPlaceholder": { "message": "e.g. youtube.com" },
+  "options_sitesEmpty": { "message": "No sites added yet." },
+  "options_foldersHint": { "message": "Or quick-add a whole category:" },
+  "options_modeExplainerOff": { "message": "Site blocking is off — every site is reachable during focus sessions." },
+  "options_modeExplainerBlacklist": { "message": "Sites in the list below are blocked during focus sessions. Everything else is reachable." },
+  "options_modeExplainerWhitelist": { "message": "Only sites in the list below are reachable during focus sessions. Everything else is blocked." },
+  "options_profileBlockingOff": { "message": "Blocking off" },
+  "options_profileSiteCount": {
+    "message": "$COUNT$ site",
+    "placeholders": { "count": { "content": "$1", "example": "1" } }
+  },
+  "options_profileSiteCountPlural": {
+    "message": "$COUNT$ sites",
+    "placeholders": { "count": { "content": "$1", "example": "5" } }
+  },
+
+  "options_backupHeading": { "message": "Backup & Export" },
+  "options_backupIntro": { "message": "Export everything — settings, focus history, tasks, presets, and blocking profiles — to a JSON file you can keep as a backup or bring to another browser. Importing replaces your current data with what's in the file." },
+  "options_exportJson": { "message": "Export backup (JSON)" },
+  "options_importJson": { "message": "Import backup…" },
+  "options_csvIntro": { "message": "Or export just your focus-time log as a spreadsheet-friendly CSV file." },
+  "options_exportCsv": { "message": "Export focus history (CSV)" },
+  "options_csvHeaderEnd": { "message": "End Time (ISO 8601)" },
+  "options_csvHeaderMinutes": { "message": "Minutes Focused" },
+  "options_importInvalidJson": { "message": "That file isn't valid JSON." },
+  "options_importNotBackup": { "message": "That doesn't look like an OpenTomato backup file." },
+  "options_confirmImport": { "message": "Import this backup? It will replace your current settings, focus history, tasks, presets, and blocking profiles." },
+  "options_importComplete": { "message": "Import complete." },
+
+  "options_resetDefaults": { "message": "Reset to defaults" },
+  "options_confirmResetDefaults": { "message": "Reset all OpenTomato settings to their defaults?" },
+  "options_homepage": { "message": "Homepage" },
+  "options_buyMeACoffee": { "message": "☕ Buy me a coffee" },
+  "options_saved": { "message": "Saved" },
+
+  "blocked_pageTitle": { "message": "Blocked — OpenTomato" },
+  "blocked_headline": { "message": "You can't go there!" },
+  "blocked_message": { "message": "This site is off-limits while you're focusing." },
+  "blocked_timeRemainingLabel": { "message": "Time remaining" },
+  "blocked_hint": { "message": "Head back to what you were working on — you've got this." },
+  "blocked_backToSite": { "message": "Back to the site" },
+  "blocked_backToHost": {
+    "message": "Back to $HOST$",
+    "placeholders": { "host": { "content": "$1", "example": "youtube.com" } }
+  },
+  "blocked_continueAnyway": { "message": "Continue anyway" },
+  "blocked_headlineFree": { "message": "You're free!" },
+  "blocked_messageFree": { "message": "Your focus session has ended — this page no longer applies." },
+
+  "notify_idlePaused": { "message": "Paused — looks like you stepped away." },
+  "notify_idleResumed": { "message": "Welcome back — resumed where you left off." },
+  "notify_phaseFinished": {
+    "message": "$FINISHED$ finished. Starting: $NEXT$.",
+    "placeholders": { "finished": { "content": "$1", "example": "Focus" }, "next": { "content": "$2", "example": "Short Break" } }
+  },
+  "notify_warning": {
+    "message": "$SECONDS$s left in $PHASE$.",
+    "placeholders": { "seconds": { "content": "$1", "example": "30" }, "phase": { "content": "$2", "example": "Focus" } }
+  },
+  "notify_badgeSeconds": {
+    "message": "$SECONDS$s",
+    "placeholders": { "seconds": { "content": "$1", "example": "45" } }
+  }
+}

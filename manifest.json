@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "OpenTomato – Pomodoro Focus Timer",
-  "short_name": "OpenTomato",
+  "default_locale": "en",
+  "name": "__MSG_appName__",
+  "short_name": "__MSG_appShortName__",
   "version": "1.1.0",
-  "description": "Privacy-first Pomodoro timer: customizable timers, sound alerts, and focus-session site blocking. 100% local, no tracking.",
+  "description": "__MSG_appDescription__",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -33,7 +34,7 @@
         "default": "Ctrl+Shift+U",
         "mac": "Command+Shift+U"
       },
-      "description": "Start, pause, or resume the OpenTomato timer"
+      "description": "__MSG_commandToggleTimer__"
     }
   },
   "content_scripts": [

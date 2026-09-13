@@ -9,6 +9,7 @@
 
 import { THEME_OPTIONS } from "./constants.js";
 import { getTheme, setTheme } from "./storage.js";
+import { t } from "./i18n.js";
 
 // Small solid-fill icons (matching the settings gear's style) instead of
 // emoji, so the toggle looks consistent across platforms/fonts.
@@ -34,7 +35,7 @@ const THEME_ICONS = {
     <path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
   </svg>`,
 };
-const THEME_LABELS = { system: "Matching system", light: "Light", dark: "Dark" };
+const THEME_LABEL_KEYS = { system: "common_themeSystem", light: "common_themeLight", dark: "common_themeDark" };
 
 function applyThemeAttribute(theme) {
   const root = document.documentElement;
@@ -48,7 +49,8 @@ function applyThemeAttribute(theme) {
 function updateToggleButton(buttonEl, theme) {
   if (!buttonEl) return;
   buttonEl.innerHTML = THEME_ICONS[theme] ?? THEME_ICONS.system;
-  const label = `Theme: ${THEME_LABELS[theme] ?? THEME_LABELS.system} (click to change)`;
+  const themeName = t(THEME_LABEL_KEYS[theme] ?? THEME_LABEL_KEYS.system);
+  const label = t("common_themeButtonLabel", [themeName]);
   buttonEl.title = label;
   buttonEl.setAttribute("aria-label", label);
 }

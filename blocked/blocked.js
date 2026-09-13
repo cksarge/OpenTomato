@@ -5,6 +5,9 @@ import { PHASE, STATUS, DEFAULT_SETTINGS } from "../common/constants.js";
 import { getSettings, getTimerState } from "../common/storage.js";
 import { formatTime } from "../common/duration.js";
 import { initTheme } from "../common/theme.js";
+import { t, applyI18n } from "../common/i18n.js";
+
+applyI18n();
 
 const els = {
   card: document.getElementById("card"),
@@ -47,9 +50,9 @@ function render() {
 
   if (isBlocking) {
     els.icon.textContent = "⛔";
-    els.headline.textContent = "You can't go there!";
-    els.message.textContent = "This site is off-limits while you're focusing.";
-    els.hint.textContent = "Head back to what you were working on — you've got this.";
+    els.headline.textContent = t("blocked_headline");
+    els.message.textContent = t("blocked_message");
+    els.hint.textContent = t("blocked_hint");
     els.hint.hidden = false;
     const remainingMs = Math.max(0, (timerState.phaseEndTime ?? Date.now()) - Date.now());
     els.timeValue.textContent = formatTime(remainingMs);
@@ -59,14 +62,14 @@ function render() {
     els.continueBtn.hidden = !originalUrl || settings.restrictiveMode;
   } else {
     els.icon.textContent = "✅";
-    els.headline.textContent = "You're free!";
-    els.message.textContent = "Your focus session has ended — this page no longer applies.";
+    els.headline.textContent = t("blocked_headlineFree");
+    els.message.textContent = t("blocked_messageFree");
     els.hint.hidden = true;
     els.timeValue.textContent = "--:--";
 
     els.continueBtn.hidden = true;
     if (originalUrl) {
-      els.backBtn.textContent = originalHost ? `Back to ${originalHost}` : "Back to the site";
+      els.backBtn.textContent = originalHost ? t("blocked_backToHost", [originalHost]) : t("blocked_backToSite");
       els.backBtn.hidden = false;
     } else {
       els.backBtn.hidden = true;

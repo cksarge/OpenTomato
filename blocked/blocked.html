@@ -2,26 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Blocked — OpenTomato</title>
+    <title data-i18n="blocked_pageTitle">Blocked — OpenTomato</title>
     <link rel="stylesheet" href="blocked.css" />
   </head>
   <body>
     <div class="page">
       <div class="topbar">
-        <button id="theme-toggle-btn" class="icon-btn" title="Toggle theme" aria-label="Toggle theme"></button>
+        <button id="theme-toggle-btn" class="icon-btn" data-i18n-title="common_toggleTheme" data-i18n-aria-label="common_toggleTheme" title="Toggle theme" aria-label="Toggle theme"></button>
       </div>
       <main class="card" id="card">
         <div class="icon" aria-hidden="true">⛔</div>
-        <h1 id="headline">You can't go there!</h1>
-        <p id="message">This site is off-limits while you're focusing.</p>
+        <h1 id="headline" data-i18n="blocked_headline">You can't go there!</h1>
+        <p id="message" data-i18n="blocked_message">This site is off-limits while you're focusing.</p>
         <div class="time-remaining" id="time-remaining">
-          <span class="label">Time remaining</span>
+          <span class="label" data-i18n="blocked_timeRemainingLabel">Time remaining</span>
           <span class="value" id="time-value">25:00</span>
         </div>
-        <p class="hint" id="hint">Head back to what you were working on — you've got this.</p>
+        <p class="hint" id="hint" data-i18n="blocked_hint">Head back to what you were working on — you've got this.</p>
         <div class="actions" id="actions" hidden>
-          <button type="button" id="back-btn" class="btn btn-primary" hidden>Back to the site</button>
-          <button type="button" id="continue-btn" class="btn btn-ghost" hidden>Continue anyway</button>
+          <button type="button" id="back-btn" class="btn btn-primary" data-i18n="blocked_backToSite" hidden>Back to the site</button>
+          <button type="button" id="continue-btn" class="btn btn-ghost" data-i18n="blocked_continueAnyway" hidden>Continue anyway</button>
         </div>
       </main>
     </div>

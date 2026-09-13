@@ -1,7 +1,6 @@
 import {
   PHASE,
   STATUS,
-  PHASE_LABELS,
   DEFAULT_SETTINGS,
   DEFAULT_TIMER_STATE,
   DEFAULT_STATS,
@@ -16,8 +15,11 @@ import {
   getActiveTaskId,
   setActiveTaskId,
 } from "../common/storage.js";
-import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
+import { totalFocusMs, formatFocusDuration } from "../common/stats.js";
 import { initTheme } from "../common/theme.js";
+import { t, applyI18n, phaseLabel, statsWindowLabel } from "../common/i18n.js";
+
+applyI18n();
 
 const RING_RADIUS = 54;
 const CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
@@ -46,7 +48,9 @@ const els = {
   presetSelect: document.getElementById("preset-select"),
 };
 
-const RESET_PHRASE = "Yes, I want to reset the timer.";
+function resetPhrase() {
+  return t("common_resetConfirmPhrase");
+}
 const TASKS_PREVIEW = 3; // tasks shown before "Show all"
 
 initTheme(els.themeToggleBtn);
@@ -74,9 +78,9 @@ function render() {
 
   els.card.dataset.phase = phaseDataAttr(phase);
 
-  const statusSuffix =
-    status === STATUS.PAUSED ? " · Paused" : status === STATUS.IDLE ? " · Ready" : "";
-  els.phaseLabel.textContent = PHASE_LABELS[phase] + statusSuffix;
+  const statusWord =
+    status === STATUS.PAUSED ? t("common_statusPaused") : status === STATUS.IDLE ? t("common_statusReady") : "";
+  els.phaseLabel.textContent = statusWord ? t("common_phaseWithStatus", [phaseLabel(phase), statusWord]) : phaseLabel(phase);
 
   const totalMs = durationMsForPhase(phase, settings);
   let remainingMs;
@@ -103,11 +107,11 @@ function render() {
   }
 
   if (status === STATUS.RUNNING) {
-    els.primaryBtn.textContent = "Pause";
+    els.primaryBtn.textContent = t("common_pause");
   } else if (status === STATUS.PAUSED) {
-    els.primaryBtn.textContent = "Resume";
+    els.primaryBtn.textContent = t("common_resume");
   } else {
-    els.primaryBtn.textContent = "Start";
+    els.primaryBtn.textContent = t("common_start");
   }
 
   const active = status !== STATUS.IDLE;
@@ -146,7 +150,7 @@ function renderPresetBar() {
     placeholder.value = "";
     placeholder.selected = true;
     placeholder.disabled = true;
-    placeholder.textContent = "Duration preset…";
+    placeholder.textContent = t("popup_presetSelectPlaceholder");
     els.presetSelect.appendChild(placeholder);
     for (const preset of presets) {
       const option = document.createElement("option");
@@ -173,19 +177,19 @@ function closeResetConfirm() {
 
 function renderFocusStat() {
   const win = state.settings.statsWindow ?? DEFAULT_SETTINGS.statsWindow;
-  const label = STATS_WINDOW_LABELS[win] ?? STATS_WINDOW_LABELS[DEFAULT_SETTINGS.statsWindow];
+  const label = statsWindowLabel(win);
   const total = formatFocusDuration(totalFocusMs(state.stats, state.timerState, state.settings));
   els.focusStat.textContent = "";
   const strong = document.createElement("strong");
   strong.textContent = total;
-  els.focusStat.append(`Focused ${label}: `, strong);
+  els.focusStat.append(t("popup_focusedLabel", [label]), strong);
 
   const tasks = Array.isArray(state.tasks) ? state.tasks : [];
   if (tasks.length) {
-    const done = tasks.filter((t) => t.done).length;
+    const done = tasks.filter((task) => task.done).length;
     const taskStrong = document.createElement("strong");
     taskStrong.textContent = `${done}/${tasks.length}`;
-    els.focusStat.append(" · Tasks complete ", taskStrong);
+    els.focusStat.append(t("popup_tasksCompleteLabel"), taskStrong);
   }
 }
 
@@ -241,7 +245,7 @@ function renderTasks() {
     const activeBtn = document.createElement("button");
     activeBtn.type = "button";
     activeBtn.className = "task-active-btn";
-    activeBtn.title = isActive ? "Stop focusing on this task" : "Focus on this task";
+    activeBtn.title = isActive ? t("popup_taskStopFocus") : t("popup_taskFocusOn");
     activeBtn.setAttribute("aria-label", activeBtn.title);
     activeBtn.setAttribute("aria-pressed", String(isActive));
     activeBtn.addEventListener("click", () => setActiveTask(task.id));
@@ -253,7 +257,7 @@ function renderTasks() {
   const overflow = tasks.length - TASKS_PREVIEW;
   if (overflow > 0) {
     els.taskToggle.hidden = false;
-    els.taskToggle.textContent = tasksExpanded ? "Show less" : `Show all (${tasks.length})`;
+    els.taskToggle.textContent = tasksExpanded ? t("popup_showLess") : t("popup_showAll", [String(tasks.length)]);
   } else {
     els.taskToggle.hidden = true;
   }
@@ -400,13 +404,13 @@ els.resetBtn.addEventListener("click", async () => {
 });
 
 els.resetConfirmInput.addEventListener("input", () => {
-  els.resetConfirmGo.disabled = els.resetConfirmInput.value !== RESET_PHRASE;
+  els.resetConfirmGo.disabled = els.resetConfirmInput.value !== resetPhrase();
 });
 
 els.resetConfirmCancel.addEventListener("click", closeResetConfirm);
 
 els.resetConfirmGo.addEventListener("click", async () => {
-  if (els.resetConfirmInput.value !== RESET_PHRASE) return;
+  if (els.resetConfirmInput.value !== resetPhrase()) return;
   closeResetConfirm();
   applyTimerState(await chrome.runtime.sendMessage({ type: "opentomato:reset", confirmed: true }));
   render();

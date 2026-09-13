@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>OpenTomato Settings</title>
+    <title data-i18n="options_pageTitle">OpenTomato Settings</title>
     <link rel="stylesheet" href="options.css" />
   </head>
   <body>
@@ -11,15 +11,15 @@
         <div class="page-header-main">
           <img src="../icons/icon48.png" alt="" width="32" height="32" />
           <div>
-            <h1>OpenTomato Settings</h1>
-            <p class="subtitle">Customize your Pomodoro timer and focus-time site blocking.</p>
+            <h1 data-i18n="options_heading">OpenTomato Settings</h1>
+            <p class="subtitle" data-i18n="options_subtitle">Customize your Pomodoro timer and focus-time site blocking.</p>
           </div>
         </div>
-        <button id="theme-toggle-btn" class="icon-btn" title="Toggle theme" aria-label="Toggle theme"></button>
+        <button id="theme-toggle-btn" class="icon-btn" data-i18n-title="common_toggleTheme" data-i18n-aria-label="common_toggleTheme" title="Toggle theme" aria-label="Toggle theme"></button>
       </header>
 
       <section class="card timer-card-section">
-        <h2>Timer</h2>
+        <h2 data-i18n="options_timerHeading">Timer</h2>
         <div id="timer-panel"></div>
       </section>
 
@@ -28,27 +28,27 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Restrictive Mode</h2>
+          <h2 data-i18n="options_restrictiveHeading">Restrictive Mode</h2>
         </summary>
         <div class="card-body">
 <label class="toggle-row">
           <input type="checkbox" id="restrictiveMode" />
-          <span>Enable restrictive mode</span>
+          <span data-i18n="options_restrictiveEnable">Enable restrictive mode</span>
         </label>
-        <p class="hint">
+        <p class="hint" data-i18n="options_restrictiveIntro">
           When restrictive mode is on, starting a focus session locks things down until that
           session ends:
         </p>
         <ul class="hint restrict-list">
-          <li>Timer durations and every site-blocking setting are frozen.</li>
-          <li>The timer can't be skipped — at all.</li>
-          <li>
+          <li data-i18n="options_restrictiveBullet1">Timer durations and every site-blocking setting are frozen.</li>
+          <li data-i18n="options_restrictiveBullet2">The timer can't be skipped — at all.</li>
+          <li id="restrictive-bullet-3">
             The timer can only be reset while it's <em>paused</em>, and only after typing a
             confirmation phrase.
           </li>
-          <li>Blocked pages lose their &ldquo;Continue anyway&rdquo; button.</li>
+          <li data-i18n="options_restrictiveBullet4">Blocked pages lose their &ldquo;Continue anyway&rdquo; button.</li>
         </ul>
-        <p class="hint lock-note" id="restrictive-active-note" hidden>
+        <p class="hint lock-note" id="restrictive-active-note" data-i18n="options_restrictiveActiveNote" hidden>
           🔒 A focus session is running — restrictive mode can't be changed until it ends.
         </p>
         </div>
@@ -59,41 +59,41 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Timer Durations</h2>
+          <h2 data-i18n="options_durationsHeading">Timer Durations</h2>
         </summary>
         <div class="card-body">
 <div class="field-grid">
           <label class="field">
-            <span>Focus session (minutes)</span>
+            <span data-i18n="options_workMinutesLabel">Focus session (minutes)</span>
             <input type="number" id="workMinutes" min="1" max="180" step="1" />
           </label>
           <label class="field">
-            <span>Short break (minutes)</span>
+            <span data-i18n="options_restMinutesLabel">Short break (minutes)</span>
             <input type="number" id="restMinutes" min="1" max="60" step="1" />
           </label>
           <label class="field">
-            <span>Focus sessions before long break</span>
+            <span data-i18n="options_cyclesLabel">Focus sessions before long break</span>
             <input type="number" id="cyclesBeforeLongBreak" min="1" max="12" step="1" />
           </label>
           <label class="field">
-            <span>Long break (minutes)</span>
+            <span data-i18n="options_longBreakMinutesLabel">Long break (minutes)</span>
             <input type="number" id="longBreakMinutes" min="1" max="120" step="1" />
           </label>
         </div>
-        <p class="hint lock-note" id="timer-lock-note" hidden>
+        <p class="hint lock-note" id="timer-lock-note" data-i18n="options_lockedRestrictive" hidden>
           🔒 Locked while a focus session is running (restrictive mode).
         </p>
 
         <div class="presets">
-          <p class="hint">
+          <p class="hint" data-i18n="options_presetsIntro">
             Save the durations above as a named preset, then switch between presets here or from
             the popup instead of re-typing them.
           </p>
           <ul class="preset-list" id="preset-list"></ul>
-          <p class="empty-hint" id="preset-empty-hint">No presets saved yet.</p>
+          <p class="empty-hint" id="preset-empty-hint" data-i18n="options_presetsEmpty">No presets saved yet.</p>
           <div class="list-add-row">
-            <input type="text" id="preset-name-input" placeholder="Name this preset" maxlength="60" />
-            <button type="button" id="save-preset-btn" class="btn btn-primary">Save current as preset</button>
+            <input type="text" id="preset-name-input" data-i18n-placeholder="options_presetNamePlaceholder" placeholder="Name this preset" maxlength="60" />
+            <button type="button" id="save-preset-btn" class="btn btn-primary" data-i18n="options_savePreset">Save current as preset</button>
           </div>
         </div>
         </div>
@@ -104,31 +104,31 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Notifications</h2>
+          <h2 data-i18n="options_notificationsHeading">Notifications</h2>
         </summary>
         <div class="card-body">
 <label class="toggle-row">
           <input type="checkbox" id="soundOnEnd" />
-          <span>Play a sound when a session ends</span>
+          <span data-i18n="options_soundOnEnd">Play a sound when a session ends</span>
         </label>
         <label class="toggle-row">
           <input type="checkbox" id="badgeCountdown" />
-          <span>Show minutes remaining on the toolbar icon</span>
+          <span data-i18n="options_badgeCountdown">Show minutes remaining on the toolbar icon</span>
         </label>
         <label class="toggle-row">
           <input type="checkbox" id="warningEnabled" />
-          <span>Warn me before a session ends</span>
+          <span data-i18n="options_warningEnabled">Warn me before a session ends</span>
         </label>
         <div class="field-grid indent" id="warning-detail">
           <label class="field">
-            <span>Warning sound</span>
+            <span data-i18n="options_warningSoundLabel">Warning sound</span>
             <label class="toggle-row inline">
               <input type="checkbox" id="soundOnWarning" />
-              <span>Play a sound for the warning</span>
+              <span data-i18n="options_soundOnWarning">Play a sound for the warning</span>
             </label>
           </label>
           <label class="field">
-            <span>Warn me this many seconds before the end</span>
+            <span data-i18n="options_warningSecondsLabel">Warn me this many seconds before the end</span>
             <input type="number" id="warningSeconds" min="5" max="120" step="5" />
           </label>
         </div>
@@ -140,27 +140,27 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Idle Detection</h2>
+          <h2 data-i18n="options_idleHeading">Idle Detection</h2>
         </summary>
         <div class="card-body">
         <label class="toggle-row">
           <input type="checkbox" id="idleEnabled" />
-          <span>Automatically pause when I'm away from the computer</span>
+          <span data-i18n="options_idleEnable">Automatically pause when I'm away from the computer</span>
         </label>
         <div class="field-grid indent" id="idle-detail">
           <label class="field">
-            <span>Consider me away after this many minutes of inactivity</span>
+            <span data-i18n="options_idleMinutesLabel">Consider me away after this many minutes of inactivity</span>
             <input type="number" id="idleMinutes" min="1" max="30" step="1" />
           </label>
           <label class="field">
-            <span>When I'm back</span>
+            <span data-i18n="options_idleBackLabel">When I'm back</span>
             <label class="toggle-row inline">
               <input type="checkbox" id="idleAutoResume" />
-              <span>Resume automatically</span>
+              <span data-i18n="options_idleAutoResume">Resume automatically</span>
             </label>
           </label>
         </div>
-        <p class="hint">
+        <p class="hint" data-i18n="options_idleHint">
           Without this, the timer keeps running (and counting toward your focus total) even while
           you're away — this is what makes it notice and pause itself instead.
         </p>
@@ -172,20 +172,20 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Keyboard Shortcut</h2>
+          <h2 data-i18n="options_shortcutHeading">Keyboard Shortcut</h2>
         </summary>
         <div class="card-body">
-        <p class="hint">
+        <p class="hint" data-i18n="options_shortcutIntro">
           Start, pause, or resume the timer without opening the popup — whichever one of those
           makes sense for the timer's current state.
         </p>
         <p class="hint">
-          Current shortcut: <strong id="shortcut-value">—</strong>
+          <span data-i18n="options_shortcutCurrentLabel">Current shortcut:</span> <strong id="shortcut-value">—</strong>
         </p>
         <div>
-          <button type="button" id="change-shortcut-btn" class="btn btn-ghost">Change shortcut&hellip;</button>
+          <button type="button" id="change-shortcut-btn" class="btn btn-ghost" data-i18n="options_changeShortcut">Change shortcut&hellip;</button>
         </div>
-        <p class="hint">
+        <p class="hint" data-i18n="options_shortcutHint">
           Chrome manages keyboard shortcuts for every extension in one place, so changing it opens
           Chrome's own shortcuts page, scrolled to OpenTomato.
         </p>
@@ -197,26 +197,26 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Tasks</h2>
+          <h2 data-i18n="options_tasksHeading">Tasks</h2>
         </summary>
         <div class="card-body">
-<p class="hint">
+<p class="hint" data-i18n="options_tasksIntro">
           A checklist that shows in the popup. Check items off from the popup or here; add,
           rename, remove, and drag to reorder them here. Give a task an estimate (in pomodoros)
           and mark it "active" — either here or from the popup — to auto-track completed
           sessions against it, no manual counting needed.
         </p>
         <ul class="task-list" id="task-list"></ul>
-        <p class="empty-hint" id="task-empty-hint">No tasks yet.</p>
+        <p class="empty-hint" id="task-empty-hint" data-i18n="options_tasksEmpty">No tasks yet.</p>
         <div class="list-add-row">
-          <input type="text" id="task-input" placeholder="Add a task" maxlength="200" />
-          <button type="button" id="add-task-btn" class="btn btn-primary">Add</button>
+          <input type="text" id="task-input" data-i18n-placeholder="options_taskInputPlaceholder" placeholder="Add a task" maxlength="200" />
+          <button type="button" id="add-task-btn" class="btn btn-primary" data-i18n="common_add">Add</button>
         </div>
         <div class="task-foot" id="task-foot" hidden>
           <span class="hint" id="task-count-line"></span>
           <div class="task-foot-actions">
-            <button type="button" id="clear-done-btn" class="btn btn-ghost">Clear completed</button>
-            <button type="button" id="clear-all-btn" class="btn btn-ghost">Clear all</button>
+            <button type="button" id="clear-done-btn" class="btn btn-ghost" data-i18n="options_clearCompleted">Clear completed</button>
+            <button type="button" id="clear-all-btn" class="btn btn-ghost" data-i18n="options_clearAll">Clear all</button>
           </div>
         </div>
         </div>
@@ -227,28 +227,28 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Focus Stats</h2>
+          <h2 data-i18n="options_statsHeading">Focus Stats</h2>
         </summary>
         <div class="card-body">
-<p class="hint">
+<p class="hint" data-i18n="options_statsIntro">
           Counts the time you actually spend in focus sessions. Pick the window the popup's
           running total adds up over, or reset it whenever you want a fresh start.
         </p>
         <div class="field-grid">
           <label class="field">
-            <span>Popup total covers</span>
+            <span data-i18n="options_statsWindowLabel">Popup total covers</span>
             <select id="statsWindow">
-              <option value="hour">The current hour</option>
-              <option value="day">Today</option>
-              <option value="week">This week</option>
-              <option value="month">This month</option>
-              <option value="all">Since I last reset it</option>
+              <option value="hour" data-i18n="options_statsWindowHourOption">The current hour</option>
+              <option value="day" data-i18n="options_statsWindowDayOption">Today</option>
+              <option value="week" data-i18n="options_statsWindowWeekOption">This week</option>
+              <option value="month" data-i18n="options_statsWindowMonthOption">This month</option>
+              <option value="all" data-i18n="options_statsWindowAllOption">Since I last reset it</option>
             </select>
           </label>
         </div>
         <p class="hint" id="focus-total-line"></p>
         <div>
-          <button type="button" id="reset-stats-btn" class="btn btn-ghost">Reset focus total</button>
+          <button type="button" id="reset-stats-btn" class="btn btn-ghost" data-i18n="options_resetFocusTotal">Reset focus total</button>
         </div>
         </div>
       </details>
@@ -258,7 +258,7 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Site Blocking</h2>
+          <h2 data-i18n="options_blockingHeading">Site Blocking</h2>
         </summary>
         <div class="card-body">
 <p class="hint" id="blocking-hint">
@@ -269,47 +269,47 @@
         </p>
 
         <div class="presets">
-          <p class="hint">
+          <p class="hint" data-i18n="options_profilesIntro">
             Save the current mode and lists as a named profile (e.g. "Deep Work" vs "Light
             Research"), then switch between them here without re-editing your lists.
           </p>
           <ul class="preset-list" id="profile-list"></ul>
-          <p class="empty-hint" id="profile-empty-hint">No blocking profiles saved yet.</p>
+          <p class="empty-hint" id="profile-empty-hint" data-i18n="options_profilesEmpty">No blocking profiles saved yet.</p>
           <div class="list-add-row">
-            <input type="text" id="profile-name-input" placeholder="Name this profile" maxlength="60" />
-            <button type="button" id="save-profile-btn" class="btn btn-primary">Save current as profile</button>
+            <input type="text" id="profile-name-input" data-i18n-placeholder="options_profileNamePlaceholder" placeholder="Name this profile" maxlength="60" />
+            <button type="button" id="save-profile-btn" class="btn btn-primary" data-i18n="options_saveProfile">Save current as profile</button>
           </div>
         </div>
 
-        <div class="mode-row" role="radiogroup" aria-label="Blocking mode">
+        <div class="mode-row" role="radiogroup" data-i18n-aria-label="options_blockModeAriaLabel" aria-label="Blocking mode">
           <label class="radio-pill">
             <input type="radio" name="blockMode" value="off" />
-            <span>Off</span>
+            <span data-i18n="common_blockModeOff">Off</span>
           </label>
           <label class="radio-pill">
             <input type="radio" name="blockMode" value="blacklist" />
-            <span>Blacklist</span>
+            <span data-i18n="common_blockModeBlacklist">Blacklist</span>
           </label>
           <label class="radio-pill">
             <input type="radio" name="blockMode" value="whitelist" />
-            <span>Whitelist</span>
+            <span data-i18n="common_blockModeWhitelist">Whitelist</span>
           </label>
         </div>
         <p class="hint" id="mode-explainer"></p>
 
         <div class="list-editor" id="list-editor">
           <div class="list-add-row">
-            <input type="text" id="site-input" placeholder="e.g. youtube.com" />
-            <button type="button" id="add-site-btn" class="btn btn-primary">Add</button>
+            <input type="text" id="site-input" data-i18n-placeholder="options_siteInputPlaceholder" placeholder="e.g. youtube.com" />
+            <button type="button" id="add-site-btn" class="btn btn-primary" data-i18n="common_add">Add</button>
           </div>
           <ul class="site-list" id="site-list"></ul>
-          <p class="empty-hint" id="empty-hint">No sites added yet.</p>
+          <p class="empty-hint" id="empty-hint" data-i18n="options_sitesEmpty">No sites added yet.</p>
         </div>
 
-        <p class="hint" id="folders-hint">Or quick-add a whole category:</p>
+        <p class="hint" id="folders-hint" data-i18n="options_foldersHint">Or quick-add a whole category:</p>
         <div class="site-folders" id="site-folders"></div>
 
-        <p class="hint lock-note" id="blocking-lock-note" hidden>
+        <p class="hint lock-note" id="blocking-lock-note" data-i18n="options_lockedRestrictive" hidden>
           🔒 Locked while a focus session is running (restrictive mode).
         </p>
         </div>
@@ -320,33 +320,33 @@
           <svg class="card-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
           </svg>
-          <h2>Backup &amp; Export</h2>
+          <h2 data-i18n="options_backupHeading">Backup &amp; Export</h2>
         </summary>
         <div class="card-body">
-        <p class="hint">
+        <p class="hint" data-i18n="options_backupIntro">
           Export everything — settings, focus history, tasks, presets, and blocking profiles — to
           a JSON file you can keep as a backup or bring to another browser. Importing replaces
           your current data with what's in the file.
         </p>
         <div class="backup-actions">
-          <button type="button" id="export-json-btn" class="btn btn-ghost">Export backup (JSON)</button>
-          <button type="button" id="import-json-btn" class="btn btn-ghost">Import backup&hellip;</button>
+          <button type="button" id="export-json-btn" class="btn btn-ghost" data-i18n="options_exportJson">Export backup (JSON)</button>
+          <button type="button" id="import-json-btn" class="btn btn-ghost" data-i18n="options_importJson">Import backup&hellip;</button>
           <input type="file" id="import-json-input" accept="application/json,.json" hidden />
         </div>
-        <p class="hint">
+        <p class="hint" data-i18n="options_csvIntro">
           Or export just your focus-time log as a spreadsheet-friendly CSV file.
         </p>
         <div class="backup-actions">
-          <button type="button" id="export-csv-btn" class="btn btn-ghost">Export focus history (CSV)</button>
+          <button type="button" id="export-csv-btn" class="btn btn-ghost" data-i18n="options_exportCsv">Export focus history (CSV)</button>
         </div>
         </div>
       </details>
 
       <div class="footer-row">
         <div class="footer-actions">
-          <button type="button" id="reset-defaults-btn" class="btn btn-ghost">Reset to defaults</button>
-          <a href="https://cksarge.github.io/OpenTomato/" target="_blank" rel="noopener" class="btn btn-ghost">Homepage</a>
-          <a href="https://buymeacoffee.com/cksarge" target="_blank" rel="noopener" class="btn btn-ghost">☕ Buy me a coffee</a>
+          <button type="button" id="reset-defaults-btn" class="btn btn-ghost" data-i18n="options_resetDefaults">Reset to defaults</button>
+          <a href="https://cksarge.github.io/OpenTomato/" target="_blank" rel="noopener" class="btn btn-ghost" data-i18n="options_homepage">Homepage</a>
+          <a href="https://buymeacoffee.com/cksarge" target="_blank" rel="noopener" class="btn btn-ghost" data-i18n="options_buyMeACoffee">☕ Buy me a coffee</a>
         </div>
         <div class="footer-right">
           <span class="version-line" id="version-line"></span>

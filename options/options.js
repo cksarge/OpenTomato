@@ -29,9 +29,14 @@ import {
   setTheme,
 } from "../common/storage.js";
 import { normalizeEntry } from "../common/blocklist.js";
-import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
+import { totalFocusMs, formatFocusDuration } from "../common/stats.js";
 import { initTheme } from "../common/theme.js";
 import { initTimerPanel } from "../common/timer-panel.js";
+import { t, applyI18n, applyI18nHtml, statsWindowLabel } from "../common/i18n.js";
+
+applyI18n();
+applyI18nHtml(document.getElementById("restrictive-bullet-3"), "options_restrictiveBullet3");
+applyI18nHtml(document.getElementById("blocking-hint"), "options_blockingHint");
 
 const els = {
   restrictiveMode: document.getElementById("restrictiveMode"),
@@ -98,18 +103,18 @@ initTheme(els.themeToggleBtn);
 initTimerPanel(els.timerPanel);
 
 // Read straight from the manifest so this never drifts from the real version.
-els.versionLine.textContent = `Version: ${chrome.runtime.getManifest().version}`;
+els.versionLine.textContent = t("options_versionLine", [chrome.runtime.getManifest().version]);
 
 // Chrome (not this page) owns the actual key binding — this only displays
 // whatever it currently is and links out to where it can be changed.
 async function renderShortcut() {
   if (!chrome.commands?.getAll) {
-    els.shortcutValue.textContent = "Not available in this browser";
+    els.shortcutValue.textContent = t("options_shortcutNotAvailable");
     return;
   }
   const commands = await chrome.commands.getAll();
   const toggle = commands.find((c) => c.name === "toggle-timer");
-  els.shortcutValue.textContent = toggle?.shortcut || "Not set";
+  els.shortcutValue.textContent = toggle?.shortcut || t("options_shortcutNotSet");
 }
 renderShortcut();
 
@@ -146,10 +151,10 @@ function isLocked() {
   return settings.restrictiveMode && timerState.status !== STATUS.IDLE;
 }
 
-const MODE_EXPLAINERS = {
-  [BLOCK_MODE.OFF]: "Site blocking is off — every site is reachable during focus sessions.",
-  [BLOCK_MODE.BLACKLIST]: "Sites in the list below are blocked during focus sessions. Everything else is reachable.",
-  [BLOCK_MODE.WHITELIST]: "Only sites in the list below are reachable during focus sessions. Everything else is blocked.",
+const MODE_EXPLAINER_KEYS = {
+  [BLOCK_MODE.OFF]: "options_modeExplainerOff",
+  [BLOCK_MODE.BLACKLIST]: "options_modeExplainerBlacklist",
+  [BLOCK_MODE.WHITELIST]: "options_modeExplainerWhitelist",
 };
 
 // Push the scalar setting values onto their controls (everything except the
@@ -172,7 +177,7 @@ function syncControlsFromSettings() {
   els.modeRadios.forEach((radio) => (radio.checked = radio.value === settings.blockMode));
   els.warningDetail.style.display = settings.warningEnabled ? "grid" : "none";
   els.idleDetail.style.display = settings.idleEnabled ? "grid" : "none";
-  els.modeExplainer.textContent = MODE_EXPLAINERS[settings.blockMode] ?? "";
+  els.modeExplainer.textContent = t(MODE_EXPLAINER_KEYS[settings.blockMode]) || "";
 }
 
 function populateForm() {
@@ -222,7 +227,12 @@ function presetMatchesSettings(preset) {
 }
 
 function presetSummary(preset) {
-  return `${preset.workMinutes}/${preset.restMinutes} · ${preset.cyclesBeforeLongBreak} cycles · ${preset.longBreakMinutes} long break`;
+  return t("options_presetSummary", [
+    String(preset.workMinutes),
+    String(preset.restMinutes),
+    String(preset.cyclesBeforeLongBreak),
+    String(preset.longBreakMinutes),
+  ]);
 }
 
 function renderPresets() {
@@ -252,14 +262,14 @@ function renderPresets() {
     applyBtn.type = "button";
     applyBtn.className = "preset-apply";
     applyBtn.dataset.active = String(active);
-    applyBtn.textContent = active ? "Active" : "Apply";
+    applyBtn.textContent = active ? t("common_active") : t("common_apply");
     applyBtn.disabled = active || locked;
     applyBtn.addEventListener("click", () => applyPreset(preset));
 
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "preset-remove";
-    removeBtn.textContent = "Remove";
+    removeBtn.textContent = t("common_remove");
     removeBtn.addEventListener("click", () => removePreset(preset.id));
 
     actions.append(applyBtn, removeBtn);
@@ -327,10 +337,10 @@ els.presetNameInput.addEventListener("keydown", (event) => {
 
 // --- Blocking profiles -------------------------------------------------
 
-const MODE_LABELS = {
-  [BLOCK_MODE.OFF]: "Off",
-  [BLOCK_MODE.BLACKLIST]: "Blacklist",
-  [BLOCK_MODE.WHITELIST]: "Whitelist",
+const MODE_LABEL_KEYS = {
+  [BLOCK_MODE.OFF]: "common_blockModeOff",
+  [BLOCK_MODE.BLACKLIST]: "common_blockModeBlacklist",
+  [BLOCK_MODE.WHITELIST]: "common_blockModeWhitelist",
 };
 
 function profileMatchesSettings(profile) {
@@ -342,10 +352,11 @@ function profileMatchesSettings(profile) {
 }
 
 function profileSummary(profile) {
-  if (profile.blockMode === BLOCK_MODE.OFF) return "Blocking off";
+  if (profile.blockMode === BLOCK_MODE.OFF) return t("options_profileBlockingOff");
   const count =
     profile.blockMode === BLOCK_MODE.WHITELIST ? profile.whitelist.length : profile.blacklist.length;
-  return `${MODE_LABELS[profile.blockMode]} · ${count} site${count === 1 ? "" : "s"}`;
+  const countLabel = t(count === 1 ? "options_profileSiteCount" : "options_profileSiteCountPlural", [String(count)]);
+  return `${t(MODE_LABEL_KEYS[profile.blockMode])} · ${countLabel}`;
 }
 
 function renderBlockingProfiles() {
@@ -374,14 +385,14 @@ function renderBlockingProfiles() {
     const applyBtn = document.createElement("button");
     applyBtn.type = "button";
     applyBtn.className = "preset-apply";
-    applyBtn.textContent = active ? "Active" : "Apply";
+    applyBtn.textContent = active ? t("common_active") : t("common_apply");
     applyBtn.disabled = active || locked;
     applyBtn.addEventListener("click", () => applyBlockingProfile(profile));
 
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "preset-remove";
-    removeBtn.textContent = "Remove";
+    removeBtn.textContent = t("common_remove");
     removeBtn.addEventListener("click", () => removeBlockingProfile(profile.id));
 
     actions.append(applyBtn, removeBtn);
@@ -450,8 +461,8 @@ els.profileNameInput.addEventListener("keydown", (event) => {
 
 function renderFocusTotal() {
   const total = formatFocusDuration(totalFocusMs(stats, timerState, settings));
-  const label = STATS_WINDOW_LABELS[settings.statsWindow] ?? STATS_WINDOW_LABELS[DEFAULT_SETTINGS.statsWindow];
-  els.focusTotalLine.textContent = `You've focused ${total} ${label}.`;
+  const label = statsWindowLabel(settings.statsWindow);
+  els.focusTotalLine.textContent = t("options_focusTotalLine", [total, label]);
 }
 
 // Hide the site input, the added-sites list, and the quick-add folders while
@@ -562,7 +573,7 @@ function renderSiteList() {
     label.textContent = site;
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
-    removeBtn.textContent = "Remove";
+    removeBtn.textContent = t("common_remove");
     removeBtn.disabled = isLocked();
     removeBtn.addEventListener("click", () => {
       setCurrentList(currentList().filter((entry) => entry !== site));
@@ -605,7 +616,7 @@ function readFormIntoSettings() {
 }
 
 function showSaved() {
-  els.savedIndicator.textContent = "Saved";
+  els.savedIndicator.textContent = t("options_saved");
   els.savedIndicator.classList.add("visible");
   clearTimeout(savedIndicatorTimeout);
   savedIndicatorTimeout = setTimeout(() => els.savedIndicator.classList.remove("visible"), 1200);
@@ -658,7 +669,7 @@ els.statsWindow.addEventListener("change", () => {
 });
 
 els.resetStatsBtn.addEventListener("click", async () => {
-  if (!confirm("Reset your focus total back to zero?")) return;
+  if (!confirm(t("options_confirmResetStats"))) return;
   await chrome.runtime.sendMessage({ type: "opentomato:reset-stats" }).catch(() => {});
   stats = await getStats();
   renderFocusTotal();
@@ -669,7 +680,7 @@ els.modeRadios.forEach((radio) =>
   radio.addEventListener("change", () => {
     if (!radio.checked) return;
     settings.blockMode = radio.value;
-    els.modeExplainer.textContent = MODE_EXPLAINERS[settings.blockMode] ?? "";
+    els.modeExplainer.textContent = t(MODE_EXPLAINER_KEYS[settings.blockMode]) || "";
     renderFolders();
     renderSiteList();
     applyBlockingVisibility();
@@ -697,7 +708,7 @@ els.siteInput.addEventListener("keydown", (event) => {
 });
 
 els.resetDefaultsBtn.addEventListener("click", () => {
-  if (!confirm("Reset all OpenTomato settings to their defaults?")) return;
+  if (!confirm(t("options_confirmResetDefaults"))) return;
   settings = { ...DEFAULT_SETTINGS, blacklist: [], whitelist: [] };
   populateForm();
   persist();
@@ -719,7 +730,7 @@ function taskCounts() {
 
 function renderTaskCount() {
   const { done, total } = taskCounts();
-  els.taskCountLine.textContent = total ? `${done} of ${total} complete` : "";
+  els.taskCountLine.textContent = total ? t("options_taskCountLine", [String(done), String(total)]) : "";
 }
 
 // Drag-to-reorder: which task is currently being dragged, tracked module-wide
@@ -769,7 +780,7 @@ function renderTasks() {
     check.type = "checkbox";
     check.className = "task-check";
     check.checked = task.done;
-    check.setAttribute("aria-label", "Mark task done");
+    check.setAttribute("aria-label", t("options_taskMarkDone"));
     check.addEventListener("change", () => {
       task.done = check.checked;
       li.classList.toggle("done", task.done);
@@ -800,35 +811,35 @@ function renderTasks() {
     estimate.min = "1";
     estimate.max = "99";
     estimate.step = "1";
-    estimate.placeholder = "≈";
-    estimate.title = "Estimated pomodoros";
-    estimate.setAttribute("aria-label", "Estimated pomodoros");
+    estimate.placeholder = t("options_taskEstimatePlaceholder");
+    estimate.title = t("options_taskEstimateTitle");
+    estimate.setAttribute("aria-label", t("options_taskEstimateTitle"));
     estimate.value = task.estimate ?? "";
     estimate.addEventListener("change", () => {
       const v = Number(estimate.value);
       task.estimate = Number.isFinite(v) && v > 0 ? Math.round(v) : null;
       estimate.value = task.estimate ?? "";
-      progress.textContent = task.estimate ? `${task.actual}/${task.estimate}` : task.actual ? `${task.actual} done` : "";
+      progress.textContent = task.estimate ? `${task.actual}/${task.estimate}` : task.actual ? t("options_taskProgressDone", [String(task.actual)]) : "";
       persistTasks();
     });
 
     const progress = document.createElement("span");
     progress.className = "task-progress";
-    progress.textContent = task.estimate ? `${task.actual}/${task.estimate}` : task.actual ? `${task.actual} done` : "";
+    progress.textContent = task.estimate ? `${task.actual}/${task.estimate}` : task.actual ? t("options_taskProgressDone", [String(task.actual)]) : "";
 
     const activeBtn = document.createElement("button");
     activeBtn.type = "button";
     activeBtn.className = "task-active-btn" + (isActive ? " active" : "");
-    activeBtn.textContent = isActive ? "Active" : "Set active";
+    activeBtn.textContent = isActive ? t("common_active") : t("options_taskSetActive");
     activeBtn.title = isActive
-      ? "Stop crediting completed sessions to this task"
-      : "Credit completed sessions to this task";
+      ? t("options_taskStopCrediting")
+      : t("options_taskStartCrediting");
     activeBtn.addEventListener("click", () => setActiveTask(task.id));
 
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "btn btn-ghost task-remove";
-    remove.textContent = "Remove";
+    remove.textContent = t("common_remove");
     remove.addEventListener("click", () => removeTask(task.id));
 
     li.append(dragHandle, check, text, estimate, progress, activeBtn, remove);
@@ -881,7 +892,7 @@ function clearCompleted() {
 
 function clearAllTasks() {
   if (!tasks.length) return;
-  if (!confirm("Remove all tasks? This can't be undone.")) return;
+  if (!confirm(t("options_confirmClearAllTasks"))) return;
   tasks = [];
   activeTaskId = null;
   renderTasks();
@@ -953,18 +964,14 @@ async function importJsonBackup(file) {
   try {
     parsed = JSON.parse(await file.text());
   } catch {
-    alert("That file isn't valid JSON.");
+    alert(t("options_importInvalidJson"));
     return;
   }
   if (parsed?.format !== BACKUP_FORMAT || !isPlainObject(parsed.data)) {
-    alert("That doesn't look like an OpenTomato backup file.");
+    alert(t("options_importNotBackup"));
     return;
   }
-  if (
-    !confirm(
-      "Import this backup? It will replace your current settings, focus history, tasks, presets, and blocking profiles."
-    )
-  ) {
+  if (!confirm(t("options_confirmImport"))) {
     return;
   }
 
@@ -1003,7 +1010,7 @@ async function importJsonBackup(file) {
   populateForm();
   renderTasks();
   showSaved();
-  alert("Import complete.");
+  alert(t("options_importComplete"));
 }
 
 function csvEscape(value) {
@@ -1012,7 +1019,7 @@ function csvEscape(value) {
 }
 
 function exportCsvHistory() {
-  const rows = [["End Time (ISO 8601)", "Minutes Focused"]];
+  const rows = [[t("options_csvHeaderEnd"), t("options_csvHeaderMinutes")]];
   for (const entry of Array.isArray(stats.focusLog) ? stats.focusLog : []) {
     rows.push([new Date(entry.end).toISOString(), (entry.ms / 60000).toFixed(2)]);
   }
