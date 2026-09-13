@@ -3,7 +3,7 @@
 // data-store-link) reads from this one value — just paste the URL below and
 // both pages update automatically, no need to hunt through the HTML.
 
-window.OPENTOMATO_CHROME_STORE_URL = ""; // e.g. "https://chromewebstore.google.com/detail/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+window.OPENTOMATO_CHROME_STORE_URL = "https://chromewebstore.google.com/detail/opentomato-%E2%80%93-pomodoro-foc/ccljdblofkpblglflfdkeebjplncgifp"; // e.g. "https://chromewebstore.google.com/detail/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 // Which version's privacy policy /privacy.html shows when the URL has no
 // #version fragment — i.e. the version that's actually live on the Chrome Web
