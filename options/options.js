@@ -52,6 +52,8 @@ const els = {
   idleDetail: document.getElementById("idle-detail"),
   idleMinutes: document.getElementById("idleMinutes"),
   idleAutoResume: document.getElementById("idleAutoResume"),
+  shortcutValue: document.getElementById("shortcut-value"),
+  changeShortcutBtn: document.getElementById("change-shortcut-btn"),
   statsWindow: document.getElementById("statsWindow"),
   focusTotalLine: document.getElementById("focus-total-line"),
   resetStatsBtn: document.getElementById("reset-stats-btn"),
@@ -97,6 +99,23 @@ initTimerPanel(els.timerPanel);
 
 // Read straight from the manifest so this never drifts from the real version.
 els.versionLine.textContent = `Version: ${chrome.runtime.getManifest().version}`;
+
+// Chrome (not this page) owns the actual key binding — this only displays
+// whatever it currently is and links out to where it can be changed.
+async function renderShortcut() {
+  if (!chrome.commands?.getAll) {
+    els.shortcutValue.textContent = "Not available in this browser";
+    return;
+  }
+  const commands = await chrome.commands.getAll();
+  const toggle = commands.find((c) => c.name === "toggle-timer");
+  els.shortcutValue.textContent = toggle?.shortcut || "Not set";
+}
+renderShortcut();
+
+els.changeShortcutBtn.addEventListener("click", () => {
+  chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
+});
 
 let settings = { ...DEFAULT_SETTINGS };
 let stats = { ...DEFAULT_STATS };

@@ -475,6 +475,17 @@ async function skipPhase() {
   return advancePhase({ announce: false });
 }
 
+// Keyboard shortcut (chrome.commands, rebindable at chrome://extensions/shortcuts):
+// mirrors the popup's primary button — start if idle, pause if running, resume
+// if paused — so it does the one obviously-right thing without a popup open.
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command !== "toggle-timer") return;
+  const timerState = await getTimerState();
+  if (timerState.status === STATUS.RUNNING) await pauseTimer();
+  else if (timerState.status === STATUS.PAUSED) await resumeTimer();
+  else await startTimer();
+});
+
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === ALARM_PHASE_END) {
     await advancePhase({ announce: true });

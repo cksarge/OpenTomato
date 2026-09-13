@@ -27,6 +27,15 @@
     "page": "options/options.html",
     "open_in_tab": true
   },
+  "commands": {
+    "toggle-timer": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      },
+      "description": "Start, pause, or resume the OpenTomato timer"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["https://cksarge.github.io/OpenTomato/*"],
