@@ -423,6 +423,7 @@
         "<li><strong>Restrictive Mode</strong> — lock the timer and your site list for the whole session</li>" +
         "<li><strong>Focus stats</strong> — how much you've actually focused, by hour / day / week / month</li>" +
         "<li><strong>Toolbar countdown</strong> — minutes remaining on the extension icon</li>" +
+        "<li><strong>And more</strong> — plus any new features down the road, forever free</li>" +
         "</ul>" +
         '<a class="btn btn-primary app-callout-link" data-store-link href="https://github.com/cksarge/OpenTomato">Get the extension</a>';
       applyStoreLink();

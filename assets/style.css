@@ -356,12 +356,6 @@ a {
   gap: 20px;
 }
 
-.support-grid.single {
-  grid-template-columns: 1fr;
-  max-width: 320px;
-  margin: 0 auto;
-}
-
 .support-card {
   text-align: center;
 }
