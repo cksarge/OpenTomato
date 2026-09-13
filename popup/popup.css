@@ -387,16 +387,25 @@ body {
 }
 
 .task-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 6px 8px;
 }
 
+.task-row.active {
+  border-color: var(--accent);
+}
+
 .task-row label {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1;
+  min-width: 0;
   cursor: pointer;
 }
 
@@ -417,6 +426,44 @@ body {
 .task-row.done .task-text {
   text-decoration: line-through;
   color: var(--text-muted);
+}
+
+.task-progress {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-active-btn {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
+
+.task-active-btn:hover {
+  border-color: var(--accent);
+}
+
+.task-active-btn::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.task-row.active .task-active-btn {
+  border-color: var(--accent);
+}
+
+.task-row.active .task-active-btn::after {
+  background: var(--accent);
 }
 
 .task-toggle {

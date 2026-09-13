@@ -7,7 +7,15 @@ import {
   DEFAULT_STATS,
 } from "../common/constants.js";
 import { durationMsForPhase, formatTime } from "../common/duration.js";
-import { getStats, getTasks, setTasks, getPresets, setSettings } from "../common/storage.js";
+import {
+  getStats,
+  getTasks,
+  setTasks,
+  getPresets,
+  setSettings,
+  getActiveTaskId,
+  setActiveTaskId,
+} from "../common/storage.js";
 import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
 import { initTheme } from "../common/theme.js";
 
@@ -49,6 +57,7 @@ let state = {
   stats: DEFAULT_STATS,
   tasks: [],
   presets: [],
+  activeTaskId: null,
 };
 let tasksExpanded = false;
 
@@ -195,14 +204,19 @@ function renderTasks() {
 
   // render() runs every 250ms; only rebuild the interactive list when the task
   // data or the expanded state actually changed, so clicks aren't disrupted.
-  const sig = JSON.stringify({ showAll, rows: tasks.map((t) => [t.id, t.text, t.done]) });
+  const sig = JSON.stringify({
+    showAll,
+    activeTaskId: state.activeTaskId,
+    rows: tasks.map((t) => [t.id, t.text, t.done, t.estimate, t.actual]),
+  });
   if (sig === lastTasksSig) return;
   lastTasksSig = sig;
 
   els.taskList.innerHTML = "";
   for (const task of visible) {
+    const isActive = task.id === state.activeTaskId;
     const li = document.createElement("li");
-    li.className = "task-row" + (task.done ? " done" : "");
+    li.className = "task-row" + (task.done ? " done" : "") + (isActive ? " active" : "");
 
     const label = document.createElement("label");
     const check = document.createElement("input");
@@ -214,9 +228,25 @@ function renderTasks() {
     const text = document.createElement("span");
     text.className = "task-text";
     text.textContent = task.text;
+    if (task.estimate) {
+      const progress = document.createElement("span");
+      progress.className = "task-progress";
+      progress.textContent = ` ${task.actual}/${task.estimate}`;
+      text.appendChild(progress);
+    }
 
     label.append(check, text);
     li.appendChild(label);
+
+    const activeBtn = document.createElement("button");
+    activeBtn.type = "button";
+    activeBtn.className = "task-active-btn";
+    activeBtn.title = isActive ? "Stop focusing on this task" : "Focus on this task";
+    activeBtn.setAttribute("aria-label", activeBtn.title);
+    activeBtn.setAttribute("aria-pressed", String(isActive));
+    activeBtn.addEventListener("click", () => setActiveTask(task.id));
+    li.appendChild(activeBtn);
+
     els.taskList.appendChild(li);
   }
 
@@ -236,10 +266,20 @@ function renderTasks() {
 const TASK_DONE_MOVE_DELAY_MS = 500;
 const pendingTaskMoves = new Map(); // task id -> setTimeout handle
 
+async function setActiveTask(id) {
+  state.activeTaskId = state.activeTaskId === id ? null : id;
+  render();
+  await setActiveTaskId(state.activeTaskId);
+}
+
 async function toggleTask(id, done) {
   state.tasks = state.tasks.map((t) => (t.id === id ? { ...t, done } : t));
+  // A finished task has nothing left to credit pomodoros toward.
+  const clearingActive = done && state.activeTaskId === id;
+  if (clearingActive) state.activeTaskId = null;
   render();
   await setTasks(state.tasks);
+  if (clearingActive) await setActiveTaskId(null);
 
   const existingTimeout = pendingTaskMoves.get(id);
   if (existingTimeout) {
@@ -310,7 +350,7 @@ async function loadState() {
     // Worker not ready yet (e.g. just after an unpacked reload) — fall through
     // to reading storage directly; a storage.onChanged will catch us up.
   }
-  const [tasks, presets] = await Promise.all([getTasks(), getPresets()]);
+  const [tasks, presets, activeTaskId] = await Promise.all([getTasks(), getPresets(), getActiveTaskId()]);
 
   state = {
     timerState:
@@ -320,6 +360,7 @@ async function loadState() {
     stats: response && response.stats ? response.stats : await getStats(),
     tasks,
     presets,
+    activeTaskId,
   };
   render();
 }
@@ -385,6 +426,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
   if (changes.presets) {
     state.presets = Array.isArray(changes.presets.newValue) ? changes.presets.newValue : [];
+  }
+  if (changes.activeTaskId) {
+    state.activeTaskId = typeof changes.activeTaskId.newValue === "string" ? changes.activeTaskId.newValue : null;
   }
   render();
 });

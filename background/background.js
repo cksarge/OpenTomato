@@ -23,6 +23,9 @@ import {
   setTimerState,
   getStats,
   setStats,
+  getTasks,
+  setTasks,
+  getActiveTaskId,
 } from "../common/storage.js";
 import { isUrlBlocked, activeBlockList, matchesList } from "../common/blocklist.js";
 import { getNextPhase } from "../common/phases.js";
@@ -267,9 +270,11 @@ const MIN_FOCUS_SEGMENT_MS = 30 * 1000; // ignore blink-and-you-miss-it stretche
 
 // Log how much of a focus (WORK) phase was actually spent before it ended —
 // whether it ran out naturally, was skipped, or was reset. Called with the
-// timer state as it was *before* the transition.
+// timer state as it was *before* the transition. Returns whether it logged
+// anything, so callers can tell a real stretch of focus from a near-instant
+// one (e.g. immediately skipping or resetting).
 async function recordFocusSegment(timerState, settings) {
-  if (timerState.phase !== PHASE.WORK) return;
+  if (timerState.phase !== PHASE.WORK) return false;
 
   const fullMs = durationMsForPhase(PHASE.WORK, settings);
   let elapsedMs = 0;
@@ -279,7 +284,7 @@ async function recordFocusSegment(timerState, settings) {
     elapsedMs = fullMs - Math.max(0, timerState.remainingMsWhenPaused ?? fullMs);
   }
   elapsedMs = Math.max(0, Math.min(fullMs, elapsedMs));
-  if (elapsedMs < MIN_FOCUS_SEGMENT_MS) return;
+  if (elapsedMs < MIN_FOCUS_SEGMENT_MS) return false;
 
   const stats = await getStats();
   const now = Date.now();
@@ -291,6 +296,21 @@ async function recordFocusSegment(timerState, settings) {
     { end: now, ms: Math.round(elapsedMs) },
   ];
   await setStats({ ...stats, focusLog });
+  return true;
+}
+
+// Credits the currently-selected "active" task with one completed pomodoro.
+// Only called when a WORK phase actually transitions to a break (naturally or
+// via skip) — not on reset, which represents abandoning the attempt rather
+// than finishing it.
+async function incrementActiveTaskProgress() {
+  const activeTaskId = await getActiveTaskId();
+  if (!activeTaskId) return;
+  const tasks = await getTasks();
+  const index = tasks.findIndex((t) => t.id === activeTaskId);
+  if (index === -1) return;
+  tasks[index] = { ...tasks[index], actual: tasks[index].actual + 1 };
+  await setTasks(tasks);
 }
 
 async function clearAlarms() {
@@ -427,7 +447,8 @@ async function advancePhase({ announce }) {
   const settings = await getSettings();
   const timerState = await getTimerState();
   const finishedPhase = timerState.phase;
-  await recordFocusSegment(timerState, settings);
+  const counted = await recordFocusSegment(timerState, settings);
+  if (counted) await incrementActiveTaskProgress();
   const { phase: nextPhase, cycleCount } = getNextPhase(
     finishedPhase,
     timerState.cycleCount,

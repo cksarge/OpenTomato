@@ -28,11 +28,15 @@ export const STORAGE_KEYS = {
   TASKS: "tasks",
   PRESETS: "presets",
   BLOCKING_PROFILES: "blockingProfiles",
+  ACTIVE_TASK: "activeTaskId",
 };
 
 // Task list shown in the popup and edited on the options page. Each entry is
-// { id: <string>, text: <string>, done: <boolean> }. Kept in chrome.storage.local
-// like everything else — never leaves the device.
+// { id, text, done, estimate, actual }: estimate is the pomodoros you expect
+// this task to take (null if you haven't guessed), and actual auto-increments
+// whenever a focus session completes while this is the "active" task (see
+// ACTIVE_TASK) — no manual counting needed. Kept in chrome.storage.local like
+// everything else — never leaves the device.
 export const DEFAULT_TASKS = [];
 
 // Named timer-duration snapshots, switchable from the popup or the options

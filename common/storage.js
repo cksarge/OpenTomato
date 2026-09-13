@@ -66,11 +66,30 @@ export async function getTasks() {
   // Keep only well-shaped entries so a corrupt write can't break the UI.
   return tasks
     .filter((t) => t && typeof t.id === "string" && typeof t.text === "string")
-    .map((t) => ({ id: t.id, text: t.text, done: !!t.done }));
+    .map((t) => ({
+      id: t.id,
+      text: t.text,
+      done: !!t.done,
+      estimate: Number.isFinite(Number(t.estimate)) && Number(t.estimate) > 0 ? Math.round(Number(t.estimate)) : null,
+      actual: Number.isFinite(Number(t.actual)) && Number(t.actual) >= 0 ? Math.round(Number(t.actual)) : 0,
+    }));
 }
 
 export async function setTasks(tasks) {
   await chrome.storage.local.set({ [STORAGE_KEYS.TASKS]: tasks });
+}
+
+// The task an in-progress or upcoming focus session's completed pomodoros get
+// credited to (see DEFAULT_TASKS above) — null when no task is selected.
+export async function getActiveTaskId() {
+  const { [STORAGE_KEYS.ACTIVE_TASK]: activeTaskId } = await chrome.storage.local.get(
+    STORAGE_KEYS.ACTIVE_TASK
+  );
+  return typeof activeTaskId === "string" ? activeTaskId : null;
+}
+
+export async function setActiveTaskId(id) {
+  await chrome.storage.local.set({ [STORAGE_KEYS.ACTIVE_TASK]: id });
 }
 
 export async function getPresets() {

@@ -17,6 +17,8 @@ import {
   setPresets,
   getBlockingProfiles,
   setBlockingProfiles,
+  getActiveTaskId,
+  setActiveTaskId,
 } from "../common/storage.js";
 import { normalizeEntry } from "../common/blocklist.js";
 import { totalFocusMs, formatFocusDuration, STATS_WINDOW_LABELS } from "../common/stats.js";
@@ -90,6 +92,7 @@ let timerState = { ...DEFAULT_TIMER_STATE };
 let tasks = [];
 let presets = [];
 let blockingProfiles = [];
+let activeTaskId = null;
 let savedIndicatorTimeout = null;
 
 // Folder names the user has expanded, so a re-render doesn't collapse them.
@@ -688,14 +691,48 @@ function renderTaskCount() {
   els.taskCountLine.textContent = total ? `${done} of ${total} complete` : "";
 }
 
+// Drag-to-reorder: which task is currently being dragged, tracked module-wide
+// since it spans several elements' event handlers.
+let draggedTaskId = null;
+
 function renderTasks() {
   els.taskList.innerHTML = "";
   els.taskEmptyHint.style.display = tasks.length ? "none" : "block";
   els.taskFoot.hidden = tasks.length === 0;
 
   for (const task of tasks) {
+    const isActive = task.id === activeTaskId;
     const li = document.createElement("li");
-    li.className = "task-row" + (task.done ? " done" : "");
+    li.className = "task-row" + (task.done ? " done" : "") + (isActive ? " active" : "");
+    li.draggable = true;
+
+    li.addEventListener("dragstart", (event) => {
+      draggedTaskId = task.id;
+      event.dataTransfer.effectAllowed = "move";
+      // Let the drag image render before the dragged row starts fading.
+      requestAnimationFrame(() => li.classList.add("dragging"));
+    });
+    li.addEventListener("dragend", () => {
+      draggedTaskId = null;
+      renderTasks(); // clears "dragging"/"drag-over" classes on every row
+    });
+    li.addEventListener("dragover", (event) => {
+      if (!draggedTaskId || draggedTaskId === task.id) return;
+      event.preventDefault();
+      li.classList.add("drag-over");
+    });
+    li.addEventListener("dragleave", () => li.classList.remove("drag-over"));
+    li.addEventListener("drop", (event) => {
+      event.preventDefault();
+      li.classList.remove("drag-over");
+      if (!draggedTaskId || draggedTaskId === task.id) return;
+      reorderTasks(draggedTaskId, task.id);
+    });
+
+    const dragHandle = document.createElement("span");
+    dragHandle.className = "task-drag-handle";
+    dragHandle.setAttribute("aria-hidden", "true");
+    dragHandle.textContent = "⠿";
 
     const check = document.createElement("input");
     check.type = "checkbox";
@@ -705,6 +742,8 @@ function renderTasks() {
     check.addEventListener("change", () => {
       task.done = check.checked;
       li.classList.toggle("done", task.done);
+      // A finished task has nothing left to credit pomodoros toward.
+      if (task.done && activeTaskId === task.id) setActiveTask(task.id);
       renderTaskCount();
       persistTasks();
     });
@@ -717,36 +756,87 @@ function renderTasks() {
     text.addEventListener("change", () => {
       const v = text.value.trim();
       if (!v) {
-        tasks = tasks.filter((t) => t.id !== task.id); // empty text removes it
-        renderTasks();
-        persistTasks();
+        removeTask(task.id); // empty text removes it
         return;
       }
       task.text = v;
       persistTasks();
     });
 
+    const estimate = document.createElement("input");
+    estimate.type = "number";
+    estimate.className = "task-estimate";
+    estimate.min = "1";
+    estimate.max = "99";
+    estimate.step = "1";
+    estimate.placeholder = "≈";
+    estimate.title = "Estimated pomodoros";
+    estimate.setAttribute("aria-label", "Estimated pomodoros");
+    estimate.value = task.estimate ?? "";
+    estimate.addEventListener("change", () => {
+      const v = Number(estimate.value);
+      task.estimate = Number.isFinite(v) && v > 0 ? Math.round(v) : null;
+      estimate.value = task.estimate ?? "";
+      progress.textContent = task.estimate ? `${task.actual}/${task.estimate}` : task.actual ? `${task.actual} done` : "";
+      persistTasks();
+    });
+
+    const progress = document.createElement("span");
+    progress.className = "task-progress";
+    progress.textContent = task.estimate ? `${task.actual}/${task.estimate}` : task.actual ? `${task.actual} done` : "";
+
+    const activeBtn = document.createElement("button");
+    activeBtn.type = "button";
+    activeBtn.className = "task-active-btn" + (isActive ? " active" : "");
+    activeBtn.textContent = isActive ? "Active" : "Set active";
+    activeBtn.title = isActive
+      ? "Stop crediting completed sessions to this task"
+      : "Credit completed sessions to this task";
+    activeBtn.addEventListener("click", () => setActiveTask(task.id));
+
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "btn btn-ghost task-remove";
     remove.textContent = "Remove";
-    remove.addEventListener("click", () => {
-      tasks = tasks.filter((t) => t.id !== task.id);
-      renderTasks();
-      persistTasks();
-    });
+    remove.addEventListener("click", () => removeTask(task.id));
 
-    li.append(check, text, remove);
+    li.append(dragHandle, check, text, estimate, progress, activeBtn, remove);
     els.taskList.appendChild(li);
   }
   renderTaskCount();
+}
+
+function reorderTasks(draggedId, targetId) {
+  const fromIndex = tasks.findIndex((t) => t.id === draggedId);
+  const toIndex = tasks.findIndex((t) => t.id === targetId);
+  if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) return;
+  const reordered = tasks.slice();
+  const [moved] = reordered.splice(fromIndex, 1);
+  reordered.splice(toIndex, 0, moved);
+  tasks = reordered;
+  renderTasks();
+  persistTasks();
+}
+
+async function setActiveTask(id) {
+  activeTaskId = activeTaskId === id ? null : id;
+  renderTasks();
+  await setActiveTaskId(activeTaskId);
+}
+
+function removeTask(id) {
+  tasks = tasks.filter((t) => t.id !== id);
+  if (activeTaskId === id) activeTaskId = null;
+  renderTasks();
+  persistTasks();
+  setActiveTaskId(activeTaskId);
 }
 
 function addTask() {
   const value = els.taskInput.value.trim();
   els.taskInput.value = "";
   if (!value) return;
-  tasks = [...tasks, { id: newTaskId(), text: value.slice(0, 200), done: false }];
+  tasks = [...tasks, { id: newTaskId(), text: value.slice(0, 200), done: false, estimate: null, actual: 0 }];
   renderTasks();
   persistTasks();
 }
@@ -762,8 +852,10 @@ function clearAllTasks() {
   if (!tasks.length) return;
   if (!confirm("Remove all tasks? This can't be undone.")) return;
   tasks = [];
+  activeTaskId = null;
   renderTasks();
   persistTasks();
+  setActiveTaskId(null);
 }
 
 async function persistTasks() {
@@ -788,7 +880,13 @@ chrome.storage.onChanged.addListener((changes, area) => {
     const next = Array.isArray(changes.tasks.newValue) ? changes.tasks.newValue : [];
     tasks = next
       .filter((t) => t && typeof t.id === "string" && typeof t.text === "string")
-      .map((t) => ({ id: t.id, text: t.text, done: !!t.done }));
+      .map((t) => ({
+        id: t.id,
+        text: t.text,
+        done: !!t.done,
+        estimate: Number.isFinite(Number(t.estimate)) && Number(t.estimate) > 0 ? Math.round(Number(t.estimate)) : null,
+        actual: Number.isFinite(Number(t.actual)) && Number(t.actual) >= 0 ? Math.round(Number(t.actual)) : 0,
+      }));
     // Don't yank a task's text field out from under an in-progress edit.
     const ae = document.activeElement;
     if (ae && ae.classList && ae.classList.contains("task-text")) {
@@ -796,6 +894,11 @@ chrome.storage.onChanged.addListener((changes, area) => {
     } else {
       renderTasks();
     }
+  }
+
+  if (changes.activeTaskId) {
+    activeTaskId = typeof changes.activeTaskId.newValue === "string" ? changes.activeTaskId.newValue : null;
+    renderTasks();
   }
 
   if (changes.stats) stats = { ...DEFAULT_STATS, ...(changes.stats.newValue || {}) };
@@ -852,13 +955,14 @@ chrome.storage.onChanged.addListener((changes, area) => {
 setInterval(renderFocusTotal, 1000);
 
 (async function init() {
-  [settings, stats, timerState, tasks, presets, blockingProfiles] = await Promise.all([
+  [settings, stats, timerState, tasks, presets, blockingProfiles, activeTaskId] = await Promise.all([
     getSettings(),
     getStats(),
     getTimerState(),
     getTasks(),
     getPresets(),
     getBlockingProfiles(),
+    getActiveTaskId(),
   ]);
   populateForm();
   renderTasks();

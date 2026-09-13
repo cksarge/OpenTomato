@@ -22,7 +22,8 @@ globalThis.chrome = {
   },
 };
 
-const { getPresets, setPresets, getBlockingProfiles, setBlockingProfiles } = await import("./storage.js");
+const { getPresets, setPresets, getBlockingProfiles, setBlockingProfiles, getTasks, setTasks, getActiveTaskId, setActiveTaskId } =
+  await import("./storage.js");
 const { DEFAULT_PRESETS } = await import("./constants.js");
 
 test("getPresets falls back to the two built-in defaults when nothing is stored", async () => {
@@ -72,4 +73,30 @@ test("getBlockingProfiles sanitizes a bogus blockMode and non-string list entrie
   assert.deepEqual(profiles, [
     { id: "weird", name: "Weird", blockMode: "off", blacklist: ["ok.com"], whitelist: [] },
   ]);
+});
+
+test("getTasks fills in estimate (null) and actual (0) defaults for older/plain task shapes", async () => {
+  await setTasks([{ id: "t1", text: "Write report", done: false }]);
+  const tasks = await getTasks();
+  assert.deepEqual(tasks, [{ id: "t1", text: "Write report", done: false, estimate: null, actual: 0 }]);
+});
+
+test("getTasks round-trips estimate and actual, and rejects invalid values", async () => {
+  await setTasks([
+    { id: "t1", text: "Write report", done: false, estimate: "3", actual: 2 },
+    { id: "t2", text: "Bad estimate", done: false, estimate: -5, actual: -1 },
+  ]);
+  const tasks = await getTasks();
+  assert.deepEqual(tasks, [
+    { id: "t1", text: "Write report", done: false, estimate: 3, actual: 2 },
+    { id: "t2", text: "Bad estimate", done: false, estimate: null, actual: 0 },
+  ]);
+});
+
+test("getActiveTaskId defaults to null, and round-trips a set value", async () => {
+  assert.equal(await getActiveTaskId(), null);
+  await setActiveTaskId("t1");
+  assert.equal(await getActiveTaskId(), "t1");
+  await setActiveTaskId(null);
+  assert.equal(await getActiveTaskId(), null);
 });
