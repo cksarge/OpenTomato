@@ -17,7 +17,7 @@ window.OPENTOMATO_CHROME_STORE_URL = "https://chromewebstore.google.com/detail/o
 // safe to point the Chrome Web Store's privacy policy field at a not-yet-live
 // version's #-URL while it's pending review, without disturbing what's shown
 // to current users.
-window.OPENTOMATO_PRIVACY_VERSION = "1.0.0";
+window.OPENTOMATO_PRIVACY_VERSION = "1.1.0";
 
 document.addEventListener("DOMContentLoaded", function () {
   var url = window.OPENTOMATO_CHROME_STORE_URL;

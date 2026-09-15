@@ -26,7 +26,7 @@
 
 # Privacy Policy
 
-**Effective date:** September 13, 2026 &nbsp;·&nbsp; **Extension version:** 1.1.0
+**Effective date:** September 15, 2026 &nbsp;·&nbsp; **Extension version:** 1.1.0
 
 OpenTomato is built around a simple rule: nothing about how you use it ever leaves your device.
 This page explains exactly what that means.
