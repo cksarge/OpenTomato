@@ -16,8 +16,9 @@ accounts, no trackers. Every setting and every second of timer state stays on yo
 ```
 extension/   The Chrome extension itself (Manifest V3): popup, settings page, background
              service worker, and the "blocked" page shown for off-limits sites.
-website/     A simple static 2-page website: a homepage and a privacy policy page
-             (authored in website/privacy-policy.md).
+website/     A simple static 3-page website: a homepage (index.html), a live timer
+             demo (app.html), and a versioned privacy policy page (privacy.html,
+             authored per-version in website/privacy-policy-X-Y-Z.md).
 ```
 
 > **Branches:** this `main` branch is a lightweight landing point. The actual extension source
